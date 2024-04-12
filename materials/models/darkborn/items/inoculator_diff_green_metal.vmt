@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+    $basetexture                "models\darkborn\items\inoculator_g_diff"
+    $bumpmap                    "models\darkborn\items\inoculator_norm"
+    $normalmapalphaenvmapmask   "1"
+    $envmap                     env_cubemap
+    $envmaptint                 "[.025 .025 .025]"
+    $phong                      "1"
+    $phongexponent              "4"
+    $phongboost                 "5"
+    $phongfresnelranges         "[.05 0.5 1]"
+}

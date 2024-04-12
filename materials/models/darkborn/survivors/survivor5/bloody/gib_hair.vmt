@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor5/bloody/gib_diffuse"
+	"$bumpmap" "models/darkborn/survivors/survivor5/bloody/gib_normal"
+	"$surfaceprop" "flesh"
+
+	"$model" "1"
+	"$nocull"	"1"
+	"$translucent"	"1"
+}

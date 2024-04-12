@@ -1,0 +1,38 @@
+"VertexLitGeneric"
+{
+
+//default color texture-----
+"$basetexture" "models\darkborn\items\inoculator_diff"
+"$basealphaenvmapmask" "1"
+
+//specifies normal map image-----
+"$bumpmap" "models\darkborn\items\inoculator_norm"
+
+//alpha channel of normal map contains specular map info-----
+"$normalmapalphaenvmapmask" "1"
+
+//sets cubemap usage for specular in game or image file-----
+"$envmap" "env_cubemap"
+"$envmaptint" "[.015 .01 .005]"
+
+
+
+
+//Phong parameters (all optional OrangeBox commands), gives great results for rendering reflections-----
+"$phong" "1"
+"$phongexponent" "2"
+"$phongboost" "5"
+"$phongfresnelranges" "[.05 0.5 1]"
+"$phongalbedotint" "1"
+"$phongtint" "[1 1 .75]"
+
+
+"$rimlight" "1"
+"$rimlightexponent" "1"
+"$rimlightboost" ".15"
+
+//created using StudioMDL-----
+"$model" 1
+"$surfaceprop" "metal"
+
+}

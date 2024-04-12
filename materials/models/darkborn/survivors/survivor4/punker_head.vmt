@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/survivors/survivor4/001_punker_head_color"
+"$bumpmap" "models/darkborn/survivors/survivor4/001_Punker_Head_Normal"
+"$alphatest"  "1"
+$alphatestreference 0.3
+$ambientocclusion 1
+$halflambert 1
+$diffuseexp "1.5"
+$nocull 1
+}
+

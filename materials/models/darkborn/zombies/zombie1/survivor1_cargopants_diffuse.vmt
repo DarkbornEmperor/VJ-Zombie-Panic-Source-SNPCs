@@ -1,0 +1,8 @@
+VertexlitGeneric
+{
+$basetexture "models/darkborn/survivors/survivor1/survivor1_cargopants_diffuse"
+$detail "models/darkborn/zombies/zombie3/bloody/detail"
+$detailscale 4
+$detaiblendfactor 0.3
+$halflambert 1
+}

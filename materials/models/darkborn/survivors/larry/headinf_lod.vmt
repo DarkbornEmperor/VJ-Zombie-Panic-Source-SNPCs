@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+$basetexture "models/darkborn/survivors/larry/butcher_head_diff_infected"
+	"Proxies"
+	{
+		"ZombieVision"
+		{
+			"resultVar"	"$selfillumtint"
+		}
+	}
+}

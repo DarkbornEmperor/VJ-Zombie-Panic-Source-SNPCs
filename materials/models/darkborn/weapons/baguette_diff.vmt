@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/baguette_diff"
+	"$bumpmap" "models/darkborn/weapons/baguette_norm" 
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn\viewmodels\student\survivor\student_hand_diff"
+	"$bumpmap" "models/darkborn/viewmodels/jess/survivor/bump"
+	"$phong"     "1"
+}

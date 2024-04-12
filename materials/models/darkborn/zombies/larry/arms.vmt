@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/larry/shirt_diff2"
+	"$bumpmap" "models/darkborn/survivors/larry/shirt_norm"
+	"$nocull" "1"
+	"$phong"     "1"
+	"$phongexponent"   "3"
+	"$phongboost"   "3"
+	"$phongfresnelranges"   "[0.5 0.5 0.5]"
+}

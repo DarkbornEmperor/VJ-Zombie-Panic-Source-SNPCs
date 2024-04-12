@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/001_Punker_Head_Color"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+"$phong"     			"1"
+"$phongboost"			"150"
+"$phongexponent"		"4"
+"$phongfresnelranges"	"[0.01 0.1 1]"
+  "$rimlight" "1"
+        "$rimlightboost" "3"
+        "$rimlightexponent" "90"
+        "$rimmask" "1"
+$halflambert 1
+}
+

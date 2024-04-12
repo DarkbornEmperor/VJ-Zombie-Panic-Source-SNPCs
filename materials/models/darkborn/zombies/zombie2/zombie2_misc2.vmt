@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor2/survivor2_misc2"
+	"$bumpmap" "models/darkborn/survivors/survivor2/survivor2_mn"
+$detail "models/darkborn/zombies/zombie2/detail"
+$detailblendmode 3
+$detailblendfactor 0.5
+$detailscale 4
+$halflambert 1
+}

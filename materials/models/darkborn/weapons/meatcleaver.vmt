@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/darkborn/weapons/meatcleaver"
+	"$surfaceprop" "metal"
+    "$bumpmap" "models/darkborn/weapons/meatcleaver_nm" 
+	"$phong" "1"
+	"$phongexponent" "75"
+	"$phongboost" "1"	
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

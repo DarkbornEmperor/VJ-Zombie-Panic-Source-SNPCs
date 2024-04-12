@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+"$basetexture""models/darkborn/zombies/zombie4/009_Punker_Pants_Color"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+"$phong" "1"
+"$phongexponent"   "12"
+"$phongboost"   "1.12"
+"$phongfresnelranges"   "[0.90 0.90 60]"
+$halflambert 1
+}

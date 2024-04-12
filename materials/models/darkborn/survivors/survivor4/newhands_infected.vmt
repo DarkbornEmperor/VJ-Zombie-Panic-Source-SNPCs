@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor4/newhands_infected"
+"$bumpmap" "models/darkborn/survivors/pedro/normalmap"
+$halflambert 1
+}
+

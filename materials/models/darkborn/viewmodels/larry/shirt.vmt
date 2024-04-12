@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels\larry\shirt"
+	"$bumpmap" "models/darkborn/viewmodels\larry\survivor\normal"
+	"$phong"     "1"
+
+}

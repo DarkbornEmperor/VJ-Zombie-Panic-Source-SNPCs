@@ -1,0 +1,12 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_mouth"
+	"$bumpmap" "models/darkborn/survivors/survivor1/survivor1_teeth_normal"
+$phong 1
+$phongboost "1.4"
+$phongexponent 7
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+}

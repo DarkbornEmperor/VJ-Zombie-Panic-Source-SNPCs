@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie0/carrier_teeth_diffuse"
+"$bumpmap" "models/darkborn/zombies/zombie1/zombie1_teeth_normal"
+$halflambert 1
+}

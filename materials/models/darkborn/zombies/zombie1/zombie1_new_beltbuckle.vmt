@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_new_beltbuckle"
+	"$bumpmap" "models/darkborn/survivors/shared/flat"
+	"$phong"     "1"
+	"$phongexponent"   "3"
+	"$phongboost"   "5"
+	"$phongfresnelranges"   "[0.1 2 1]"
+$detail "models/darkborn/zombies/zombie2/detail"
+$detailblendfactor 0.9
+$detailscale 6
+$halflambert 1
+}

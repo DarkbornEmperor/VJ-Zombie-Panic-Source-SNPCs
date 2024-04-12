@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/001_punker_head_color"
+$detail "models/darkborn/zombies/zombie1/zombie2_eyeglow"
+$detailblendmode 2
+$detailblendfactor 0.35
+
+}

@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn\viewmodels\punker\punkerzom_arm_diffuse"
+	"$bumpmap" "models/darkborn\viewmodels\punker\punkerzom_arm_normal"
+	"$phong"     "1"
+$detail "models/zombies/zombie3/bloody/detail"
+$detailscale 3
+$detailblendfactor 0.5
+}

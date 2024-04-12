@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/darkborn/weapons/chain"
+	"$alphatest" 1
+	"$nocull" 1
+}

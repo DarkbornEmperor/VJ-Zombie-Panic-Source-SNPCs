@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+"$basetexture""models/darkborn/survivors/survivor4/standard"
+"$bumpmap" "models/darkborn/survivors/survivor4/006_Punker_Jacket_Normal"
+$ambientocclusion 1
+$halflambert 1
+}

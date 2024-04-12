@@ -1,0 +1,7 @@
+"eyes"
+{
+	"$basetexture" "models/darkborn/zombies/pedro/eyeball_r"
+	"$iris" "models/darkborn/zombies/pedro/pupil_r"
+	"$halflambert" 1
+	"$nodecal" "1"
+}

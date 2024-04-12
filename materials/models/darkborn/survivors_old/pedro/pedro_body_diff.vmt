@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors_old/pedro/pedro_body_diff"
+	"$nocull" "1"
+	
+	"$bumpmap" "models/darkborn/survivors_old/pedro/pedro_body_bump"
+	
+	"$model" "1"
+	"$surfaceprop" "flesh"
+
+	"$phong"     "1"
+	"$phongexponent"   "10"
+	"$phongboost"   "0.75"
+	"$phongfresnelranges"   "[0.05 0.5 1]"
+}

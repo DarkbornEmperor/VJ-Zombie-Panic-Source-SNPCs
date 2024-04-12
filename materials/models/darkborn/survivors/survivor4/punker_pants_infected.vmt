@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+"$basetexture""models/darkborn/survivors/survivor4/009_Punker_Pants_infected"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+"$phong" "1"
+  "$rimlight" "1"
+        "$rimlightboost" "1"
+        "$rimlightexponent" "90"
+        "$rimmask" "1"
+$halflambert 1
+}

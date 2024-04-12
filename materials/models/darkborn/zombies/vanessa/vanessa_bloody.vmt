@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/vanessa/vanessa_bloody"
+	"$bumpmap" "models/darkborn/zombies/vanessa/gib_n"
+$halflambert 1
+}

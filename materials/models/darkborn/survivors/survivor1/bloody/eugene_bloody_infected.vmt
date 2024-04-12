@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor1/bloody/eugene_bloody_infected"
+	"$bumpmap" "models/darkborn/survivors/survivor1/bloody/eugene_bloody_normal"
+	"$phong"     "1"
+	"$phongboost"   "31"
+	"$phongexponent"   "55"
+	"$phongfresnelranges"   "[.05 .5 1]"
+$ambientocclusion 1
+$halflambert 1
+}
+

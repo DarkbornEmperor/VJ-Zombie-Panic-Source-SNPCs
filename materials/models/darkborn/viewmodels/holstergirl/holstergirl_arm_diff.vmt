@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels/holstergirl/holstergirl_arm_diff"
+	"$bumpmap" "models/darkborn/viewmodels/jess/jess_arm_normal"
+	"$phong"     "1"
+	"$phongexponent"   "3"
+	"$phongboost"   ".010"
+	"$phongfresnelranges"   "[0.1 5 1]"
+$rimlightboost .009
+$rimlight 1
+$rimlightexponent 90
+}

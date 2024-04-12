@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/paul_Bloody"
+$nocull 1
+$alphatest 1
+$alphatestreference 0.135
+}
+

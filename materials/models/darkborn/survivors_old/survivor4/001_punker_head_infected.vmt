@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors_old/survivor4/001_punker_head_infected"
+	"$bumpmap" "models/darkborn/survivors_old/survivor4/002_punker_head_normal"
+	"$surfaceprop" "flesh"
+
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$alphatest" 1
+	"$alpha" 1
+	"$nocull" 1
+	"$model" 1
+	
+	//phong parameters
+	"$phong"     "1"
+	"$phongboost"   "12"
+	"$phongexponent"   "40"
+	"$phongfresnelranges"   "[0.05 0.5 1]"
+}
+

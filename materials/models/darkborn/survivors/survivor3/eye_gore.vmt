@@ -1,0 +1,9 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/darkborn/gibs/eye_gore"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+	"$phong"     "1"
+	"$phongexponent"   "5"
+	"$phongboost"   "0.15"
+	"$phongfresnelranges"   "[0.6 5 1]"
+}

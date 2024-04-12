@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/viewmodels/jess/survivor/jess_arm_diff"
+        "$bumpmap" "models/viewmodels/jess/survivor/bump"
+	"$phong"     "1"
+
+}

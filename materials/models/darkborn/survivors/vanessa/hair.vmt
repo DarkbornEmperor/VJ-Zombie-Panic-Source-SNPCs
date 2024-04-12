@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/vanessa/hair"
+	"$nocull" "1"
+	"$translucent" "1"
+$halflambert 1
+}

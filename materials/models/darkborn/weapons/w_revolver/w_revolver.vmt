@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/w_revolver/w_revolver"
+	"$bumpmap"   "models/darkborn/weapons/w_revolver/w_revolver_normal"
+	"$phong"     "1"
+	"$phongexponent"   "10"
+	"$phongboost"   "1.25"
+	"$phongfresnelranges"   "[1 1 1]"
+}

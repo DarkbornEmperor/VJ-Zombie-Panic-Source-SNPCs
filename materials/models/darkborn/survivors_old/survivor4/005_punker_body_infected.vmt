@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors_old/survivor4/005_punker_body_infected"
+	"$bumpmap" "models/darkborn/survivors_old/survivor4/006_punker_body_bump"
+	"$alphatest"	"1"
+	"$surfaceprop" "flesh"
+
+	//phong parameters
+	"$phong"     "1"
+	"$nocull"	"1"
+	"$phongexponent"   "30"
+	"$phongboost"   "1.5"
+	"$phongfresnelranges"   "[0.1 5 1]"
+}

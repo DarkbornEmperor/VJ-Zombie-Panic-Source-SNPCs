@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/vanessa/Diffuse"
+$nocull 1
+}

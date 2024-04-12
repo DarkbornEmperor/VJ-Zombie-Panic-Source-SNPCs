@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/001_Punker_Head_Color"
+$nocull 1
+$alphatest 1
+$alphatestreference 0.135
+}
+

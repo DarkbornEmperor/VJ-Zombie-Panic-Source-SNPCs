@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie0/carrier_pants_diffuse"
+	"$bumpmap" "models/darkborn/zombies/zombie0/carrier_pants_normal"
+$nocull 1
+$halflambert 1
+}

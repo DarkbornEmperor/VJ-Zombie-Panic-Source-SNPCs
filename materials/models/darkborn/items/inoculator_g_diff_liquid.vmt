@@ -1,0 +1,4 @@
+VertexLitGeneric
+{
+    $basetexture                "models\darkborn\items\inoculator_g_diff_liquid"
+}

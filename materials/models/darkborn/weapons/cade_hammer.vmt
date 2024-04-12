@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/darkborn/weapons/cade_hammer"
+	"$surfaceprop" "metal"
+}

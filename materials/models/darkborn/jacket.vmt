@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/jacket"
+	"$bumpmap" "models/darkborn/jacket_nm"
+}

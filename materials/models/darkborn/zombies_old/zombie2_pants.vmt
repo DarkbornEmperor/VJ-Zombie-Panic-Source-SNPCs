@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies_old/zombie2_pants"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+	"$bumpmap" "models/darkborn/zombies_old/zombie2_pants_nm"
+//	"$envmapcontrast" 1
+}

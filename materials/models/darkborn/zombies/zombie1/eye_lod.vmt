@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie1/zombie1_eye_glow"
+$detail "models/darkborn/zombies/zombie1/zombie2_eyeglow"
+$detailblendmode 2
+$detailblendfactor 0.75
+$detailscale 0.9
+}

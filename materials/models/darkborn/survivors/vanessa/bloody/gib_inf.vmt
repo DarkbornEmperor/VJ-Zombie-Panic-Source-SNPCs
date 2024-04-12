@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/vanessa/bloody/gib_inf"
+	"$nocull" "1"
+	"$alphatest" 1
+	"$bumpmap" "models/darkborn/survivors/vanessa/bloody/bump"
+	"$phong"     "1"
+
+	"$phongboost"   "8"
+	"$phongexponent"   "80"
+	"$phongfresnelranges"   "[0.05 0.5 1]"
+$nodecal 1
+$ambientocclusion 1
+$halflambert 1
+$diffuseexp "1.5"
+}

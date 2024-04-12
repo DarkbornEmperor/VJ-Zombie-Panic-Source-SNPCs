@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/keyboard_diff"
+	"$surfaceprop" "plastic"
+        "$bumpmap" "models/darkborn/weapons/keyboard_norm" 
+	"$phong" "1"
+	//"$phongexponent" "33"
+	"$phongboost" "9"	
+	"$phongfresnelranges"	"[0 3 5]"
+	"$phongexponenttexture" "models/darkborn\weapons\keyboard_exp"
+	"$selfillum" "1"
+}

@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/survivors/survivor4/001_punker_head_color"
+"$alphatest"  "1"
+$alphatestreference 0.135
+$nocull 1
+}
+

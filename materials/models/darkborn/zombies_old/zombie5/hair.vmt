@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies_old/zombie5/diffuse"
+	"$model" "1"
+	"$translucent" "1"
+}

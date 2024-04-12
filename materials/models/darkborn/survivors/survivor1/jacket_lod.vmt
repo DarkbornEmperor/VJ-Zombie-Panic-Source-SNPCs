@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "models/darkborn/survivors/survivor1/survivor1_jacket_diffuse"
+$nocull 1
+}

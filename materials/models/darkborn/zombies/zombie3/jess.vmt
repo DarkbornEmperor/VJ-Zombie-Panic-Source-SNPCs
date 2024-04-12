@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie3/jess"
+	"$bumpmap" "models/darkborn/survivors/survivor3/Jess_Normal"
+	"$phong"     "1"
+	"$phongexponent"   "8"
+	"$phongboost"   ".2"
+	"$phongfresnelranges"   "[0.6 5 1]"
+$halflambert 1
+}

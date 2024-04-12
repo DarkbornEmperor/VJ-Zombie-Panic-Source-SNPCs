@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie5/diffuse_shared"
+	"$bumpmap" "models/darkborn/zombies/zombie5/zombie5_normalshared"
+	"$phong"     "1"
+	"$phongexponent"   "5"
+	"$phongboost"   ".50"
+	"$phongfresnelranges"   "[0.01 5 5]"
+$halflambert 1
+}

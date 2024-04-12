@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn\viewmodels\student\student_sleeves_diff"
+	"$bumpmap" "models/darkborn\viewmodels\student\survivor\student_hand_norm"
+	"$phong"     "1"
+	"$phongexponent"   "4"
+	"$phongboost"   "0.01"
+	"$phongfresnelranges"   "[0.1 5 1]"
+}

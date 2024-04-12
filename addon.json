@@ -1,0 +1,12 @@
+{
+  "title": "[VJ] Zombie Panic! Source SNPCs",
+  "type": "npc",
+  "tags": [
+    "fun",
+    "realism"
+  ],
+  "ignore": [
+    ".gitattributes",
+    ".md"
+  ]
+}

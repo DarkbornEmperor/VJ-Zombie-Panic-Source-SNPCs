@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie1/zombie1_eye_glow"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+$phong 1
+$phongexponent 400
+$phongboost 2
+$phongfresnelranges   "[0.5 0.5 0.5]"
+$detail "models/darkborn/zombies/zombie1/zombie2_eyeglow"
+$detailblendmode 2
+$detailblendfactor 0.75
+$detailscale 0.9
+$halflambert 1
+}

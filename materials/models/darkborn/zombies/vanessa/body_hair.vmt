@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/vanessa/Hairalt"
+	"$bumpmap" "models/darkborn/zombies/vanessa/bumpmap"
+	"$nocull" "1"
+$nodecal 1
+	"$alphatest" 1
+$halflambert 1
+}

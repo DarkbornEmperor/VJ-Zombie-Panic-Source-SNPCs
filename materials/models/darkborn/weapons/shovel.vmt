@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/darkborn/weapons/shovel"
+	"$bumpmap" "models/darkborn/weapons/shovel_nm" 
+	"$surfaceprop" "metal"
+	"$phong" "1"
+	"$phongboost" "5"	
+	"$phongexponent"   "10"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

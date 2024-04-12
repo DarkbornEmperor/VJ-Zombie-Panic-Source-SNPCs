@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels/larry/larryarm"
+	"$bumpmap" "models/darkborn/viewmodels/pedro/survivor/pedro_arm_bump"
+	"$phong"     "1"
+	"$phongexponent"   "6"
+	"$phongboost"   ".2"
+	"$phongfresnelranges"   "[0.1 5 1]"
+$detail "models/darkborn/zombies/zombie3/bloody/detail"
+$detailscale 3
+$detailblendfactor 0.4
+
+}

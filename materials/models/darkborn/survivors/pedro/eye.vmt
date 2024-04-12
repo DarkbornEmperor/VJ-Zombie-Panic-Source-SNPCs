@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/pedro/Eye"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+$phong 1
+$phongexponent 400
+$phongboost 3
+$phongfresnelranges   "[0.5 0.5 0.5]"
+$halflambert 1
+	"Proxies"
+	{
+		"ZombieVision"
+		{
+			"resultVar"	"$selfillumtint"
+		}
+	}
+}

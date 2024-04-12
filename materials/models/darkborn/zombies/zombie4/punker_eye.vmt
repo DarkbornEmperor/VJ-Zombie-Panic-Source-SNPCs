@@ -1,0 +1,17 @@
+"vertexlitgeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/001_punker_head_color"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+	"$phong"     "1"
+	"$phongexponent"   "64"
+	"$phongboost"   "0.25"
+	"$phongfresnelranges"   "[0.6 5 1]"
+$detail "models/darkborn/zombies/zombie1/zombie2_eyeglow"
+$detailblendmode 2
+$detailblendfactor 0.35
+  "$rimlight" "1"
+        "$rimlightboost" "1"
+        "$rimlightexponent" "90"
+        "$rimmask" "1"
+$halflambert 1
+}

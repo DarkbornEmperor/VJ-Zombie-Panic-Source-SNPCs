@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models/darkborn/weapons/pot"
+	"$envmap" "env_cubemap"
+}

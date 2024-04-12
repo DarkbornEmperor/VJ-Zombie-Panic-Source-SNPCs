@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor3/newarms"
+	"$bumpmap" "models/darkborn/survivors/survivor3/bump"
+	"$phong"     "1"
+}

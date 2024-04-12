@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/survivors/survivor4/001_Punker_Head_Color"
+"$bumpmap" "models/darkborn/survivors/survivor4/001_Punker_Head_Normal"
+"$phong"     			"1"
+"$phongboost"			"9"
+"$phongexponent"		"2"
+"$phongfresnelranges"	"[0.90 0.90 1]"
+$halflambert 1
+}
+

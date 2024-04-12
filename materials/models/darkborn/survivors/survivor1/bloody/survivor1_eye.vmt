@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_eye_diffuse"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+	"$phong"     "1"
+	"$phongexponent"   "700"
+	"$phongboost"   "18"
+	"$phongfresnelranges"   "[0.6 5 1]"
+$halflambert 1
+}
+

@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/Survivor2/newarms1_inf"
+	"$bumpmap" "models/darkborn/survivors/pedro/normalmap"
+$halflambert 1
+
+}

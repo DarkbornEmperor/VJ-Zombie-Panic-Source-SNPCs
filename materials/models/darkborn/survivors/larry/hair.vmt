@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/darkborn/survivors/larry/hair_diff"
+$nocull 1
+$translucent 1
+}

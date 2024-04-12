@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/larry/lower_diff"
+	"$bumpmap" "models/darkborn/survivors/larry/lower_norm"
+	"$phong"     "1"
+}

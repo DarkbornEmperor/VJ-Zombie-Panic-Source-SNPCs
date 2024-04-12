@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/v_ied/package_sheet"
+	"$bumpmap" "models/darkborn/weapons/v_ied/package_normal"
+	//phong parameters
+	"$phong"     "1"
+
+	"$phongexponent"   "20"
+	"$phongboost"   "2"
+	"$phongfresnelranges"   "[.05 0.5 1]"
+}

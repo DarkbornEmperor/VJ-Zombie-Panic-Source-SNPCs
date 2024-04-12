@@ -1,0 +1,6 @@
+VertexlitGeneric
+{
+$basetexture "models/darkborn/survivors/survivor1/survivor1_new_shirt"
+$bumpmap "models/darkborn/survivors/survivor1/survivor1_new_shirt_normal"
+$halflambert 1
+}

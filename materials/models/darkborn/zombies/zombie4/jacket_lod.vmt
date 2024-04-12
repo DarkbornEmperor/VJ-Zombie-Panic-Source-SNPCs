@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+"$basetexture""models/darkborn/zombies/zombie4/standard1"
+
+$nocull 1
+}

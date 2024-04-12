@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+"$basetexture" "models/darkborn/zombies/zombie4/paul_Bloody"
+"$bumpmap" "models/darkborn/zombies/zombie4/gib_n"
+$nocull 1
+$alphatest 1
+$alphatestreference 0.135
+		"$phong"     "1"
+	"$phongboost"   "1"
+	"$phongexponent"   "8"
+	"$phongfresnelranges"   "[.05 .5 1]"
+   "$rimlight" "1"
+        "$rimlightboost" ".70"
+        "$rimlightexponent" "90"
+        "$rimmask" "1"
+$halflambert 1
+$nodecal 1
+}
+

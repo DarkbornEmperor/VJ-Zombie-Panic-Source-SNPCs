@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture"							"models/darkborn/weapons/v_ied/package_sheet_glow"
+	"$bumpmap"								"models/darkborn/weapons/v_ied/package_normal"
+	"$selfillum"							"1"
+	"$selfillum_envmapmask_alpha"			"1"
+	"$phong"								"1"
+	"$phongexponent"						"20"
+	"$phongboost"							"2"
+	"$phongfresnelranges"					"[.05 0.5 1]"
+}

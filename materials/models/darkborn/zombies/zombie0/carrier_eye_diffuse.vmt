@@ -1,0 +1,10 @@
+"Vertexlitgeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie0/carrier_eye_diffuse"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+$phong 1
+$phongexponent 400
+$phongboost 2
+$phongfresnelranges   "[0.5 0.5 0.5]"
+$halflambert 1
+}

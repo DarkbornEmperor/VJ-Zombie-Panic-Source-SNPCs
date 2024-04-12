@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels/zombies/zombie0_arm_dff"
+	"$bumpmap" "models/darkborn/viewmodels/zombies/zombie0_arm_nm"
+$phong 1
+$halflambert 1
+	"$phongexponent"   "10"
+	"$phongboost"   "3"
+	"$phongfresnelranges"   "[0.3 0.5 1]"
+	
+	"$rimlight" "1"
+	"$rimlightexponent" "20"
+	"$rimlightboost" "0.3"
+}

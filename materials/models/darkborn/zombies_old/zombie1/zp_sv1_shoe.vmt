@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies_old/zombie1/zp_sv1_shoe"
+	"$surfaceprop" "flesh"
+
+}

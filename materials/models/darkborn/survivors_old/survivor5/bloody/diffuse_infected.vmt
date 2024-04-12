@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors_old/survivor5/bloody/diffuse_infected"
+	"$bumpmap" "models/darkborn/survivors_old/survivor5/bloody/normal"
+	"$surfaceprop" "flesh"
+
+	"$nocull" "1"
+	"$model" "1"
+	//phong parameters
+	"$phong"     "1"
+
+	"$phongexponent"   "100"
+	"$phongboost"   "0.2"
+	"$phongfresnelranges"   "[0.05 5 1]"
+}

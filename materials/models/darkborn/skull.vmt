@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/darkborn/skull"
+	"$bumpmap" "models/darkborn/skull_normal"
+	
+	"$phong" "1"
+	"$phongexponent"   "200"
+	"$phongboost"   "1"
+	"$phongfresnelranges"   "[.05 .5 1]"
+}

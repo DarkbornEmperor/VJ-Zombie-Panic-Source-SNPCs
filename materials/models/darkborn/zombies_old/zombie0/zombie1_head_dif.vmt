@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies_old/zombie0/zombie1_head_dif"
+	"$bumpmap" "models/darkborn/zombies_old/zombie0/zombie1_head_nm"
+
+	"$phong"     "1"
+	"$phongexponent"   "35"
+	"$phongboost"   ".75"
+	"$phongfresnelranges"   "[0.05 2 1]"
+}

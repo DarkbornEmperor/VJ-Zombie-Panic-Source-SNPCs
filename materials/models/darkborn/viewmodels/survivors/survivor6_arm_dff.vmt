@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels/survivors/survivor6_arm_dff"
+	"$bumpmap" "models/darkborn/viewmodels/survivors/survivor6_arm_nm"
+$halflambert 1
+}

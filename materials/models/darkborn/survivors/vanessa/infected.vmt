@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/vanessa/infected"
+	"$bumpmap" "models/darkborn/survivors/vanessa/Bumpmap"
+	"$phong"     "1"
+	"$phongexponent"   "3"
+	"$phongboost"   "1"
+	"$phongfresnelranges"   "[0.1 5 1]"
+ "$rimlight" "1"
+        "$rimlightboost" "1"
+        "$rimlightexponent" "90"
+        "$rimmask" "1"
+$halflambert 1
+}
+

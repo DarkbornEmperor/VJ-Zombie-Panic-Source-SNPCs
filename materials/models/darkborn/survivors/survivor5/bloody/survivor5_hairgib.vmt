@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor5/bloody/survivor5_hairgib"
+	"$bumpmap" "models/darkborn/survivors/survivor5/bloody/gib_normal"
+	"$nocull"	"1"
+	"$translucent"	"1"
+$nodecal 1
+$halflambert 1
+}

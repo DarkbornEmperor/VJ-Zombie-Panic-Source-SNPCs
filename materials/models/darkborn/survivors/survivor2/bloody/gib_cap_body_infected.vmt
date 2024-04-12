@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor2/bloody/survivor2_infected_bloody"
+	"$bumpmap" "models/darkborn/survivors/survivor2/bloody/survivor2_bloody_normal"
+	"$phong"     "1"
+	"$phongexponent"  "25"
+	"$phongboost"   "0.25"
+	"$phongfresnelranges"   "[0.1 2 1]"
+$nodecal 1
+$halflambert 1
+}

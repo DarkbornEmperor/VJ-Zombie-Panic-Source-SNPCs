@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/axe"
+	"$bumpmap" "models/darkborn/weapons/axe_nm" 
+	"$surfaceprop" "Wood_Plank"
+//	"$nodecal"		"1"
+	"$phong"		"1"
+	"$phongexponent"	"5"
+	"$phongboost"	".05"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

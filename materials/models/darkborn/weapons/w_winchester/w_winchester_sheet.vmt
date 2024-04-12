@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/w_winchester/w_winchester_sheet"
+	"$bumpmap" "models/darkborn/weapons/w_winchester/w_winchester_normal"
+	//phong parameters
+	"$phong"     "1"
+
+	"$phongexponent"   "20"
+	"$phongboost"   "1"
+	"$phongfresnelranges"   "[1 0.5 1]"
+	
+	//rimlight parameters
+	"$rimlight" "1"
+	"$rimlightexponent" "20"
+	"$rimlightboost" "0.4"
+}

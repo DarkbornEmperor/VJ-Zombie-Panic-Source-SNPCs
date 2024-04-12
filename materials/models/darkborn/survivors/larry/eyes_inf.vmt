@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+"$basetexture" "models/darkborn/survivors/larry/eyes_diff2"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+$phong "1"
+$phongexponent "600"
+$phongboost "1"
+$phongfresnelranges   "[0.5 0.5 0.5]"
+}

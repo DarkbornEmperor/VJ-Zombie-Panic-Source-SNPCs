@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor3/bloody/headgib_diff_infected"
+	"$bumpmap" "models/darkborn/survivors/survivor3/bloody/headgib_diff_nm"
+$halflambert 1
+}

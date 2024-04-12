@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/weapons/w_m4/w_m4_sheet"
+	"$envmap" "env_cubemap"
+        "$envmapmask" "models/darkborn/weapons/w_m4/w_m4_spec"
+	"$envmaptint" "[ .2 .2 .2 ]"
+	"$envmapconstrast" .3
+        //"$translucent" 1
+        "$alphatest" 1
+	"$alpha" 1
+	"$nocull" 1
+	"$model" 1
+}

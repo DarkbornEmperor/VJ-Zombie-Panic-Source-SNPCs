@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie5/hair"
+	"$bumpmap" "models/darkborn/zombies/zombie5/zombie5_normalshared"
+	"$nocull"	"1"
+	"$translucent"	"1"
+	"$phong"     "1"
+	"$phongexponent"   "8"
+$detail "models/darkborn/zombies/zombie3/bloody/detail"
+$detailscale 2
+	"$phongboost"   "0.75"
+	"$phongfresnelranges"   "[0.05 5 1]"
+$nodecal 1
+$halflambert 1
+}

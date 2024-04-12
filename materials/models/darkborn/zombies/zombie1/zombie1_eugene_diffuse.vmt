@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/zombie1/zombie1_eugene_diffuse"
+	"$bumpmap" "models/darkborn/survivors/survivor1/survivor1_eugene_normal"
+$halflambert 1
+}

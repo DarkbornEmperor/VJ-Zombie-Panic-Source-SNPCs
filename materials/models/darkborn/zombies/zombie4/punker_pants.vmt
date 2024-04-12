@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+"$basetexture""models/darkborn/zombies/zombie4/009_Punker_Pants_Color"
+"$bumpmap" "models/darkborn/survivors/survivor4/punker_pants_bump"
+$halflambert 1
+}

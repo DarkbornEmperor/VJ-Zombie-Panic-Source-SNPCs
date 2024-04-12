@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "models/darkborn/survivors/survivor1/survivor1_jacket_diffuse"
+$bumpmap "models/darkborn/survivors/survivor1/survivor1_jacket_normal"
+$nocull 1
+        "$phong" "1"
+	"$phongexponent"   "3"
+	"$phongboost"   "0.07"
+$phongfresnelranges   "[0.5 0.5 0.5]"
+$halflambert 1
+}

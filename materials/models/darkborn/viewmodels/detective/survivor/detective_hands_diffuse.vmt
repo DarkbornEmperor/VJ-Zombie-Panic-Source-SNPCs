@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/viewmodels/detective/survivor/detective_hands_diffuse"
+	"$bumpmap" "models/darkborn/viewmodels/detective/survivor/detective_normal"
+	"$phong"     "1"
+	"$phongexponent"   "8"
+	"$phongboost"   ".50"
+	"$phongfresnelranges"   "[0.1 5 1]"
+}

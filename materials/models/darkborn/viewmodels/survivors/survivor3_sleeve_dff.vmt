@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor3/skin"
+	"$bumpmap" "models/darkborn/survivors/survivor3/normal2"
+$ambientocclusion 1
+$halflambert 1
+$diffuseexp "1.5"
+}

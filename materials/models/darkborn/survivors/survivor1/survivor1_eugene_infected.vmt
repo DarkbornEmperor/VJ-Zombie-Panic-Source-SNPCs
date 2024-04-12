@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_eugene_infected"
+	"$bumpmap" "models/darkborn/survivors/survivor1/survivor1_eugene_normal"
+	//"$detail" "models/darkborn/survivors/survivor1/survivor1_eugene_detail"
+	//"$detailscale" "1"
+	//"$detailblendfactor" "0.4"
+	"$halflambert" "1"
+}
+

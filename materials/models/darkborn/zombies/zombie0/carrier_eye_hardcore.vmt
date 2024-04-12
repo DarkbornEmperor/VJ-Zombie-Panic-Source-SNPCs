@@ -1,0 +1,10 @@
+unlitgeneric
+{
+	"$basetexture" "models/darkborn/zombies/zombie0/carrier_eye_hardcore"
+"$bumpmap" "models/darkborn/survivors/shared/flat"
+	"$phong"     "1"
+	"$phongexponent"   "155"
+	"$phongboost"   "0.95"
+	"$phongfresnelranges"   "[0.6 5 1]"
+$halflambert 1
+}

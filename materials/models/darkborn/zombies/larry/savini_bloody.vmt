@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/darkborn/zombies/larry/savini_bloody"
+	"$bumpmap" "models/darkborn/survivors/larry/butcher_head_norm"
+	"$phong"     "1"
+	"$phongexponent"   "3"
+	"$phongboost"   "1"
+	"$phongfresnelranges"   "[0.5 0.5 0.5]"
+}
