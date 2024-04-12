@@ -653,7 +653,7 @@ end
 	end
 end)	
 	if string.find(oldModel,"female") or string.find(oldModel,"alyx") or string.find(oldModel,"mossman") or string.find(oldModel,"chell") then		   
-	   zombie:ZombieVoice_InfectedFemale()
+	    zombie:ZombieVoice_InfectedFemale()
     end						
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
