@@ -1269,7 +1269,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
  if IsValid(self.Bonemerge) then	
 	corpseEnt:VJ_ZPS_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)		
 end	
- if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
+ if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end	
  if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) then
 	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-0"..math.random(1,3)..".wav",75,100)
