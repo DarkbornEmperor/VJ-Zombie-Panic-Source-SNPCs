@@ -2389,7 +2389,6 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMoveRandomlyWhenShooting()
- if self.VJ_IsBeingControlled then return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
 	    self.ZPS_Crouching = true
     else

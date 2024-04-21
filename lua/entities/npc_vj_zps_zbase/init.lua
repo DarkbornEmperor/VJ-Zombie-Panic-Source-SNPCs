@@ -1082,7 +1082,7 @@ end
 	local curAct = self:GetSequenceActivity(self:GetIdealSequence())
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 && GetConVar("ai_disabled"):GetInt() == 0 then
 	if IsValid(self:GetEnemy()) && !self.ZPS_Crouching && !self.IsGuard && curAct != ACT_OPEN_DOOR && !IsValid(self.ZPS_DoorToBreak) then
-		if math.random(1,100) <= 3 && self.AttackType == VJ.ATTACK_TYPE_MELEE && !IsValid(controller) && self:Visible(self:GetEnemy()) then
+		if math.random(1,100) <= 3 && self.NearestPointToEnemyDistance < 150 && !IsValid(controller) && self:Visible(self:GetEnemy()) then
 			self:AvoidThreat()
 		end
     end	
