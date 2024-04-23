@@ -1037,12 +1037,10 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
- if self:GetClass() == "npc_vj_zps_zcarrier" && !self.ZPS_Crouching then
-	if act == ACT_RUN or act == ACT_WALK then
+ if !self.ZPS_Crouching then
+	if self:GetClass() == "npc_vj_zps_zcarrier" && (act == ACT_RUN or act == ACT_WALK) then
 		return ACT_RUN
-end
- elseif self:GetClass() != "npc_vj_zps_zcarrier" && !self.ZPS_Crouching then
-	if act == ACT_RUN or act == ACT_WALK then
+	elseif self:GetClass() != "npc_vj_zps_zcarrier" && (act == ACT_RUN or act == ACT_WALK) then
 		return ACT_WALK
     end
 end
@@ -1053,10 +1051,8 @@ end
 		return ACT_WALK_STEALTH
 	end
 end
- if act == ACT_IDLE then
-	if !self:OnGround() && !self:IsMoving() then
+ if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
 		return ACT_GLIDE
-	end
 end
 	return self.BaseClass.TranslateActivity(self,act)
 end

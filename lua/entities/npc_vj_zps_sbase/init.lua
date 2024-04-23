@@ -2213,10 +2213,8 @@ function ENT:TranslateActivity(act)
 		end
 	end
 end
- if act == ACT_IDLE then
-	if !self:OnGround() && !self:IsMoving() then
+	if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
 		return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
-	end
 end
 	return self.BaseClass.TranslateActivity(self,act)
 end
@@ -2389,6 +2387,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMoveRandomlyWhenShooting()
+  if self.VJ_IsBeingControlled then self.ZPS_Crouching = false return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
 	    self.ZPS_Crouching = true
     else

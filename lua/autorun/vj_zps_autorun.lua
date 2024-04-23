@@ -462,10 +462,11 @@ end)
 			local colFri = Color(0,127,31,255)
 		    local colCar = Color(255,191,0,255)
             for _,v in pairs(ents.GetAll()) do
-            if (v:IsNPC() && v:GetClass() != "obj_vj_bullseye" or v:IsPlayer()) && !v:IsFlagSet(FL_NOTARGET) then
-            if (v:GetClass() == "npc_vj_zps_zeugene" or v:GetClass() == "npc_vj_zps_zmarcus" or v:GetClass() == "npc_vj_zps_zjessica" or v:GetClass() == "npc_vj_zps_zpaul" or v:GetClass() == "npc_vj_zps_zlea" or v:GetClass() == "npc_vj_zps_zvanessa" or v:GetClass() == "npc_vj_zps_zpedro" or v:GetClass() == "npc_vj_zps_zlarry") && v:GetClass() != "npc_vj_zps_zcarrier" then
+			local classType = v:GetClass()
+            if (v:IsNPC() && classType != "obj_vj_bullseye" or v:IsPlayer()) && !v:IsFlagSet(FL_NOTARGET) then
+            if (classType == "npc_vj_zps_zeugene" or classType == "npc_vj_zps_zmarcus" or classType == "npc_vj_zps_zjessica" or classType == "npc_vj_zps_zpaul" or classType == "npc_vj_zps_zlea" or classType == "npc_vj_zps_zvanessa" or classType == "npc_vj_zps_zpedro" or classType == "npc_vj_zps_zlarry" or classType == "npc_vj_zps_zinf" or classType == "npc_vj_zps_zinf_ply") && classType != "npc_vj_zps_zcarrier" then
 				table.insert(tbFri,v)
-                elseif v:GetClass() == "npc_vj_zps_zcarrier" then
+                elseif classType == "npc_vj_zps_zcarrier" then
 			    table.insert(tbCar,v)
 			    /*elseif v.ZPS_InfectedVictim then
 				table.insert(tbInf,v)*/
@@ -800,7 +801,7 @@ end
 		body.VJ_Owner = zombieEnt
 		body:Spawn()			
 		body:SetParent(zombieEnt)
-     if body:GetModel() == "models/darkborn/zps/survivors/eugene.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/eugene.mdl" or body:GetModel() == "models/darkborn/zps/survivors/jessica.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/jessica.mdl" or body:GetModel() == "models/darkborn/zps/survivors/larry.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/larry.mdl" or body:GetModel() == "models/darkborn/zps/survivors/lea.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/lea.mdl" or body:GetModel() == "models/darkborn/zps/survivors/marcus.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/marcus.mdl" or body:GetModel() == "models/darkborn/zps/survivors/paul.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/paul.mdl" or body:GetModel() == "models/darkborn/zps/survivors/pedro.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/pedro.mdl" or body:GetModel() == "models/darkborn/zps/survivors/vanessa.mdl" or body:GetModel() == "models/darkborn/zps/survivors_old/vanessa.mdl" then 
+     if string.find(body:GetModel(),"models/darkborn/zps/survivors/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/") or string.find(body:GetModel(),"models/darkborn/zps/survivors/pms/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/pms/") then 
 		body:SetSkin(1) 
 	 else
 	    body:SetSkin(oldSkin) 

@@ -22,7 +22,7 @@ TFAVOX_Models[model] = {
 			['sound'] = TFAVOX_GenerateSound(mdlprefix,"crithit",{""})
 		},
 		['crithealth'] = {
-			['delay']= 8,
+			['delay']= 10,
 			['sound'] = TFAVOX_GenerateSound(mdlprefix,"crithealth",{
 			"darkborn/zps/survivors/jessica/commandmenu/needhealth/needhealth-01.wav",
 			"darkborn/zps/survivors/jessica/commandmenu/needhealth/needhealth-02.wav",
