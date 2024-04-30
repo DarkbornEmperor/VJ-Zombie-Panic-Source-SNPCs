@@ -1,6 +1,6 @@
 AddCSLuaFile()
 ---------------------------------------------------------------------------------------------------------------------------------------------
-ENT.Base = "base_anim"
+ENT.Base = "prop_vj_animatable"
 ENT.Type = "anim"
 ENT.Spawnable = false
 ENT.AdminOnly = false

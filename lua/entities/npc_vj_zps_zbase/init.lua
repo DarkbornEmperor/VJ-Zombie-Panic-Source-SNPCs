@@ -1185,7 +1185,7 @@ end
 end
 		 if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then
 		        self.ZPS_Berserk = true
-			if self:GetClass() == "npc_vj_zps_zcarrier" or self:GetClass() == "npc_vj_zps_zeugene" or self:GetClass() == "npc_vj_zps_zlarry" then self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Berserk) end
+			    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Berserk)
 	            timer.Simple(8,function() if IsValid(self) then
                 self.ZPS_Berserk = false			
 		        self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
