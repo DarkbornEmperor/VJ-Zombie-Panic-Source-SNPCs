@@ -18,7 +18,7 @@ ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 ENT.NextMoveRandomlyWhenShootingTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 15
-ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_punch_l","vjseq_vjges_gesture_punch_r"}
+ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_punch_l","vjseq_vjges_gesture_punch_r","vjseq_vjges_gesture_push"}
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30 
 ENT.MeleeAttackDamageDistance = 60
@@ -2371,8 +2371,10 @@ function ENT:CustomOnMedic_BeforeHeal()
 	self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 	self:DeleteOnRemove(self.Inoculator)
 	//SafeRemoveEntityDelayed(self.Inoculator,1)
-  if self.Inoculator:GetSkin() == 0 or self.Inoculator:GetSkin() == 1 then	
+  if self.Inoculator:GetSkin() == 0 then	
 	self.Medic_HealthAmount = 25
+  elseif self.Inoculator:GetSkin() == 1 then	
+	self.Medic_HealthAmount = 0
   elseif self.Inoculator:GetSkin() == 2 then	
 	self.Medic_HealthAmount = 100
 	end
