@@ -28,3 +28,11 @@ SWEP.Primary.Sound = {"darkborn/zps/weapons/firearms/remington870/fire.wav"}
 SWEP.PrimaryEffects_ShellType = "ShotgunShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound = {"darkborn/zps/weapons/firearms/remington870/dryfire.wav"}
+---------------------------------------------------------------------------------------------------------------------------------------------
+function SWEP:NPC_Reload()
+	local owner = self:GetOwner()
+	owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
+	owner.NextChaseTime = 0
+	self:CustomOnReload()
+	if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
+end

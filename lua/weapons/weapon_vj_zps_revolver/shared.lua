@@ -25,3 +25,11 @@ SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_SpawnShells = false
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound = {"darkborn/zps/weapons/firearms/magnum/dryfire.wav"}
+---------------------------------------------------------------------------------------------------------------------------------------------
+function SWEP:NPC_Reload()
+	local owner = self:GetOwner()
+	owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
+	owner.NextChaseTime = 0
+	self:CustomOnReload()
+	if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
+end

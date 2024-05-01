@@ -16,7 +16,7 @@ ENT.BloodColor = "Red"
 ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 //ENT.CustomBlood_Decal = {"VJ_ZPS_Blood_Red"}
 ENT.NextMoveRandomlyWhenShootingTime = VJ.SET(2,3)
-ENT.HasMeleeAttack = true
+ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 15
 ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_punch_l","vjseq_vjges_gesture_punch_r"}
 ENT.TimeUntilMeleeAttackDamage = false
@@ -38,6 +38,7 @@ ENT.Medic_SpawnPropOnHealModel = "models/darkborn/zps/weapons/w_inoculator.mdl"
 ENT.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
 ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_empty"}
 ENT.CallForBackUpOnDamageAnimation = "vjges_gesture_interaction_grab_empty"
+ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
 ENT.OnlyDoKillEnemyWhenClear = false
 ENT.DisableFootStepSoundTimer = true
@@ -59,7 +60,7 @@ ENT.ZPS_NextPanicT = 0
 ENT.ZPS_NextSelfHealT = 0
 	-- ====== File Path Variables ====== --
 	-- Leave blank if you don't want any sounds to play
-ENT.SoundTbl_MeleeAttack = {
+ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-01.wav",
 "darkborn/zps/weapons/melee/push/push_hit-02.wav",
 "darkborn/zps/weapons/melee/push/push_hit-03.wav",
@@ -74,6 +75,7 @@ ENT.SoundTbl_Impact = {
 "darkborn/zps/shared/impacts/flesh_impact-03.wav",
 "darkborn/zps/shared/impacts/flesh_impact-04.wav"
 }
+ENT.DefaultSoundTbl_MeleeAttack = false
 ENT.WeaponsList = {
 	["Close"] = {
 		"weapon_vj_zps_rem870",
@@ -140,6 +142,9 @@ function ENT:CustomOnInitialize()
  else
      self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
 	end
+end
+ if GetConVar("VJ_ZPS_Melee"):GetInt() == 1 then
+    self.HasMeleeAttack = true
 end
  if GetConVar("VJ_ZPS_ReloadCover"):GetInt() == 1 then 
     self.WeaponReload_FindCover = true
@@ -2396,17 +2401,31 @@ function ENT:InoculatorInject()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed) 
+function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
  if IsValid(self:GetActiveWeapon()) && !self.CurrentWeaponEntity.IsMeleeWeapon then
     self.MeleeAttackDamage = 15
 	self.MeleeAttackDamageType = DMG_CLUB
-	self.SoundTbl_MeleeAttack = {
+	self.SoundTbl_MeleeAttackExtra = {
     "darkborn/zps/weapons/melee/push/push_hit-01.wav",
     "darkborn/zps/weapons/melee/push/push_hit-02.wav",
     "darkborn/zps/weapons/melee/push/push_hit-03.wav",
     "darkborn/zps/weapons/melee/push/push_hit-04.wav"
 }
     end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnWeaponAttack()
+ if self.VJ_IsBeingControlled then return end
+ local wep = self.CurrentWeaponEntity
+ if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
+ if self.MoveRandomlyWhenShooting && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.DoingWeaponAttack && CurTime() > self.NextMoveRandomlyWhenShootingT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
+ timer.Simple(0,function()
+    local moveCheck = VJ.PICK(self:VJ_CheckAllFourSides(math.random(150, 250), true, "0111"))
+    if moveCheck then
+    self:StopMoving()
+	self.NextMoveRandomlyWhenShootingT = CurTime() + math.Rand(self.NextMoveRandomlyWhenShootingTime.a, self.NextMoveRandomlyWhenShootingTime.b)
+    self:SetLastPosition(moveCheck)
+	self:VJ_TASK_GOTO_LASTPOS("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end end) end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMoveRandomlyWhenShooting()
@@ -2430,12 +2449,12 @@ function ENT:CustomOnWeaponReload()
 end
  //if self.WeaponReload_FindCover then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
  if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.WeaponReload_FindCover or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:VJ_ForwardIsHidingZone(self:NearestPoint(self:GetPos() + self:OBBCenter()), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) == true then return end
- timer.Simple(0,function() if IsValid(self) && !self.Dead then
+ timer.Simple(0,function()
     local moveCheck = VJ.PICK(self:VJ_CheckAllFourSides(math.random(150, 400), true, "0111"))
     if moveCheck then
     self:StopMoving()
     self:SetLastPosition(moveCheck)
-	self:VJ_TASK_GOTO_LASTPOS(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end end end)
+	self:VJ_TASK_GOTO_LASTPOS(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 /*function ENT:CustomOnDoChangeWeapon(newWeapon,oldWeapon,invSwitch)

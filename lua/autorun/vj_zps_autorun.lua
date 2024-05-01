@@ -210,7 +210,7 @@ if VJExists == true then
 	util.PrecacheModel("models/darkborn/zps/zombies_old/pms/pedro_zombie.mdl")
 	util.PrecacheModel("models/darkborn/zps/zombies_old/pms/vanessa_zombie.mdl")		
 	util.PrecacheModel("models/darkborn/zps/breen.mdl")	
-	util.PrecacheModel("models/darkborn/zps/breen_ply.mdl")*/
+	util.PrecacheModel("models/darkborn/zps/breen_ply.mdl")
 	util.PrecacheModel("models/darkborn/zps/weapons/arms/c_carrier.mdl")	
 	util.PrecacheModel("models/darkborn/zps/weapons/arms/c_jessica.mdl")
 	util.PrecacheModel("models/darkborn/zps/weapons/arms/c_lea.mdl")	
@@ -253,7 +253,7 @@ if VJExists == true then
 	util.PrecacheModel("models/darkborn/zps/weapons/w_spanner.mdl")	
 	util.PrecacheModel("models/darkborn/zps/weapons/w_supershorty.mdl")
 	util.PrecacheModel("models/darkborn/zps/weapons/w_tireiron.mdl")
-	util.PrecacheModel("models/darkborn/zps/weapons/w_usp.mdl")
+	util.PrecacheModel("models/darkborn/zps/weapons/w_usp.mdl")*/
 	util.PrecacheModel("models/darkborn/zps/gibs/gib_arm_l.mdl")
 	util.PrecacheModel("models/darkborn/zps/gibs/gib_arm_r.mdl")
 	util.PrecacheModel("models/darkborn/zps/gibs/gib_head.mdl")
@@ -285,6 +285,7 @@ if VJExists == true then
 	VJ.AddConVar("VJ_ZPS_Gib", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("VJ_ZPS_Hardcore", 0, {FCVAR_ARCHIVE})
 	//VJ.AddConVar("VJ_ZPS_Flashlight", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("VJ_ZPS_Melee", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("VJ_ZPS_WeaponSwitch", 1, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("VJ_ZPS_OldModels", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("VJ_ZPS_ZombieModels", 0, {FCVAR_ARCHIVE})
@@ -342,6 +343,7 @@ end
 				VJ_ZPS_HeadGib = "1",
 				VJ_ZPS_Gib = "1",
 				VJ_ZPS_Hardcore = "0",
+				VJ_ZPS_Melee = "1",
 				VJ_ZPS_WeaponSwitch = "1",
 				VJ_ZPS_OldModels = "0",
 				VJ_ZPS_ZombieModels = "0",
@@ -359,6 +361,7 @@ end
             Panel:AddControl("Checkbox", {Label ="Enable Legacy Models?", Command ="VJ_ZPS_OldModels"})
 			Panel:AddControl( "Label", {Text = "Survivor Options:"})
             //Panel:AddControl("Checkbox", {Label ="Enable Survivors Having Flashlights?", Command ="VJ_ZPS_Flashlight"})
+            Panel:AddControl("Checkbox", {Label ="Enable Survivors Having Melee Attack?", Command ="VJ_ZPS_Melee"})
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Switching Weapons?", Command ="VJ_ZPS_WeaponSwitch"})
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Finding Cover To Reload?", Command ="VJ_ZPS_ReloadCover"})
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Moving While Reloading?", Command ="VJ_ZPS_ReloadRun"})

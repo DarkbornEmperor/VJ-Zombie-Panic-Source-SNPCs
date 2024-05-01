@@ -30,6 +30,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:PrimaryAttack(UseAlt)	-- Heavily modified PrimaryAttack function to have melee weapons work better and more fluid
+    self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 	local owner = self:GetOwner()
 	local isNPC = owner:IsNPC()
 	
@@ -42,4 +43,12 @@ function SWEP:PrimaryAttack(UseAlt)	-- Heavily modified PrimaryAttack function t
 		owner:VJ_ACT_PLAYACTIVITY(owner:TranslateActivity(VJ.PICK(owner.AnimTbl_WeaponAttackFiringGesture)), false, false, false, 0, {AlwaysUseGesture=true})
         self.NextMeleeAnimT = CurTime() + VJ.AnimDuration(owner,owner.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK1])
     end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function SWEP:NPC_Reload()
+	local owner = self:GetOwner()
+	owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
+	owner.NextChaseTime = 0
+	self:CustomOnReload()
+	if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end
