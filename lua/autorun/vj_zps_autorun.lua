@@ -518,7 +518,7 @@ function VJ_ZPS_InfectionApply(victim,zombie)
  if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim:IsNextBot() then return end
  if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.IsZPSZombie or (victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class,"CLASS_ZOMBIE")) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
  local victimModel = victim:GetModel()
- victim.ZPS_NextCoughT = CurTime() + math.Rand(1,30) 
+ victim.ZPS_NextCoughT = CurTime() + math.random(1,30) 
  if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 then
 	hook.Add("Think","VJ_ZPS_VictimCough",function() 
 	if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
@@ -533,17 +533,17 @@ end
 			net.WriteEntity(victim)
 		net.Send(victim)
 end
-            victim.ZPS_NextCoughT = CurTime() + math.Rand(1,30)
+            victim.ZPS_NextCoughT = CurTime() + math.random(1,30)
         end
     end)
 end
     if victim.IsZPSSurvivor then
-	   victim.ZPS_NextSurvCoughT = CurTime() + math.Rand(1,30)
+	   victim.ZPS_NextSurvCoughT = CurTime() + math.random(1,30)
 end
 function victim:Survivor_CustomOnThink()
-	 if self.IsZPSSurvivor && CurTime() > self.ZPS_NextSurvCoughT then
+	 if self.IsZPSSurvivor && victim.ZPS_InfectedVictim && CurTime() > self.ZPS_NextSurvCoughT then
         self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
-        self.ZPS_NextSurvCoughT = CurTime() + math.Rand(1,30)
+        self.ZPS_NextSurvCoughT = CurTime() + math.random(1,30)
     end	   
 end
  local deaths

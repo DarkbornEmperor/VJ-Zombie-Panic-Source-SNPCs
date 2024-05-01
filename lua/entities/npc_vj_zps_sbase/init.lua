@@ -5,7 +5,10 @@ include("shared.lua")
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.StartHealth = 100 
+ENT.StartHealth = 100
+ENT.HealthRegenerationAmount = 1
+ENT.HealthRegenerationDelay = VJ.SET(1,1)
+ENT.HealthRegenerationResetOnDmg = false
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_PLAYER_ALLY"} 
 ENT.FriendsWithAllPlayerAllies = true
@@ -2266,14 +2269,14 @@ end
 function ENT:Survivor_CustomOnThink() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink_AIEnabled()
- if self.IsMedicSNPC && !self:IsBusy() && self.Medic_Status != "Healing" && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+ if self.IsMedicSNPC && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:CustomOnMedic_BeforeHeal() 
  	self:VJ_ACT_PLAYACTIVITY("vjges_gesture_inoculator_inject_self",true,false,false)
- if IsValid(self:GetEnemy()) then
-    self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
+ if IsValid(self:GetEnemy()) then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
 	timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
 	local CurHP = self:Health()
 	self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
+	self:InoculatorInject()
 	self:CustomOnMedic_OnHeal()
 	self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
 	VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
@@ -2311,7 +2314,7 @@ function ENT:CustomOnAllyDeath(ent)
 	timer.Simple(0, function() if IsValid(self) && !self.Dead then
 	self.ZPS_Panic = true
 	self:StopMoving()
-	self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = false x.FaceData = {Type = VJ.NPC_FACE_NONE} x.DisableChasingEnemy = true
+	self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = false x.CanTurnWhileMoving = false x.FaceData = {Type = VJ.NPC_FACE_NONE} x.DisableChasingEnemy = true
 end)
 		self.TakingCoverT = CurTime() + 10
 		self.NextChaseTime = CurTime() + 10
@@ -2353,7 +2356,7 @@ function ENT:CustomOnMedic_BeforeHeal()
 	local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
 	self.Inoculator = ents.Create("prop_vj_animatable")
 	self.Inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
-	self.Inoculator:SetSkin(math.random(0,2))
+	self.Inoculator:SetSkin(1)
 	self.Inoculator:SetPos(att.Pos)
 	self.Inoculator:SetAngles(att.Ang)
 	self.Inoculator:SetParent(self)
@@ -2363,15 +2366,35 @@ function ENT:CustomOnMedic_BeforeHeal()
 	self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 	self:DeleteOnRemove(self.Inoculator)
 	//SafeRemoveEntityDelayed(self.Inoculator,1)
+  if self.Inoculator:GetSkin() == 0 or self.Inoculator:GetSkin() == 1 then	
+	self.Medic_HealthAmount = 25
+  elseif self.Inoculator:GetSkin() == 2 then	
+	self.Medic_HealthAmount = 100
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMedic_OnHeal(ent)
+ if IsValid(ent) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then		
+	ent.ZPS_InfectedVictim = false
+	ent.HasHealthRegeneration = true
+	VJ.CreateSound(ent,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+	timer.Simple(25,function() if IsValid(ent) then ent.HasHealthRegeneration = false end end)
+end
 	timer.Simple(0.5,function()
-	if IsValid(self) then
+	if IsValid(self) && IsValid(self.Inoculator) then
 	SafeRemoveEntity(self.Inoculator)
-		if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end
+    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end
 	end
 end) return true end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InoculatorInject()
+ if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then	
+	self.ZPS_InfectedVictim = false
+	self.HasHealthRegeneration = true
+	VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+	timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false end end)
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed) 
  if IsValid(self:GetActiveWeapon()) && !self.CurrentWeaponEntity.IsMeleeWeapon then
