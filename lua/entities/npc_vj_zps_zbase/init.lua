@@ -1218,7 +1218,7 @@ end
         hitEnt.ZPS_InfectedVictim = true
 	//if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
         VJ_ZPS_InfectionApply(hitEnt,self)
-	end
+	end 
 end	
     return false
 end
