@@ -22,7 +22,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt,isProp)
         VJ_ZPS_SetPlayerZombie(hitEnt,self,self)	
 end
 	if math.random(1,GetConVar("VJ_ZPS_CarrierInfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.ZPS_InfectedVictim then
-	if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
+	if (hitEnt:IsPlayer() /*&& hitEnt:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
     if hitEnt.ZPS_InfectedVictim then return end
         hitEnt.ZPS_InfectedVictim = true
 	//if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end

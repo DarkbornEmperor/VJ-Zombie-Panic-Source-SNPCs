@@ -54,6 +54,8 @@ ENT.VJC_Data = {
 ENT.ZPS_NextMeleeSoundT = 0
 ENT.ZPS_NextWepSwitchT = 0
 ENT.ZPS_NextJumpT = 0
+ENT.ZPS_Armor = false
+ENT.ZPS_ArmorHP = 100
 ENT.ZPS_Crouching = false
 ENT.ZPS_Panic = false
 ENT.ZPS_NextPanicT = 0
@@ -136,6 +138,7 @@ function ENT:CustomOnInitialize()
  self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
  self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
  if math.random(1,5) == 1 then self.IsMedicSNPC = true end
+ if math.random(1,5) == 1 then self.ZPS_Armor = true end
  if !self.DisableWeapons then
  if !self.WeaponInventory_Melee then
  	 self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
@@ -2690,6 +2693,26 @@ end
 	self.AnimationTranslations[ACT_GLIDE] = defGlide
 	self.AnimationTranslations[ACT_LAND] = defLand
 	return true
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+ -- For Armor
+ if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
+ if self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
+    dmginfo:ScaleDamage(0.80)
+	if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70)
+	local spark = ents.Create("env_spark")
+	spark:SetKeyValue("Magnitude","1")
+	spark:SetKeyValue("Spark Trail Length","1")
+	spark:SetPos(dmginfo:GetDamagePosition())
+	spark:SetAngles(self:GetAngles())
+	spark:SetParent(self)
+	spark:Spawn()
+	spark:Activate()
+	spark:Fire("StartSpark","",0)
+	spark:Fire("StopSpark","",0.001)
+	self:DeleteOnRemove(spark) end end
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)

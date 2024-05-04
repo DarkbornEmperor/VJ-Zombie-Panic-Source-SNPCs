@@ -143,8 +143,7 @@ function ENT:CustomOnInitialize()
    self:Zombie_CustomOnInitialize()
    self:ZombieVoices()
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
-   if self:GetClass() == "npc_vj_zps_zcarrier" then
-        self:SetSkin(1) end
+   if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
         self.HealthRegenerationAmount = 4
         self.HealthRegenerationDelay = VJ.SET(1,1)       
     end
@@ -1183,14 +1182,12 @@ end
 		self:SetLocalVelocity(self:GetMoveVelocity() *0)
 	end
 end
-		 if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then
-		        self.ZPS_Berserk = true
-			    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Berserk)
-	            timer.Simple(8,function() if IsValid(self) then
-                self.ZPS_Berserk = false			
-		        self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
-			end
-		end)
+     if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then
+		self.ZPS_Berserk = true
+	    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Berserk)
+	    timer.Simple(8,function() if IsValid(self) then
+        self.ZPS_Berserk = false			
+	    self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20) end end)
 	end   
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1216,7 +1213,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt,isProp)
         VJ_ZPS_SetPlayerZombie(hitEnt,self,self)	
 end
 	if math.random(1,GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.ZPS_InfectedVictim then
-	if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
+	if (hitEnt:IsPlayer() /*&& hitEnt:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
     if hitEnt.ZPS_InfectedVictim then return end
         hitEnt.ZPS_InfectedVictim = true
 	//if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
