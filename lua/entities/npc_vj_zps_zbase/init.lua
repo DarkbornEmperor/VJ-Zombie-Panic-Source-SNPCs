@@ -152,25 +152,26 @@ end
 function ENT:Zombie_CustomOnInitialize() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieVoices()
- if self:GetClass() == "npc_vj_zps_zcarrier" then
+ local cType = self:GetClass()
+ if cType == "npc_vj_zps_zcarrier" then
         self:ZombieVoice_Carrier()	
- elseif self:GetClass() == "npc_vj_zps_zeugene" then
+ elseif cType == "npc_vj_zps_zeugene" then
         self:ZombieVoice_Eugene()
- elseif self:GetClass() == "npc_vj_zps_zjessica" then
+ elseif cType == "npc_vj_zps_zjessica" then
         self:ZombieVoice_Jessica()
- elseif self:GetClass() == "npc_vj_zps_zlarry" then
+ elseif cType == "npc_vj_zps_zlarry" then
         self:ZombieVoice_Larry()
- elseif self:GetClass() == "npc_vj_zps_zlea" then
+ elseif cType == "npc_vj_zps_zlea" then
         self:ZombieVoice_Lea()
- elseif self:GetClass() == "npc_vj_zps_zmarcus" then
+ elseif cType == "npc_vj_zps_zmarcus" then
         self:ZombieVoice_Marcus()
- elseif self:GetClass() == "npc_vj_zps_zpaul" then
+ elseif cType == "npc_vj_zps_zpaul" then
         self:ZombieVoice_Paul()
- elseif self:GetClass() == "npc_vj_zps_zpedro" then
+ elseif cType == "npc_vj_zps_zpedro" then
         self:ZombieVoice_Pedro()
- elseif self:GetClass() == "npc_vj_zps_zvanessa" then
+ elseif cType == "npc_vj_zps_zvanessa" then
         self:ZombieVoice_Vanessa()
- elseif self:GetClass() == "npc_vj_zps_zinf" or self:GetClass() == "npc_vj_zps_zinf_ply" then
+ elseif cType == "npc_vj_zps_zinf" or cType == "npc_vj_zps_zinf_ply" then
         self:ZombieVoice_InfectedMale()
     end
 end

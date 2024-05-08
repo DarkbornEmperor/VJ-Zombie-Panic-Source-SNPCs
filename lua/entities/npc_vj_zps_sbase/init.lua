@@ -167,21 +167,22 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SurvivorVoices()
- if self:GetClass() == "npc_vj_zps_eugene" then
+ local cType = self:GetClass()
+ if cType == "npc_vj_zps_eugene" then
         self:SurvivorVoice_Eugene()
- elseif self:GetClass() == "npc_vj_zps_jessica" then
+ elseif cType == "npc_vj_zps_jessica" then
         self:SurvivorVoice_Jessica()
- elseif self:GetClass() == "npc_vj_zps_larry" then
+ elseif cType == "npc_vj_zps_larry" then
         self:SurvivorVoice_Larry()
- elseif self:GetClass() == "npc_vj_zps_lea" then
+ elseif cType == "npc_vj_zps_lea" then
         self:SurvivorVoice_Lea()
- elseif self:GetClass() == "npc_vj_zps_marcus" then
+ elseif cType == "npc_vj_zps_marcus" then
         self:SurvivorVoice_Marcus()
- elseif self:GetClass() == "npc_vj_zps_paul" then
+ elseif cType == "npc_vj_zps_paul" then
         self:SurvivorVoice_Paul()
- elseif self:GetClass() == "npc_vj_zps_pedro" then
+ elseif cType == "npc_vj_zps_pedro" then
         self:SurvivorVoice_Pedro()
- elseif self:GetClass() == "npc_vj_zps_vanessa" then
+ elseif cType == "npc_vj_zps_vanessa" then
         self:SurvivorVoice_Vanessa()
     end
 end
