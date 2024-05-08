@@ -540,15 +540,6 @@ end
         end
     end)
 end
-    if victim.IsZPSSurvivor then
-	   victim.ZPS_NextSurvCoughT = CurTime() + math.random(1,30)
-end
-function victim:Survivor_CustomOnThink()
-	 if self.IsZPSSurvivor && victim.ZPS_InfectedVictim && CurTime() > self.ZPS_NextSurvCoughT then
-        self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
-        self.ZPS_NextSurvCoughT = CurTime() + math.random(1,30)
-    end	   
-end
  local deaths
  if victim:IsPlayer() then
 	deaths = victim:Deaths()

@@ -40,11 +40,11 @@ ENT.VJC_Data = {
 ENT.ZPS_VirusInfection = true
 ENT.ZPS_Crouching = false
 ENT.ZPS_CanBreakDoors = false
-ENT.ZPS_DoorToBreak = NULL
 ENT.ZPS_Berserk = false
+ENT.ZPS_DoorToBreak = NULL
+ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextBerserkT = 0
 ENT.ZPS_NextJumpT = 0
-ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextMeleeAnimT = 0
 	-- ====== File Path Variables ====== --
 	-- Leave blank if you don't want any sounds to play
@@ -1217,7 +1217,8 @@ end
 	if (hitEnt:IsPlayer() /*&& hitEnt:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
     if hitEnt.ZPS_InfectedVictim then return end
         hitEnt.ZPS_InfectedVictim = true
-	//if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
+        if hitEnt.IsZPSSurvivor then hitEnt.ZPS_NextCoughT = CurTime() + math.random(1,30) end
+	    //if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
         VJ_ZPS_InfectionApply(hitEnt,self)
 	end 
 end	

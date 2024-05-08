@@ -51,15 +51,16 @@ ENT.VJC_Data = {
 	FirstP_Offset = Vector(0, 0, 5), -- The offset for the controller when the camera is in first person
 }
 -- Custom
-ENT.ZPS_NextMeleeSoundT = 0
-ENT.ZPS_NextWepSwitchT = 0
-ENT.ZPS_NextJumpT = 0
 ENT.ZPS_Armor = false
 ENT.ZPS_ArmorHP = 100
 ENT.ZPS_Crouching = false
 ENT.ZPS_Panic = false
+ENT.ZPS_NextMeleeSoundT = 0
+ENT.ZPS_NextWepSwitchT = 0
+ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextPanicT = 0
 ENT.ZPS_NextSelfHealT = 0
+ENT.ZPS_NextCoughT = 0
 	-- ====== File Path Variables ====== --
 	-- Leave blank if you don't want any sounds to play
 ENT.SoundTbl_MeleeAttackExtra = {
@@ -2232,7 +2233,6 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
- self:Survivor_CustomOnThink()
    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
 	  if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
 	     if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
@@ -2275,9 +2275,11 @@ end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Survivor_CustomOnThink() end
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink_AIEnabled()
+ if self.ZPS_InfectedVictim && CurTime() > self.ZPS_NextCoughT then
+    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
+    self.ZPS_NextCoughT = CurTime() + math.random(1,30)
+end
  if self.IsMedicSNPC && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:CustomOnMedic_BeforeHeal() 
  	self:VJ_ACT_PLAYACTIVITY("vjges_gesture_inoculator_inject_self",true,false,false)
@@ -2374,7 +2376,7 @@ function ENT:CustomOnMedic_BeforeHeal()
 	self.Inoculator:AddEffects(EF_BONEMERGE)
 	self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
 	self:DeleteOnRemove(self.Inoculator)
-	//SafeRemoveEntityDelayed(self.Inoculator,1)
+	SafeRemoveEntityDelayed(self.Inoculator,1.2)
   if self.Inoculator:GetSkin() == 0 then	
 	self.Medic_HealthAmount = 25
   elseif self.Inoculator:GetSkin() == 1 then	
@@ -2386,21 +2388,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMedic_OnHeal(ent)
  if IsValid(ent) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then		
-	ent.ZPS_InfectedVictim = false
+	if ent.ZPS_InfectedVictim then ent.ZPS_InfectedVictim = false end
 	ent.HasHealthRegeneration = true
 	VJ.CreateSound(ent,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
 	timer.Simple(25,function() if IsValid(ent) then ent.HasHealthRegeneration = false end end)
 end
-	timer.Simple(0.5,function()
-	if IsValid(self) && IsValid(self.Inoculator) then
-	SafeRemoveEntity(self.Inoculator)
+	timer.Simple(0.5,function() if IsValid(self) then
     if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end
 	end
 end) return true end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:InoculatorInject()
  if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then	
-	self.ZPS_InfectedVictim = false
+	if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
 	self.HasHealthRegeneration = true
 	VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
 	timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false end end)

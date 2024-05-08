@@ -25,7 +25,8 @@ end
 	if (hitEnt:IsPlayer() /*&& hitEnt:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
     if hitEnt.ZPS_InfectedVictim then return end
         hitEnt.ZPS_InfectedVictim = true
-	//if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
+		if hitEnt.IsZPSSurvivor then hitEnt.ZPS_NextCoughT = CurTime() + math.random(1,30) end
+	    //if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
         VJ_ZPS_InfectionApply(hitEnt,self)
 	end
 end	
