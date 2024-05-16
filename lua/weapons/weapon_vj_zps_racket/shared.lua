@@ -1,5 +1,5 @@
 SWEP.Base = "weapon_vj_zps_melee_base"
-SWEP.PrintName = "Racket"
+SWEP.PrintName = "Tennis Racket"
 SWEP.Author = "Darkborn"
 SWEP.Contact = "http://steamcommunity.com/groups/vrejgaming"
 SWEP.Purpose = "This weapon is made for Players and NPCs"
@@ -8,7 +8,7 @@ SWEP.Category = "Zombie Panic! Source"
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.WorldModel = "models/darkborn/zps/weapons/w_racket.mdl"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 25
+SWEP.Primary.Damage = 52
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()

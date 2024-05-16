@@ -16,7 +16,7 @@ SWEP.NPC_TimeUntilFire = 0.11
 SWEP.NPC_CustomSpread = 0.8
 SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/firearms/glock18c/reload.wav"}
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage	= 14
+SWEP.Primary.Damage	= 30
 SWEP.Primary.ClipSize = 17
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Pistol"

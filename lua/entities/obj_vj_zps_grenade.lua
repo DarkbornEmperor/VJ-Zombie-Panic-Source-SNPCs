@@ -27,7 +27,7 @@ end
 if !SERVER then return end
 
 ENT.Model = {"models/darkborn/zps/weapons/w_grenade_thrown.mdl"}
-ENT.RadiusDamage = 200
+ENT.RadiusDamage = 300
 ENT.SoundTbl_OnRemove = {"darkborn/zps/weapons/explosives/grenade/nade_blast.wav"}
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/explosives/grenade/nade_bounce-01.wav","darkborn/zps/weapons/explosives/grenade/nade_bounce-02.wav","darkborn/zps/weapons/explosives/grenade/nade_bounce-03.wav","darkborn/zps/weapons/explosives/grenade/nade_bounce-04.wav","darkborn/zps/weapons/explosives/grenade/nade_bounce-05.wav"}
 ENT.OnRemoveSoundLevel = 100

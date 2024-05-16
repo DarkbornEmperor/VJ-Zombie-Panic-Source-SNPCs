@@ -10,7 +10,7 @@ SWEP.WorldModel = "models/darkborn/zps/weapons/w_chair.mdl"
 SWEP.HoldType = "melee2"
 SWEP.ZPS_HType = "chair"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 50
+SWEP.Primary.Damage = 96
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()

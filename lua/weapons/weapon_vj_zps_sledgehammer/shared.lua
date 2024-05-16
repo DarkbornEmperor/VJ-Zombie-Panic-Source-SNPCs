@@ -10,13 +10,16 @@ SWEP.WorldModel = "models/darkborn/zps/weapons/w_sledgehammer.mdl"
 SWEP.HoldType = "melee2"
 SWEP.ZPS_HType = "2handheavy"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 45
+SWEP.Primary.Damage = 112
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()
 	owner.MeleeAttackDamage = self.Primary.Damage	
 	owner.MeleeAttackDamageType = DMG_CLUB
 	owner.SoundTbl_MeleeAttackExtra = {
-	"darkborn/zps/weapons/melee/hammer/hit_melee01.wav"
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-1.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-2.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-3.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-4.wav"
 	}
 end

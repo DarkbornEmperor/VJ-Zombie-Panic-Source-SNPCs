@@ -1,5 +1,5 @@
 SWEP.Base = "weapon_vj_zps_melee_base"
-SWEP.PrintName = "Hammer (Barricade)"
+SWEP.PrintName = "Barricade Hammer"
 SWEP.Author = "Darkborn"
 SWEP.Contact = "http://steamcommunity.com/groups/vrejgaming"
 SWEP.Purpose = "This weapon is made for Players and NPCs"
@@ -10,7 +10,7 @@ SWEP.WorldModel = "models/darkborn/zps/weapons/w_barricade.mdl"
 SWEP.HoldType = "melee"
 SWEP.ZPS_HType = "hammer"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 25
+SWEP.Primary.Damage = 52
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()

@@ -9,7 +9,7 @@ SWEP.Category = "Zombie Panic! Source"
 SWEP.WorldModel = "models/darkborn/zps/weapons/w_broom.mdl"
 SWEP.HoldType = "melee2"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 20
+SWEP.Primary.Damage = 44
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()

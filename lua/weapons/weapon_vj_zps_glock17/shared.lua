@@ -15,7 +15,7 @@ SWEP.MadeForNPCsOnly = true
 SWEP.NPC_CustomSpread = 0.8
 SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/firearms/glock/reload.wav"}
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage	= 14
+SWEP.Primary.Damage	= 24
 SWEP.Primary.ClipSize = 17
 SWEP.Primary.Ammo = "Pistol"
 SWEP.Primary.Sound = {"darkborn/zps/weapons/firearms/glock/fire.wav"}

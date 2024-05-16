@@ -18,9 +18,9 @@ SWEP.NPC_ExtraFireSound = {"darkborn/zps/weapons/firearms/remington870/pump.wav"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.NPC_FiringDistanceScale = 0.5
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 10
+SWEP.Primary.Damage = 16
 SWEP.Primary.Force = 1
-SWEP.Primary.NumberOfShots = 9
+SWEP.Primary.NumberOfShots = 8
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"

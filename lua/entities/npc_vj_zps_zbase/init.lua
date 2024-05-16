@@ -1231,6 +1231,12 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_HEAD then
+		self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
 	self.HasDeathSounds = false	
@@ -1267,7 +1273,7 @@ end
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end	
  if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) then
-	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-0"..math.random(1,3)..".wav",75,100)
+	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
 	corpseEnt:RemoveAllDecals()
 	corpseEnt:SetBodygroup(0,math.random(1,3))
 	corpseEnt:SetBodygroup(1,math.random(1,3))
@@ -1292,7 +1298,7 @@ end
  -- For bonemerged Zombies
  if IsValid(self.Bonemerge) && (self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/eugene.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/jessica.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/larry.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/lea.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/marcus.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/paul.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/pedro.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/vanessa.mdl") then
  if hitgroup == HITGROUP_HEAD then
-	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-0"..math.random(1,3)..".wav",75,100)
+	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
 	corpseEnt.Bonemerge:RemoveAllDecals()
 	corpseEnt.Bonemerge:SetBodygroup(0,math.random(1,3))
 	corpseEnt.Bonemerge:SetBodygroup(1,math.random(1,3))

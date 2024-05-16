@@ -69,11 +69,11 @@ if VJExists == true then
 	VJ.AddNPCWeapon("VJ_ZPS_Hammer_Barricade", "weapon_vj_zps_hammer_bar",spawnCategory)
 	VJ.AddNPCWeapon("VJ_ZPS_Keyboard", "weapon_vj_zps_keyboard",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_Machete", "weapon_vj_zps_machete",spawnCategory)	
-    VJ.AddNPCWeapon("VJ_ZPS_Pan", "weapon_vj_zps_pan",spawnCategory)
+    VJ.AddNPCWeapon("VJ_ZPS_Frying_Pan", "weapon_vj_zps_pan",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_Pipe", "weapon_vj_zps_pipe",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_Pipe_Wrench", "weapon_vj_zps_pipewrench",spawnCategory)	
 	VJ.AddNPCWeapon("VJ_ZPS_Plank", "weapon_vj_zps_plank",spawnCategory)	
-	VJ.AddNPCWeapon("VJ_ZPS_Racket", "weapon_vj_zps_racket",spawnCategory)
+	VJ.AddNPCWeapon("VJ_ZPS_Tennis_Racket", "weapon_vj_zps_racket",spawnCategory)
 	VJ.AddNPCWeapon("VJ_ZPS_Shovel", "weapon_vj_zps_shovel",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_Wrench", "weapon_vj_zps_wrench",spawnCategory)	
     VJ.AddNPCWeapon("VJ_ZPS_Pot", "weapon_vj_zps_pot",spawnCategory)   
@@ -82,6 +82,7 @@ if VJExists == true then
 	VJ.AddNPCWeapon("VJ_ZPS_Spanner", "weapon_vj_zps_spanner",spawnCategory)
 	VJ.AddNPCWeapon("VJ_ZPS_Cleaver", "weapon_vj_zps_cleaver",spawnCategory)
 	VJ.AddNPCWeapon("VJ_ZPS_Crowbar", "weapon_vj_zps_crowbar",spawnCategory)
+	VJ.AddNPCWeapon("VJ_ZPS_Fists", "weapon_vj_zps_fists",spawnCategory)
 	
 	VJ_ZPS_WEAPONS = {					
 		"weapon_vj_zps_ak47",
@@ -122,7 +123,8 @@ if VJExists == true then
 		"weapon_vj_zps_axe",
 		"weapon_vj_zps_spanner",
 		"weapon_vj_zps_cleaver",
-		"weapon_vj_zps_crowbar"			
+		"weapon_vj_zps_crowbar",
+		"weapon_vj_zps_fists"		
 	}
 	
     -- Particles --

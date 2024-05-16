@@ -8,16 +8,16 @@ SWEP.Category = "Zombie Panic! Source"
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.WorldModel = "models/darkborn/zps/weapons/w_pipe.mdl"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 45
+SWEP.Primary.Damage = 49
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()
 	owner.MeleeAttackDamage = self.Primary.Damage	
 	owner.MeleeAttackDamageType = DMG_CLUB
 	owner.SoundTbl_MeleeAttackExtra = {
-	"darkborn/zps/weapons/melee/wrench/wrench_hit-01.wav",
-	"darkborn/zps/weapons/melee/wrench/wrench_hit-02.wav",
-	"darkborn/zps/weapons/melee/wrench/wrench_hit-03.wav",
-	"darkborn/zps/weapons/melee/wrench/wrench_hit-04.wav"
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-1.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-2.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-3.wav",
+	"darkborn/zps/weapons/melee/crowbar/crowbar_hit-4.wav"
 	}
 end

@@ -10,7 +10,7 @@ SWEP.WorldModel = "models/darkborn/zps/weapons/w_hammer.mdl"
 SWEP.HoldType = "melee"
 SWEP.ZPS_HType = "hammer"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 25
+SWEP.Primary.Damage = 52
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()

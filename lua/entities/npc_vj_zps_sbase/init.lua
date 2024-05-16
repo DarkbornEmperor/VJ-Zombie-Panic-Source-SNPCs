@@ -17,8 +17,8 @@ ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 //ENT.CustomBlood_Decal = {"VJ_ZPS_Blood_Red"}
 ENT.NextMoveRandomlyWhenShootingTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
-ENT.MeleeAttackDamage = 15
-ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_punch_l","vjseq_vjges_gesture_punch_r","vjseq_vjges_gesture_push"}
+ENT.MeleeAttackDamage = 25
+ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_push"}
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30 
 ENT.MeleeAttackDamageDistance = 60
@@ -2378,7 +2378,7 @@ function ENT:CustomOnMedic_BeforeHeal()
 	self:DeleteOnRemove(self.Inoculator)
 	SafeRemoveEntityDelayed(self.Inoculator,1.2)
   if self.Inoculator:GetSkin() == 0 then	
-	self.Medic_HealthAmount = 25
+	self.Medic_HealthAmount = 20
   elseif self.Inoculator:GetSkin() == 1 then	
 	self.Medic_HealthAmount = 0
   elseif self.Inoculator:GetSkin() == 2 then	
@@ -2409,7 +2409,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
  if IsValid(self:GetActiveWeapon()) && !self.CurrentWeaponEntity.IsMeleeWeapon then
-    self.MeleeAttackDamage = 15
+    self.MeleeAttackDamage = 25
 	self.MeleeAttackDamageType = DMG_CLUB
 	self.SoundTbl_MeleeAttackExtra = {
     "darkborn/zps/weapons/melee/push/push_hit-01.wav",
@@ -2671,6 +2671,17 @@ end
 		defJump = VJ.SequenceToActivity(self,"melee_chair_jump")
 		defGlide = VJ.SequenceToActivity(self,"melee_chair_glide")
 		defLand = VJ.SequenceToActivity(self,"melee_chair_idle")
+	elseif h == "fists" then
+		defIdleAim = VJ.SequenceToActivity(self,"empty_idle")
+		defWalkAim = VJ.SequenceToActivity(self,"empty_walk")
+		defRunAim = VJ.SequenceToActivity(self,"empty_run")
+		defCrouch = VJ.SequenceToActivity(self,"empty_idle_crouch")
+		defCrawl = VJ.SequenceToActivity(self,"empty_walk_crouch")
+		defFire = VJ.PICK({"vjges_gesture_punch_l","vjges_gesture_punch_r"})
+		defReload = false
+		defJump = VJ.SequenceToActivity(self,"empty_jump")
+		defGlide = VJ.SequenceToActivity(self,"empty_glide")
+		defLand = VJ.SequenceToActivity(self,"empty_idle")
 end
 
 	self.AnimationTranslations[ACT_IDLE] = defIdleAim
@@ -2716,6 +2727,18 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_HEAD then
+		self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnDropWeapon(dmginfo,hitgroup,wepEnt)
+    if wepEnt:GetClass() == "weapon_vj_zps_fists" then
+	    wepEnt:Remove()
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
 	self.HasDeathSounds = false	
@@ -2749,7 +2772,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end	
  if hitgroup == HITGROUP_HEAD then
-	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-0"..math.random(1,3)..".wav",75,100)
+	VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
 	corpseEnt:RemoveAllDecals()
 	corpseEnt:SetBodygroup(0,math.random(1,3))
 	corpseEnt:SetBodygroup(1,math.random(1,3))

@@ -18,9 +18,9 @@ SWEP.NPC_CustomSpread = 1.5
 SWEP.NPC_FiringDistanceScale = 0.5
 SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/firearms/doublebarrel_shotgun/reload.wav"}
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage = 10
+SWEP.Primary.Damage = 16
 SWEP.Primary.Force = 1
-SWEP.Primary.NumberOfShots = 9
+SWEP.Primary.NumberOfShots = 8
 SWEP.Primary.ClipSize = 2
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"
