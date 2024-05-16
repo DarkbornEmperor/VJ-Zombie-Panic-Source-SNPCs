@@ -24,4 +24,8 @@ function SWEP:CustomOnEquip(newOwner)
 	"darkborn/zps/weapons/melee/push/push_hit-03.wav",
 	"darkborn/zps/weapons/melee/push/push_hit-04.wav"
 	}
+	owner.SoundTbl_MeleeAttackMiss = {
+	"npc/zombie/claw_miss1.wav",
+	"npc/zombie/claw_miss2.wav"
+	}
 end

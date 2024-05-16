@@ -2417,6 +2417,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
     "darkborn/zps/weapons/melee/push/push_hit-03.wav",
     "darkborn/zps/weapons/melee/push/push_hit-04.wav"
 }
+    self.SoundTbl_MeleeAttackMiss = {
+	"npc/zombie/claw_miss1.wav",
+	"npc/zombie/claw_miss2.wav"
+}
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2515,7 +2519,7 @@ end
 		defFire = "vjges_gesture_shoot_mp5"
 		defReload = "vjges_gesture_reload_mp5"
 		defJump = VJ.SequenceToActivity(self,"mp5_jump")
-		defGlide = VJ.SequenceToActivity(self,"mp5_glide")
+		defGlide = VJ.SequenceToActivity(self,"mp5_jump")
 		defLand = VJ.SequenceToActivity(self,"mp5_idle")
 	elseif h == "ar2" or h == "rpg" then
 		defIdleAim = VJ.SequenceToActivity(self,"rifle_idle")
@@ -2526,7 +2530,7 @@ end
 		defFire = "vjges_gesture_shoot_rifle"
 		defReload = "vjges_gesture_reload_rifle"
 		defJump = VJ.SequenceToActivity(self,"rifle_jump")
-		defGlide = VJ.SequenceToActivity(self,"rifle_glide")
+		defGlide = VJ.SequenceToActivity(self,"rifle_jump")
 		defLand = VJ.SequenceToActivity(self,"rifle_idle")
 	elseif h == "m4" then
 		defIdleAim = VJ.SequenceToActivity(self,"m4_idle")
@@ -2537,7 +2541,7 @@ end
 		defFire = "vjges_gesture_shoot_m4"
 		defReload = "vjges_gesture_reload_m4"
 		defJump = VJ.SequenceToActivity(self,"m4_jump")
-		defGlide = VJ.SequenceToActivity(self,"m4_glide")
+		defGlide = VJ.SequenceToActivity(self,"m4_jump")
 		defLand = VJ.SequenceToActivity(self,"m4_idle")
 	elseif h == "shotgun" then
 		defIdleAim = VJ.SequenceToActivity(self,"shotgun_idle")
@@ -2548,7 +2552,7 @@ end
 		defFire = "vjges_gesture_shoot_shotgun"
 		defReload = "vjges_gesture_reload_shotgun"
 		defJump = VJ.SequenceToActivity(self,"shotgun_jump")
-		defGlide = VJ.SequenceToActivity(self,"shotgun_glide")
+		defGlide = VJ.SequenceToActivity(self,"shotgun_jump")
 		defLand = VJ.SequenceToActivity(self,"shotgun_idle")
 	elseif h == "shorty" then
 		defIdleAim = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
@@ -2559,7 +2563,7 @@ end
 		defFire = "vjges_gesture_shoot_shotgun_shorty"
 		defReload = "vjges_gesture_reload_shorty"
 		defJump = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
-		defGlide = VJ.SequenceToActivity(self,"shotgun_shorty_glide")
+		defGlide = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
 		defLand = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
 	elseif h == "winchester" or h == "crossbow" then
 		defIdleAim = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
@@ -2570,7 +2574,7 @@ end
 		defFire = "vjges_gesture_shoot_shotgun_winchester"
 		defReload = "vjges_gesture_reload_winchester"
 		defJump = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
-		defGlide = VJ.SequenceToActivity(self,"shotgun_winchester_glide")
+		defGlide = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
 		defLand = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
 	elseif h == "pistol" then
 		defIdleAim = VJ.SequenceToActivity(self,"pistol_idle")
@@ -2581,7 +2585,7 @@ end
 		defFire = "vjges_gesture_shoot_pistol"
 		defReload = "vjges_gesture_reload_pistol"
 		defJump = VJ.SequenceToActivity(self,"pistol_jump")
-		defGlide = VJ.SequenceToActivity(self,"pistol_glide")
+		defGlide = VJ.SequenceToActivity(self,"pistol_jump")
 		defLand = VJ.SequenceToActivity(self,"pistol_idle")
 	elseif h == "revolver" then
 		defIdleAim = VJ.SequenceToActivity(self,"revolver_idle")
@@ -2592,7 +2596,7 @@ end
 		defFire = "vjges_gesture_shoot_revolver"
 		defReload = "vjges_gesture_reload_revolver"
 		defJump = VJ.SequenceToActivity(self,"revolver_jump")
-		defGlide = VJ.SequenceToActivity(self,"revolver_glide")
+		defGlide = VJ.SequenceToActivity(self,"revolver_jump")
 		defLand = VJ.SequenceToActivity(self,"revolver_idle")
 	elseif h == "grenade" then
 		defIdleAim = VJ.SequenceToActivity(self,"frag_idle")
@@ -2603,7 +2607,7 @@ end
 		defFire = "vjges_gesture_throw_grenade"
 		//defReload = "vjges_gesture_reload_pistol"
 		defJump = VJ.SequenceToActivity(self,"frag_jump")
-		defGlide = VJ.SequenceToActivity(self,"frag_glide")
+		defGlide = VJ.SequenceToActivity(self,"frag_jump")
 		defLand = VJ.SequenceToActivity(self,"frag_idle")
 	elseif h == "ied" then
 		defIdleAim = VJ.SequenceToActivity(self,"ied_idle")
@@ -2614,7 +2618,7 @@ end
 		defFire = "vjges_gesture_throw_grenade"
 		//defReload = "vjges_gesture_reload_pistol"
 		defJump = VJ.SequenceToActivity(self,"ied_jump")
-		defGlide = VJ.SequenceToActivity(self,"ied_glide")
+		defGlide = VJ.SequenceToActivity(self,"ied_jump")
 		defLand = VJ.SequenceToActivity(self,"ied_idle")
 	elseif h == "melee" then
 		defIdleAim = VJ.SequenceToActivity(self,"melee_idle")
@@ -2625,7 +2629,7 @@ end
 		defFire = "vjges_g_attack_1handed"
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"melee_jump")
-		defGlide = VJ.SequenceToActivity(self,"melee_glide")
+		defGlide = VJ.SequenceToActivity(self,"melee_jump")
 		defLand = VJ.SequenceToActivity(self,"melee_idle")
 	elseif h == "hammer" then
 		defIdleAim = VJ.SequenceToActivity(self,"hammer_idle")
@@ -2636,7 +2640,7 @@ end
 		defFire = "vjges_g_attack_1handed"
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"hammer_jump")
-		defGlide = VJ.SequenceToActivity(self,"hammer_glide")
+		defGlide = VJ.SequenceToActivity(self,"hammer_jump")
 		defLand = VJ.SequenceToActivity(self,"hammer_idle")
 	elseif h == "melee2" then
 		defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
@@ -2647,7 +2651,7 @@ end
 		defFire = "vjges_g_attack_2handed_light"
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"melee_2handed_jump")
-		defGlide = VJ.SequenceToActivity(self,"melee_2handed_glide")
+		defGlide = VJ.SequenceToActivity(self,"melee_2handed_jump")
 		defLand = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
 	elseif h == "2handheavy" then
 		defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_idle")
@@ -2658,7 +2662,7 @@ end
 		defFire = "vjges_g_attack_2handed_heavy"
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
-		defGlide = VJ.SequenceToActivity(self,"melee_2handed_heavy_glide")
+		defGlide = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
 		defLand = VJ.SequenceToActivity(self,"melee_2handed_heavy_idle")
 	elseif h == "chair" then
 		defIdleAim = VJ.SequenceToActivity(self,"melee_chair_idle")
@@ -2669,7 +2673,7 @@ end
 		defFire = "vjges_g_attack_2handed_chair"
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"melee_chair_jump")
-		defGlide = VJ.SequenceToActivity(self,"melee_chair_glide")
+		defGlide = VJ.SequenceToActivity(self,"melee_chair_jump")
 		defLand = VJ.SequenceToActivity(self,"melee_chair_idle")
 	elseif h == "fists" then
 		defIdleAim = VJ.SequenceToActivity(self,"empty_idle")
@@ -2680,7 +2684,7 @@ end
 		defFire = VJ.PICK({"vjges_gesture_punch_l","vjges_gesture_punch_r"})
 		defReload = false
 		defJump = VJ.SequenceToActivity(self,"empty_jump")
-		defGlide = VJ.SequenceToActivity(self,"empty_glide")
+		defGlide = VJ.SequenceToActivity(self,"empty_jump")
 		defLand = VJ.SequenceToActivity(self,"empty_idle")
 end
 
