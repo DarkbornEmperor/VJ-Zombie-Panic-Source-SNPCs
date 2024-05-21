@@ -18,7 +18,7 @@ ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 ENT.NextMoveRandomlyWhenShootingTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
-ENT.AnimTbl_MeleeAttack = {"vjseq_vjges_gesture_push"}
+ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30 
 ENT.MeleeAttackDamageDistance = 60
@@ -36,6 +36,8 @@ ENT.Medic_TimeUntilHeal = 0.7
 ENT.Medic_SpawnPropOnHeal = false
 ENT.Medic_SpawnPropOnHealModel = "models/darkborn/zps/weapons/w_inoculator.mdl"
 ENT.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
+//ENT.DisableCallForBackUpOnDamageAnimation = true
+//ENT.HasCallForHelpAnimation = false
 ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_empty"}
 ENT.CallForBackUpOnDamageAnimation = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
@@ -1115,7 +1117,9 @@ function ENT:SurvivorVoice_Lea()
 	"darkborn/zps/survivors/lea/panic/panic-06.wav"
 }
     self.SoundTbl_OnReceiveOrder = {
-	"darkborn/zps/survivors/lea/commandmenu/run/run-01.wav"
+	"darkborn/zps/survivors/lea/commandmenu/cover/cover-05.wav",
+	"darkborn/zps/survivors/lea/commandmenu/escape/escape-01.wav",
+	"darkborn/zps/survivors/lea/commandmenu/escape/escape-03.wav"
 }
     self.SoundTbl_BeforeMeleeAttack = {
 	"darkborn/zps/survivors/lea/meleegrunts/melee-01.wav",
@@ -1154,8 +1158,7 @@ function ENT:SurvivorVoice_Lea()
 	"darkborn/zps/survivors/lea/commandmenu/escape/escape-02.wav",
 	"darkborn/zps/survivors/lea/commandmenu/escape/escape-03.wav",
 	"darkborn/zps/survivors/lea/commandmenu/escape/escape-04.wav",
-	"darkborn/zps/survivors/lea/commandmenu/escape/escape-05.wav",
-	"darkborn/zps/survivors/lea/commandmenu/run/run-01.wav"
+	"darkborn/zps/survivors/lea/commandmenu/escape/escape-05.wav"
 }
     self.SoundTbl_OnDangerSight = {
 	"darkborn/zps/survivors/lea/panic/panic-01.wav",

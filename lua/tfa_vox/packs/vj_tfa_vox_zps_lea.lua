@@ -552,7 +552,9 @@ TFAVOX_Models[model] = {
 			['name'] = "Keep Moving",--Callout friendly name ( what you see in the wheel )
 			['delay']= nil,
 			['sound'] = TFAVOX_GenerateSound(mdlprefix,"Wheel_KeepMoving",{
-            "darkborn/zps/survivors/lea/commandmenu/run/run-01.wav"
+			"darkborn/zps/survivors/lea/commandmenu/cover/cover-05.wav",
+			"darkborn/zps/survivors/lea/commandmenu/escape/escape-01.wav",
+			"darkborn/zps/survivors/lea/commandmenu/escape/escape-03.wav"
 	        })
 		},
 		['go'] = { -- callout classname in these quotes
