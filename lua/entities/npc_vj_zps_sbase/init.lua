@@ -20,7 +20,6 @@ ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
 ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
 ENT.TimeUntilMeleeAttackDamage = false
-ENT.MeleeAttackDistance = 30 
 ENT.MeleeAttackDamageDistance = 60
 ENT.MeleeAttackAnimationAllowOtherTasks = true
 ENT.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
@@ -2711,7 +2710,6 @@ end
 	self.AnimationTranslations[ACT_JUMP] = defJump
 	self.AnimationTranslations[ACT_GLIDE] = defGlide
 	self.AnimationTranslations[ACT_LAND] = defLand
-	return true
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)

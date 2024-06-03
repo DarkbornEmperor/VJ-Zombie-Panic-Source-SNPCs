@@ -19,7 +19,6 @@ ENT.HasMeleeAttack = true
 ENT.HasMeleeAttackKnockBack = true
 ENT.MeleeAttackDamage = 25
 ENT.TimeUntilMeleeAttackDamage = false
-ENT.MeleeAttackDistance = 30 
 ENT.MeleeAttackDamageDistance = 60
 ENT.MeleeAttackAnimationAllowOtherTasks = true 
 ENT.SlowPlayerOnMeleeAttack = true 
