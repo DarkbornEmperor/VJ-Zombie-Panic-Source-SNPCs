@@ -20,6 +20,7 @@ ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
 ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
 ENT.TimeUntilMeleeAttackDamage = false
+ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
 ENT.MeleeAttackAnimationAllowOtherTasks = true
 ENT.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
