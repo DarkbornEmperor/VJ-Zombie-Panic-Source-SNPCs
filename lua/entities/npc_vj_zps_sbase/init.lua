@@ -23,7 +23,6 @@ ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
 ENT.MeleeAttackAnimationAllowOtherTasks = true
-ENT.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
 ENT.WeaponReload_FindCover = false
 //ENT.HasGrenadeAttack = true -- We use a seperate weapon for Grenade attack
 ENT.GrenadeAttackEntity = "obj_vj_zps_grenade"
@@ -129,7 +128,7 @@ end
 function ENT:CustomOnPreInitialize()
     self:Survivor_CustomOnPreInitialize()
 	if math.random(1,2) == 1 then
-		self.WeaponInventory_Melee = true
+		self.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
     end	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -143,7 +142,7 @@ function ENT:CustomOnInitialize()
  if math.random(1,5) == 1 then self.IsMedicSNPC = true end
  if math.random(1,5) == 1 then self.ZPS_Armor = true end
  if !self.DisableWeapons then
- if !self.WeaponInventory_Melee then
+ if !self.WeaponInventory_MeleeList then
  	 self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
  else
      self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
@@ -155,7 +154,7 @@ end
  if GetConVar("VJ_ZPS_ReloadCover"):GetInt() == 1 then 
     self.WeaponReload_FindCover = true
 end
- if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_Melee then return end
+ if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList then return end
 	for _,category in pairs(self.WeaponsList) do
 		for _,wep in pairs(category) do
 			self:Give(wep)
@@ -2258,7 +2257,7 @@ end
 end*/
     local controller = self.VJ_TheController
     if IsValid(controller) then
-	if controller:KeyDown(IN_WALK) && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 1 && self.WeaponInventory_Melee then 
+	if controller:KeyDown(IN_WALK) && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 1 && self.WeaponInventory_MeleeList then 
 	   //self:VJ_ACT_PLAYACTIVITY("vjges_throw_arms",true,false,false)
 	   self:DoChangeWeapon(VJ.PICK(self.WeaponsList_Cont["ContWeapons"]),true)
 	   self.ZPS_NextWepSwitchT = CurTime() + 1    
@@ -2299,7 +2298,7 @@ end
 end)
     self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
 end
- if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_Melee or self.DisableWeapons or !IsValid(self:GetActiveWeapon()) then return end
+ if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.DisableWeapons or !IsValid(self:GetActiveWeapon()) then return end
 	local ent = self:GetEnemy()
 	local dist = self.NearestPointToEnemyDistance
 	if IsValid(ent) && !self.VJ_IsBeingControlled && !self.ZPS_Panic then
