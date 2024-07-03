@@ -54,7 +54,7 @@ if VJExists == true then
 	VJ.AddNPCWeapon("VJ_ZPS_PPK", "weapon_vj_zps_ppk",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_USP", "weapon_vj_zps_usp",spawnCategory)	
     VJ.AddNPCWeapon("VJ_ZPS_Revolver", "weapon_vj_zps_revolver",spawnCategory)
-	VJ.AddNPCWeapon("VJ_ZPS_Grenade", "weapon_vj_zps_grenade",spawnCategory)
+	VJ.AddNPCWeapon("VJ_ZPS_HE_Grenade", "weapon_vj_zps_grenade",spawnCategory)
 	VJ.AddNPCWeapon("VJ_ZPS_IED", "weapon_vj_zps_ied",spawnCategory)
 	 
     -- Melee Weapons --	

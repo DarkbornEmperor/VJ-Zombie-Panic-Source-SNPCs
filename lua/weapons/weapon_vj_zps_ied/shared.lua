@@ -64,8 +64,13 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
 	end)*/
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function SWEP:CustomOnPrimaryAttack_AfterShoot()
+	if self:Clip1() <= 0 then
+	    self.WorldModel_Invisible = true
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnReload()
-    self.WorldModel_Invisible = true
 	timer.Simple(1.6, function()
 		if IsValid(self) then
 			self.WorldModel_Invisible = false
