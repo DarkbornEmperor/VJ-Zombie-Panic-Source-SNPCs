@@ -158,11 +158,11 @@ list.Set("PlayerOptionsModel","ZPS: Vanessa (Zombie) (Legacy)","models/darkborn/
 
 -- viewmodel hands skin change
 hook.Add("PreDrawPlayerHands","carrier_skin", function(hands,vm,ply,wpn)
-    if IsValid(hands) 
-	&& hands:GetModel() == "models/darkborn/zps/weapons/arms/c_carrier.mdl" 
-//	or
-	then
-		hands:SetSkin(ply:GetSkin())
+    if IsValid(hands)
+    && hands:GetModel() == "models/darkborn/zps/weapons/arms/c_carrier.mdl"
+//    or
+    then
+        hands:SetSkin(ply:GetSkin())
  //     hands:SetBodygroup(0, (ply:GetBodygroup(1)) )
  //     hands:SetBodygroup(1, (ply:GetBodygroup(2)) )
     end

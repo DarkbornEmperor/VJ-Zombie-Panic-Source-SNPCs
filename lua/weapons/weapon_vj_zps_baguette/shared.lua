@@ -12,13 +12,13 @@ SWEP.Primary.Damage = 48
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnEquip(newOwner)
     local owner = self:GetOwner()
-	owner.MeleeAttackDamage = self.Primary.Damage	
-	owner.MeleeAttackDamageType = DMG_CLUB
-	owner.SoundTbl_MeleeAttackExtra = {
-	"darkborn/zps/weapons/melee/baguette/hit01.wav",
-	"darkborn/zps/weapons/melee/baguette/hit02.wav"
-	}
-	owner.SoundTbl_MeleeAttackMiss = {
-	"weapons/iceaxe/iceaxe_swing1.wav"
-	}
+    owner.MeleeAttackDamage = self.Primary.Damage
+    owner.MeleeAttackDamageType = DMG_CLUB
+    owner.SoundTbl_MeleeAttackExtra = {
+    "darkborn/zps/weapons/melee/baguette/hit01.wav",
+    "darkborn/zps/weapons/melee/baguette/hit02.wav"
+    }
+    owner.SoundTbl_MeleeAttackMiss = {
+    "weapons/iceaxe/iceaxe_swing1.wav"
+    }
 end

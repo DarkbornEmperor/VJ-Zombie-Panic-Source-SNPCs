@@ -14,12 +14,12 @@ SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.MadeForNPCsOnly = true
-SWEP.WorldModel	= "models/darkborn/zps/weapons/w_grenade.mdl"
+SWEP.WorldModel = "models/darkborn/zps/weapons/w_grenade.mdl"
 SWEP.HoldType = "grenade"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage	= 1
+SWEP.Primary.Damage = 1
 SWEP.Primary.ClipSize = 3
 ///SWEP.Primary.TakeAmmo = 0
 SWEP.Primary.Ammo = "grenade"
@@ -34,54 +34,54 @@ function SWEP:CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomBulletSpawnPosition()
-	local owner = self:GetOwner()
+    local owner = self:GetOwner()
 
-	return owner:GetPos() + owner:GetUp() + Vector(0,-18,40)
+    return owner:GetPos() + owner:GetUp() + Vector(0,-18,40)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttackEffects()
-	return false
+    return false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttack_BeforeShoot()
-	if CLIENT then return end
-	if IsValid(self.Gre_LastShotEnt) then return true end -- Wait until the last Grenade has detonated
-	//timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
-	local grenade = ents.Create("obj_vj_zps_grenade")
-	grenade:SetPos(self:GetNW2Vector("VJ_CurBulletPos"))
-	grenade:SetAngles(self:GetOwner():GetAngles())
-	grenade:SetOwner(self:GetOwner())
-	grenade:Spawn()
-	grenade:Activate()
-	self.Gre_LastShotEnt = grenade
-	VJ.EmitSound(grenade,{"darkborn/zps/weapons/explosives/grenade/nade_under_cook-01.wav","darkborn/zps/weapons/explosives/grenade/nade_under_cook-02.wav"},75,100)
-	
-	local phys = grenade:GetPhysicsObject()
-	if IsValid(phys) then
-		phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetNW2Vector("VJ_CurBulletPos"), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200))
-	        end
-	    /*end
-	end)*/
+    if CLIENT then return end
+    if IsValid(self.Gre_LastShotEnt) then return true end -- Wait until the last Grenade has detonated
+    //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
+    local grenade = ents.Create("obj_vj_zps_grenade")
+    grenade:SetPos(self:GetNW2Vector("VJ_CurBulletPos"))
+    grenade:SetAngles(self:GetOwner():GetAngles())
+    grenade:SetOwner(self:GetOwner())
+    grenade:Spawn()
+    grenade:Activate()
+    self.Gre_LastShotEnt = grenade
+    VJ.EmitSound(grenade,{"darkborn/zps/weapons/explosives/grenade/nade_under_cook-01.wav","darkborn/zps/weapons/explosives/grenade/nade_under_cook-02.wav"},75,100)
+
+    local phys = grenade:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetNW2Vector("VJ_CurBulletPos"), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200))
+            end
+        /*end
+    end)*/
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttack_AfterShoot()
-	if self:Clip1() <= 0 then
-	    self.WorldModel_Invisible = true
+    if self:Clip1() <= 0 then
+        self.WorldModel_Invisible = true
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnReload()
-	timer.Simple(1.6, function()
-		if IsValid(self) then
-			self.WorldModel_Invisible = false
-		end
-	end)
+    timer.Simple(1.6, function()
+        if IsValid(self) then
+            self.WorldModel_Invisible = false
+        end
+    end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
-	local owner = self:GetOwner()
-	owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
-	owner.NextChaseTime = 0
-	self:CustomOnReload()
-	if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
+    local owner = self:GetOwner()
+    owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
+    owner.NextChaseTime = 0
+    self:CustomOnReload()
+    if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end

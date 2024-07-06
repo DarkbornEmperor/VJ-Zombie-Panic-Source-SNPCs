@@ -16,7 +16,7 @@ SWEP.NPC_TimeUntilFire = 0.11
 SWEP.NPC_CustomSpread = 0.8
 SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/firearms/glock18c/reload.wav"}
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.Primary.Damage	= 30
+SWEP.Primary.Damage = 30
 SWEP.Primary.ClipSize = 17
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Pistol"
@@ -28,29 +28,29 @@ SWEP.DryFireSound = {"darkborn/zps/weapons/firearms/glock18c/dryfire.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     local Brt = math.random(1,3)
-	local Num = 0.11
-	if Brt == 1 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2}
-	self.NPC_NextPrimaryFire = math.Rand(0.65,0.85)
-	elseif Brt == 2 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2,Num*3}
-	self.NPC_NextPrimaryFire = math.Rand(1.05,1.25)
-	elseif Brt == 3 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2,Num*3,Num*4}
-	self.NPC_NextPrimaryFire = math.Rand(1.35,1.55)
-	end
+    local Num = 0.11
+    if Brt == 1 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2}
+    self.NPC_NextPrimaryFire = math.Rand(0.65,0.85)
+    elseif Brt == 2 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2,Num*3}
+    self.NPC_NextPrimaryFire = math.Rand(1.05,1.25)
+    elseif Brt == 3 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2,Num*3,Num*4}
+    self.NPC_NextPrimaryFire = math.Rand(1.35,1.55)
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnReload()
     self:SetBodygroup(1,1)
-	timer.Simple(1.6, function()
-		if IsValid(self) then
-			self:SetBodygroup(1,0)
-		end
-	end)
+    timer.Simple(1.6, function()
+        if IsValid(self) then
+            self:SetBodygroup(1,0)
+        end
+    end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
-	local owner = self:GetOwner()
-	owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
-	owner.NextChaseTime = 0
-	self:CustomOnReload()
-	if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
+    local owner = self:GetOwner()
+    owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
+    owner.NextChaseTime = 0
+    self:CustomOnReload()
+    if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end

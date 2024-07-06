@@ -1,30 +1,30 @@
 /*--------------------------------------------------
-	*** Copyright (c) 2012-2024 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
+    *** Copyright (c) 2012-2024 by DrVrej, All rights reserved. ***
+    No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
+    without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
 AddCSLuaFile()
 if (!file.Exists("autorun/vj_base_autorun.lua","LUA")) then return end
 
-ENT.Type 			= "anim"
-ENT.Base 			= "obj_vj_grenade"
-ENT.PrintName		= "IED"
-ENT.Author 			= "Darkborn"
-ENT.Contact 		= "http://steamcommunity.com/groups/vrejgaming"
-ENT.Information		= "Projectiles for my addons"
-ENT.Category		= "VJ Base"
+ENT.Type            = "anim"
+ENT.Base            = "obj_vj_grenade"
+ENT.PrintName       = "IED"
+ENT.Author          = "Darkborn"
+ENT.Contact         = "http://steamcommunity.com/groups/vrejgaming"
+ENT.Information     = "Projectiles for my addons"
+ENT.Category        = "VJ Base"
 ENT.Spawnable = true
 
 ENT.VJTag_ID_Grenade = false
 ENT.VJTag_IsPickupable = false
 
 if CLIENT then
-	local Name = "IED"
-	local LangName = "obj_vj_zps_ied"
-	language.Add(LangName, Name)
-	killicon.Add(LangName,"HUD/killicons/default",Color(255,80,0,255))
-	language.Add("#"..LangName, Name)
-	killicon.Add("#"..LangName,"HUD/killicons/default",Color(255,80,0,255))
+    local Name = "IED"
+    local LangName = "obj_vj_zps_ied"
+    language.Add(LangName, Name)
+    killicon.Add(LangName,"HUD/killicons/default",Color(255,80,0,255))
+    language.Add("#"..LangName, Name)
+    killicon.Add("#"..LangName,"HUD/killicons/default",Color(255,80,0,255))
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end
@@ -41,29 +41,29 @@ ENT.IED_Armed = false
 ENT.IED_NextBlinkT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	timer.Simple(self.IED_ArmT,function() if IsValid(self) then self.IED_Armed = true end end)
+    timer.Simple(self.IED_ArmT,function() if IsValid(self) then self.IED_Armed = true end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
     if !IsValid(self:GetOwner()) && self.IED_Armed then self:Detonate() return end
-	if !self.IED_Armed then return end
+    if !self.IED_Armed then return end
     if self.IED_Armed && CurTime() > self.IED_NextBlinkT then
-	self:SetSkin(1)
-	timer.Simple(0.2, function() if IsValid(self) then self:SetSkin(1) end end)
-	timer.Simple(0.4, function() if IsValid(self) then self:SetSkin(0) end end)
-	VJ.CreateSound(self,"darkborn/zps/weapons/explosives/ied/ied_beep_armed.wav",75,100)
-	self.IED_NextBlinkT = CurTime() + 1
+    self:SetSkin(1)
+    timer.Simple(0.2, function() if IsValid(self) then self:SetSkin(1) end end)
+    timer.Simple(0.4, function() if IsValid(self) then self:SetSkin(0) end end)
+    VJ.CreateSound(self,"darkborn/zps/weapons/explosives/ied/ied_beep_armed.wav",75,100)
+    self.IED_NextBlinkT = CurTime() + 1
 end
  if IsValid(self:GetOwner()) then
     local owner = self:GetOwner()
     local ownerDist = self:GetPos():Distance(owner:GetPos())
-	if IsValid(owner) && ownerDist <= 500 && self:Visible(owner) then
-	for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
-		if IsValid(v) && IsValid(owner) && (v != owner.VJ_TheController && v != owner.VJ_TheControllerBullseye) && ((v:IsNPC() && v:GetClass() != owner:GetClass() && (owner:IsPlayer() or (owner:IsNPC() && owner:Disposition(v) != D_LI && !v:IsFlagSet(FL_NOTARGET)))) or (v:IsPlayer() && v:Alive() && owner:Disposition(v) != D_LI && (owner:IsPlayer() or (!VJ_CVAR_IGNOREPLAYERS && !v:IsFlagSet(FL_NOTARGET))))) then
-			self:Detonate() end
-			end
-		end
-	end
+    if IsValid(owner) && ownerDist <= 500 && self:Visible(owner) then
+    for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
+        if IsValid(v) && IsValid(owner) && (v != owner.VJ_TheController && v != owner.VJ_TheControllerBullseye) && ((v:IsNPC() && v:GetClass() != owner:GetClass() && (owner:IsPlayer() or (owner:IsNPC() && owner:Disposition(v) != D_LI && !v:IsFlagSet(FL_NOTARGET)))) or (v:IsPlayer() && v:Alive() && owner:Disposition(v) != D_LI && (owner:IsPlayer() or (!VJ_CVAR_IGNOREPLAYERS && !v:IsFlagSet(FL_NOTARGET))))) then
+            self:Detonate() end
+            end
+        end
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 local defAngle = Angle(0, 0, 0)
@@ -72,37 +72,37 @@ local vezZ100 = Vector(0, 0, 100)
 --
 function ENT:Detonate()
     self.VJTag_ID_Danger = true
-	self:SetSkin(1)
+    self:SetSkin(1)
     VJ.CreateSound(self,{"darkborn/zps/weapons/explosives/ied/ied_alarm.wav"},75,100)
     timer.Simple(SoundDuration("darkborn/zps/weapons/explosives/ied/ied_alarm.wav"),function() if IsValid(self) then
-	local selfPos = self:GetPos()
-	
-	ParticleEffect("vj_zps_IED", self:GetPos(), defAngle, nil)
+    local selfPos = self:GetPos()
 
-	local expLight = ents.Create("light_dynamic")
-	expLight:SetKeyValue("brightness", "4")
-	expLight:SetKeyValue("distance", "300")
-	expLight:SetLocalPos(selfPos)
-	expLight:SetLocalAngles(self:GetAngles())
-	expLight:Fire("Color", "255 150 0")
-	//expLight:SetParent(self)
-	expLight:Spawn()
-	expLight:Activate()
-	expLight:Fire("TurnOn", "", 0)
-	expLight:Fire("Kill","",0.08)
-	util.ScreenShake(self:GetPos(), 100, 200, 1, 2500)
+    ParticleEffect("vj_zps_IED", self:GetPos(), defAngle, nil)
 
-	self:SetLocalPos(selfPos + vecZ4) -- Because the entity is too close to the ground
-	local tr = util.TraceLine({
-		start = self:GetPos(),
-		endpos = self:GetPos() - vezZ100,
-		filter = self
-	})
-	util.Decal(VJ.PICK(self.DecalTbl_DeathDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
-	
-	self:DoDamageCode()
-	self:SetDeathVariablesTrue(nil, nil, false)
-	self:Remove()
-	    end
-	end)
+    local expLight = ents.Create("light_dynamic")
+    expLight:SetKeyValue("brightness", "4")
+    expLight:SetKeyValue("distance", "300")
+    expLight:SetLocalPos(selfPos)
+    expLight:SetLocalAngles(self:GetAngles())
+    expLight:Fire("Color", "255 150 0")
+    //expLight:SetParent(self)
+    expLight:Spawn()
+    expLight:Activate()
+    expLight:Fire("TurnOn", "", 0)
+    expLight:Fire("Kill","",0.08)
+    util.ScreenShake(self:GetPos(), 100, 200, 1, 2500)
+
+    self:SetLocalPos(selfPos + vecZ4) -- Because the entity is too close to the ground
+    local tr = util.TraceLine({
+        start = self:GetPos(),
+        endpos = self:GetPos() - vezZ100,
+        filter = self
+    })
+    util.Decal(VJ.PICK(self.DecalTbl_DeathDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
+
+    self:DoDamageCode()
+    self:SetDeathVariablesTrue(nil, nil, false)
+    self:Remove()
+        end
+    end)
 end
