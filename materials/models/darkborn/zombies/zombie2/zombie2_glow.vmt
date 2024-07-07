@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie2/zombie2_head"
-	"$bumpmap" "models/darkborn/zombies/zombie2/zombie2_head_normal"
+    "$basetexture" "models/darkborn/zombies/zombie2/zombie2_head"
+    "$bumpmap" "models/darkborn/zombies/zombie2/zombie2_head_normal"
 "$phongexponent"   "60"
 "$phongboost"   "1"
 "$phongfresnelranges"   "[0.1 2 1]"

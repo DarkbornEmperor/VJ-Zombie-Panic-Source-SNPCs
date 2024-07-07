@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies_old/zombie2_eyeglow"
+    "$basetexture" "models/darkborn/zombies_old/zombie2_eyeglow"
 }

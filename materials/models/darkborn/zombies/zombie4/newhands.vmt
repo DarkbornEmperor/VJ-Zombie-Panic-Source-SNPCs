@@ -1,7 +1,7 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie4/newhands"
-	"$bumpmap" "models/darkborn/survivors/shared/flat"
+    "$basetexture" "models/darkborn/zombies/zombie4/newhands"
+    "$bumpmap" "models/darkborn/survivors/shared/flat"
 $halflambert 1
 }
 

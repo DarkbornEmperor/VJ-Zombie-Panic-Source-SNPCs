@@ -1,7 +1,7 @@
 VertexLitGeneric
 {
-	"$basetexture" "models/darkborn/survivors/larry/gibhead"
-	"$bumpmap" "models/darkborn/survivors/larry/butcher_head_norm"
+    "$basetexture" "models/darkborn/survivors/larry/gibhead"
+    "$bumpmap" "models/darkborn/survivors/larry/butcher_head_norm"
 $phong "1"
 $phongexponent "10"
 $phongboost "0.75"

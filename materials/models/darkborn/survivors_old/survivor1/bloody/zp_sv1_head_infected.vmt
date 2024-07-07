@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor1/bloody/zp_sv1_head_infected"
-	"$bumpmap" "models/darkborn/survivors_old/survivor1/bloody/zp_sv1_head_nm"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/survivors_old/survivor1/bloody/zp_sv1_head_infected"
+    "$bumpmap" "models/darkborn/survivors_old/survivor1/bloody/zp_sv1_head_nm"
+    "$surfaceprop" "flesh"
 
-	"$halflambert" 1
-	"$model"	"1"
+    "$halflambert" 1
+    "$model"    "1"
 
-	"$phong"     "1"
-	"$phongboost"   "3"
-	"$phongexponent"   "200"
-	"$phongfresnelranges"   "[.05 .5 1]"
+    "$phong"     "1"
+    "$phongboost"   "3"
+    "$phongexponent"   "200"
+    "$phongfresnelranges"   "[.05 .5 1]"
 }
 

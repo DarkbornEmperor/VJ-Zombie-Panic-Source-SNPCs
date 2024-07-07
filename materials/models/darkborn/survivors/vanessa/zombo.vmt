@@ -1,9 +1,9 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/vanessa/Diffuse"
-	"$nocull" "1"
-	"$bumpmap" "models/darkborn/survivors/vanessa/Bumpmap"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/survivors/vanessa/Diffuse"
+    "$nocull" "1"
+    "$bumpmap" "models/darkborn/survivors/vanessa/Bumpmap"
+    "$phong"     "1"
  "$rimlight" "1"
         "$rimlightboost" "1"
         "$rimlightexponent" "90"

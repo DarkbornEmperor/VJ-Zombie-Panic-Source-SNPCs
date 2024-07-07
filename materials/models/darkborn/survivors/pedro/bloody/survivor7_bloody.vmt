@@ -1,12 +1,12 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody"
-	"$nocull" "1"
-	"$bumpmap" "models/darkborn/survivors/pedro/bloody/bump"
-	"$phong"     "1"
-	"$phongexponent"   "70"
-	"$phongboost"   "1"
-	"$phongfresnelranges"   "[0.05 0.5 1]"
+    "$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody"
+    "$nocull" "1"
+    "$bumpmap" "models/darkborn/survivors/pedro/bloody/bump"
+    "$phong"     "1"
+    "$phongexponent"   "70"
+    "$phongboost"   "1"
+    "$phongfresnelranges"   "[0.05 0.5 1]"
 $nodecal 1
 $halflambert 1
 }

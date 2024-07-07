@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies_old/zombie4/009_punkerzombie_pants_color"
-	"$normalmapalphaenvmapmask" 1
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/zombies_old/zombie4/009_punkerzombie_pants_color"
+    "$normalmapalphaenvmapmask" 1
+    "$surfaceprop" "flesh"
 }

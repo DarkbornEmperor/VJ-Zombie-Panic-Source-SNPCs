@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models/darkborn\viewmodels\pedro\survivor\pedro_arm_diff"
-	"$bumpmap" "models/darkborn\viewmodels\pedro\survivor\pedro_arm_bump"
-	"$phong"     "1"
+    "$baseTexture" "models/darkborn\viewmodels\pedro\survivor\pedro_arm_diff"
+    "$bumpmap" "models/darkborn\viewmodels\pedro\survivor\pedro_arm_bump"
+    "$phong"     "1"
 }

@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody_infected"
-	"$bumpmap" "models/darkborn/survivors/pedro/bloody/bump"
-	$nodecal 1
+    "$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody_infected"
+    "$bumpmap" "models/darkborn/survivors/pedro/bloody/bump"
+    $nodecal 1
 $halflambert 1
 }

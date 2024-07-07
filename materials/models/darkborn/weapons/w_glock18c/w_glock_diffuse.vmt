@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/w_glock18c/w_glock_diffuse"
+    "$basetexture" "models/darkborn/weapons/w_glock18c/w_glock_diffuse"
 }

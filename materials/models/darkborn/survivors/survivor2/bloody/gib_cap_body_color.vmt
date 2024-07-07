@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor2/bloody/survivor2_bloody"
-	"$bumpmap" "models/darkborn/survivors/survivor2/bloody/survivor2_bloody_normal"
-	"$phong"     "1"
-	"$phongboost"   "4"
-	"$phongexponent"   "150"
-	"$phongfresnelranges"   "[.05 .5 1]"
+    "$basetexture" "models/darkborn/survivors/survivor2/bloody/survivor2_bloody"
+    "$bumpmap" "models/darkborn/survivors/survivor2/bloody/survivor2_bloody_normal"
+    "$phong"     "1"
+    "$phongboost"   "4"
+    "$phongexponent"   "150"
+    "$phongfresnelranges"   "[.05 .5 1]"
 $nodecal 1
 $halflambert 1
 }

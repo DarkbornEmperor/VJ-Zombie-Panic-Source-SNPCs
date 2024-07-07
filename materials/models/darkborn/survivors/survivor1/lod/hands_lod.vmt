@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/detective/survivor/detective_hands_diffuse"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/viewmodels/detective/survivor/detective_hands_diffuse"
+    "$phong"     "1"
 }

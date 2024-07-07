@@ -1,10 +1,10 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/misc/Teeth"
-	"$bumpmap" "models/darkborn/zombies/misc/Normalmap"
+    "$basetexture" "models/darkborn/zombies/misc/Teeth"
+    "$bumpmap" "models/darkborn/zombies/misc/Normalmap"
         "$phong" "1"
-	"$phongexponent"   "7"
-	"$phongboost"   ".3"
-	"$phongfresnelranges"   "[1 1 1]"
+    "$phongexponent"   "7"
+    "$phongboost"   ".3"
+    "$phongfresnelranges"   "[1 1 1]"
 $halflambert 1
 }

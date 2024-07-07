@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/darkborn/weapons/hammer2"
-	"$envmap" "env_cubemap"
-	"$surfaceprop" "metal"
+    "$basetexture"    "models/darkborn/weapons/hammer2"
+    "$envmap" "env_cubemap"
+    "$surfaceprop" "metal"
 }

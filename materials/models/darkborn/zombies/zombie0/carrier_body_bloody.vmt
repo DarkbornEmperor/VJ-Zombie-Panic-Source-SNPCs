@@ -1,7 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie0/carrier_bloody_body"
-	"$bumpmap" "models/darkborn/zombies/zombie0/carrier_gib_body_n"
+    "$basetexture" "models/darkborn/zombies/zombie0/carrier_bloody_body"
+    "$bumpmap" "models/darkborn/zombies/zombie0/carrier_gib_body_n"
 $halflambert 1
 }
- 

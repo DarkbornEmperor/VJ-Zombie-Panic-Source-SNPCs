@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/survivors/survivor3/skin"
-	"$bumpmap" "models/survivors/survivor3/normal2"
-	"$phong"     "1"
+    "$basetexture" "models/survivors/survivor3/skin"
+    "$bumpmap" "models/survivors/survivor3/normal2"
+    "$phong"     "1"
 }

@@ -1,9 +1,9 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/larry/protector_diff2"
-	"$bumpmap" "models/darkborn/survivors/larry/protector_norm"
-	"$nocull" "1"
-	$alphatest 1
+    "$basetexture" "models/darkborn/zombies/larry/protector_diff2"
+    "$bumpmap" "models/darkborn/survivors/larry/protector_norm"
+    "$nocull" "1"
+    $alphatest 1
                  $alphatestreference 0.78
-	"$phong"     "1"
+    "$phong"     "1"
 }

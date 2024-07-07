@@ -1,13 +1,13 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/vanessa/bloody/vanessa_body_diff"
-	"$bumpmap" "models/darkborn/survivors_old/vanessa/vanessa_body_bump"
-	"$nocull" "1"
-	"$alphatest" 1
-	"$model" "1"
-	
-	"$phong"     "1"
-	"$phongexponent"   "10"
-	"$phongboost"   ".7"
-	"$phongfresnelranges"   "[0.05 .5 1]"
+    "$basetexture" "models/darkborn/survivors_old/vanessa/bloody/vanessa_body_diff"
+    "$bumpmap" "models/darkborn/survivors_old/vanessa/vanessa_body_bump"
+    "$nocull" "1"
+    "$alphatest" 1
+    "$model" "1"
+
+    "$phong"     "1"
+    "$phongexponent"   "10"
+    "$phongboost"   ".7"
+    "$phongfresnelranges"   "[0.05 .5 1]"
 }

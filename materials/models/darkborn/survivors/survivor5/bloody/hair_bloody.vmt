@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor5/bloody/survivor5_gib"
-	"$nocull"	"1"
-	"$translucent"	"1"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/survivors/survivor5/bloody/survivor5_gib"
+    "$nocull"    "1"
+    "$translucent"    "1"
+    "$phong"     "1"
 $halflambert 1
 }

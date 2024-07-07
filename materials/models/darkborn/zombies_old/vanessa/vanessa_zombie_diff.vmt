@@ -1,23 +1,23 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies_old/vanessa/vanessa_zombie_diff"
-	"$nocull" "1"
-	"$alphatest" 1
-	"$bumpmap" "models/darkborn/zombies_old/vanessa/vanessa_zombie_bump"
-	
-	"$model" "1"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/zombies_old/vanessa/vanessa_zombie_diff"
+    "$nocull" "1"
+    "$alphatest" 1
+    "$bumpmap" "models/darkborn/zombies_old/vanessa/vanessa_zombie_bump"
 
-	//phong parameters
-	//phong parameters
-	"$phong"     "1"
+    "$model" "1"
+    "$surfaceprop" "flesh"
 
-	"$phongexponent"   "15"
-	"$phongboost"   ".05"
-	"$phongfresnelranges"   "[0.1 5 1]"
-	
-	//rimlight parameters
-	"$rimlight" "1"
-	"$rimlightexponent" "20"
-	"$rimlightboost" "0.4"
+    //phong parameters
+    //phong parameters
+    "$phong"     "1"
+
+    "$phongexponent"   "15"
+    "$phongboost"   ".05"
+    "$phongfresnelranges"   "[0.1 5 1]"
+
+    //rimlight parameters
+    "$rimlight" "1"
+    "$rimlightexponent" "20"
+    "$rimlightboost" "0.4"
 }

@@ -1,12 +1,12 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_eye_diffuse"
-	"Proxies"
-	{
-		"ZombieVision"
-		{
-			"resultVar"	"$selfillumtint"
-		}
-	}
+    "$basetexture" "models/darkborn/survivors/survivor1/survivor1_eye_diffuse"
+    "Proxies"
+    {
+        "ZombieVision"
+        {
+            "resultVar"    "$selfillumtint"
+        }
+    }
 }
 

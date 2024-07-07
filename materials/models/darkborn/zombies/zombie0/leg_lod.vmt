@@ -1,6 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie0/carrier_legs_diffuse"
-	
+    "$basetexture" "models/darkborn/zombies/zombie0/carrier_legs_diffuse"
+
 }
- 

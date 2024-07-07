@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/darkborn/weapons/golf"
-	"$surfaceprop"	"metal"
+    "$basetexture"    "models/darkborn/weapons/golf"
+    "$surfaceprop"    "metal"
 }

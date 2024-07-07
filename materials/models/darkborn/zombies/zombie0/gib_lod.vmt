@@ -1,5 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie0/carrier_bloody_body"
+    "$basetexture" "models/darkborn/zombies/zombie0/carrier_bloody_body"
 }
- 

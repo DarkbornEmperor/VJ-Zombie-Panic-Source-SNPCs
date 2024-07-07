@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/pedro/pedro"
+    "$basetexture" "models/darkborn/zombies/pedro/pedro"
 "$bumpmap" "models/darkborn/survivors/shared/flat"
 $phong 1
 $phongexponent 600

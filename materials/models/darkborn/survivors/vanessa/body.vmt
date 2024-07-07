@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/vanessa/Diffuse"
-	"$bumpmap" "models/darkborn/survivors/vanessa/Bumpmap"
+    "$basetexture" "models/darkborn/survivors/vanessa/Diffuse"
+    "$bumpmap" "models/darkborn/survivors/vanessa/Bumpmap"
 $halflambert 1
 }

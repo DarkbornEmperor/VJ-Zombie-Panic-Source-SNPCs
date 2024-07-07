@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies_old/zombie2_teeth"
-	"$envmap" "env_cubemap"
-	"$basealphaenvmapmask" 1
-	"$envmapcontrast" 1
+    "$basetexture" "models/darkborn/zombies_old/zombie2_teeth"
+    "$envmap" "env_cubemap"
+    "$basealphaenvmapmask" 1
+    "$envmapcontrast" 1
 }

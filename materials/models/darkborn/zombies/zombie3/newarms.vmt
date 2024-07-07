@@ -1,10 +1,10 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie3/newarms"
-	"$bumpmap" "models/darkborn/zombies/vanessa/bumpmap"
-	"$phong"     "1"
-	"$phongexponent"   "9"
-	"$phongboost"   "1"
-	"$phongfresnelranges"   "[0.6 5 1]"
+    "$basetexture" "models/darkborn/zombies/zombie3/newarms"
+    "$bumpmap" "models/darkborn/zombies/vanessa/bumpmap"
+    "$phong"     "1"
+    "$phongexponent"   "9"
+    "$phongboost"   "1"
+    "$phongfresnelranges"   "[0.6 5 1]"
 $halflambert 1
 }

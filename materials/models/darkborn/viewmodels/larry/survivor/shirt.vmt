@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels\larry\survivor\shirt"
-	"$bumpmap" "models/darkborn/viewmodels/policeman/policeman_arm_norm"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/viewmodels\larry\survivor\shirt"
+    "$bumpmap" "models/darkborn/viewmodels/policeman/policeman_arm_norm"
+    "$phong"     "1"
 }

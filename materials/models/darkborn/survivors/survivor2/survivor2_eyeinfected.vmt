@@ -1,10 +1,10 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor2/survivor2_infected"
+    "$basetexture" "models/darkborn/survivors/survivor2/survivor2_infected"
 "$bumpmap" "models/darkborn/survivors/shared/flat"
-	"$phong"     "1"
-	"$phongexponent"   "300"
-	"$phongboost"   "2"
-	"$phongfresnelranges"   "[0.6 5 1]"
+    "$phong"     "1"
+    "$phongexponent"   "300"
+    "$phongboost"   "2"
+    "$phongfresnelranges"   "[0.6 5 1]"
 $halflambert 1
 }

@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/zombies/zombie1_hand2_dff"
-	"$bumpmap" "models/darkborn/viewmodels/survivors/survivor1_arm_normal"
+    "$basetexture" "models/darkborn/viewmodels/zombies/zombie1_hand2_dff"
+    "$bumpmap" "models/darkborn/viewmodels/survivors/survivor1_arm_normal"
 $phong 1
 
-	"$phongexponent"   "10"
-	"$phongboost"   "1"
-	"$phongfresnelranges"   "[0.3 0.5 1]"
-	
-	"$rimlight" "1"
-	"$rimlightexponent" "20"
-	"$rimlightboost" "0.3"
+    "$phongexponent"   "10"
+    "$phongboost"   "1"
+    "$phongfresnelranges"   "[0.3 0.5 1]"
+
+    "$rimlight" "1"
+    "$rimlightexponent" "20"
+    "$rimlightboost" "0.3"
 $halflambert 1
 }

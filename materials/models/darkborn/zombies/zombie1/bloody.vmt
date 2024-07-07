@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie1/bloody"
+    "$basetexture" "models/darkborn/zombies/zombie1/bloody"
 "$bumpmap" "models/darkborn/zombies/zombie1/bloody_n"
-	"$phong"     "1"
-	"$phongboost"   "26"
-	"$phongexponent"   "70"
-	"$phongfresnelranges"   "[.05 .5 1]"
+    "$phong"     "1"
+    "$phongboost"   "26"
+    "$phongexponent"   "70"
+    "$phongfresnelranges"   "[.05 .5 1]"
 $halflambert 1
 $nodecal 1
 }

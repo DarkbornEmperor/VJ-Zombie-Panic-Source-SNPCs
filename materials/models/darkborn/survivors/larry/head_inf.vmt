@@ -3,7 +3,7 @@ VertexLitGeneric
 $basetexture "models/darkborn/survivors/larry/butcher_head_diff_infected"
 $bumpmap "models/darkborn/survivors/larry/butcher_head_norm"
 $phong 1
-	"$phongexponent"   "3"
-	"$phongboost"   "3"
-	"$phongfresnelranges"   "[0.1 5 1]"
+    "$phongexponent"   "3"
+    "$phongboost"   "3"
+    "$phongfresnelranges"   "[0.1 5 1]"
 }

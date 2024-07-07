@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor3/bloody/headgib_diff_infected"
+    "$basetexture" "models/darkborn/survivors/survivor3/bloody/headgib_diff_infected"
 
 
 }

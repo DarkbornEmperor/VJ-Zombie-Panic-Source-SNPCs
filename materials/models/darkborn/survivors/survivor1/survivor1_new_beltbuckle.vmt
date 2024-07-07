@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_new_beltbuckle"
-	"$bumpmap" "models/darkborn/survivors/shared/flat"
-	"$phong"     "1"
-	"$phongexponent"   "2"
-	"$phongboost"   "3"
-	"$phongfresnelranges"   "[0.1 2 1]"
+    "$basetexture" "models/darkborn/survivors/survivor1/survivor1_new_beltbuckle"
+    "$bumpmap" "models/darkborn/survivors/shared/flat"
+    "$phong"     "1"
+    "$phongexponent"   "2"
+    "$phongboost"   "3"
+    "$phongfresnelranges"   "[0.1 2 1]"
 $rimlight 1
 $rimlightboost 6
 $halflambert 1

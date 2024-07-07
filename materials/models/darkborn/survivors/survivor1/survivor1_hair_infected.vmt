@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor1/survivor1_hair_infected"
+    "$basetexture" "models/darkborn/survivors/survivor1/survivor1_hair_infected"
 "$bumpmap" "models/darkborn/survivors/survivor1/survivor1_hair_normal"
 $translucent 1
 $nocull 1

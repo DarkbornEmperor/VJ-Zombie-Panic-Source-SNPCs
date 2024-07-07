@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor3/hair_diff"
-	"$nocull"	"1"
-	"$nodecal"	"1"
-	"$translucent" 1
+    "$basetexture" "models/darkborn/survivors_old/survivor3/hair_diff"
+    "$nocull"    "1"
+    "$nodecal"    "1"
+    "$translucent" 1
 }

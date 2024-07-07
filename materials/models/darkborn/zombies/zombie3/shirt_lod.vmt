@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie3/shirt"
+    "$basetexture" "models/darkborn/zombies/zombie3/shirt"
 $alphatest 1
 }

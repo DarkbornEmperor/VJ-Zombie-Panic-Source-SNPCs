@@ -1,23 +1,23 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor5/diffuse_infected"
-	"$bumpmap" "models/darkborn/survivors/survivor5/normal"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/survivors/survivor5/diffuse_infected"
+    "$bumpmap" "models/darkborn/survivors/survivor5/normal"
+    "$surfaceprop" "flesh"
 
-	"$nocull" "1"
-	"$model" "1"
-	//phong parameters
-	"$phong"     "1"
+    "$nocull" "1"
+    "$model" "1"
+    //phong parameters
+    "$phong"     "1"
 
-	"$phongexponent"   "48"
-	"$phongboost"   "0.25"
-	"$phongfresnelranges"   "[0.05 5 1]"
+    "$phongexponent"   "48"
+    "$phongboost"   "0.25"
+    "$phongfresnelranges"   "[0.05 5 1]"
 
-	"Proxies"
-	{
-		"ZombieVision"
-		{
-			"resultVar"	"$selfillumtint"
-		}
-	}
+    "Proxies"
+    {
+        "ZombieVision"
+        {
+            "resultVar"    "$selfillumtint"
+        }
+    }
 }

@@ -1,5 +1,5 @@
 "Eyeball"
 {
-	"$basetexture" "models/darkborn/zombies/pedro/pupil_r"
-	"$nodecal" "1"
+    "$basetexture" "models/darkborn/zombies/pedro/pupil_r"
+    "$nodecal" "1"
 }

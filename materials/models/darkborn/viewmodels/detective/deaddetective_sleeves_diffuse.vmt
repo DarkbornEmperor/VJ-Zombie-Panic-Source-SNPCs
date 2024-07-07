@@ -1,13 +1,13 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/detective/deaddetective_sleeves_diffuse"
-	"$bumpmap" "models/darkborn/viewmodels/detective/detective_normal"
-	"$phong"     "1"
-	"$phongexponent"   "8"
-	"$phongboost"   "0.02"
-	"$phongfresnelranges"   "[0.1 5 1]"
-	$rimlight               1
-	$rimlightexponent       20
-	$rimlightboost          0.4
+    "$basetexture" "models/darkborn/viewmodels/detective/deaddetective_sleeves_diffuse"
+    "$bumpmap" "models/darkborn/viewmodels/detective/detective_normal"
+    "$phong"     "1"
+    "$phongexponent"   "8"
+    "$phongboost"   "0.02"
+    "$phongfresnelranges"   "[0.1 5 1]"
+    $rimlight               1
+    $rimlightexponent       20
+    $rimlightboost          0.4
 $rimmask 1
 }

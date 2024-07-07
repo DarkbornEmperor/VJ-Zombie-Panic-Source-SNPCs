@@ -1,19 +1,19 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/pipe_wrench"
-	"$bumpmap" "models/darkborn/weapons/pipe_wrench_norm"
-	"$envmaptint" "[ .64 .64 .64 ]"
-	"$envmap" "env_cubemap"
-	"$normalmapalphaenvmapmask" 1
-  
-	"$phong" "1"
-	"$phongexponent" "5"
-	"$phongboost" "1"
-	"$phongfresnelranges"	"[.0 .5 1]"
-	
-	"$rimlight" "1"
-	"$rimlightexponent" "4"
-	"$rimlightboost" ".2"
-	
-	"$surfaceprop"	"metal"
+    "$basetexture" "models/darkborn/weapons/pipe_wrench"
+    "$bumpmap" "models/darkborn/weapons/pipe_wrench_norm"
+    "$envmaptint" "[ .64 .64 .64 ]"
+    "$envmap" "env_cubemap"
+    "$normalmapalphaenvmapmask" 1
+
+    "$phong" "1"
+    "$phongexponent" "5"
+    "$phongboost" "1"
+    "$phongfresnelranges"    "[.0 .5 1]"
+
+    "$rimlight" "1"
+    "$rimlightexponent" "4"
+    "$rimlightboost" ".2"
+
+    "$surfaceprop"    "metal"
 }

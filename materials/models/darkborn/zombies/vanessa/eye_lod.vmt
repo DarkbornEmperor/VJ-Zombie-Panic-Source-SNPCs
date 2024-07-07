@@ -1,6 +1,6 @@
 "vertexlitgeneric"
 {
-	"$basetexture" "models/darkborn/zombies/vanessa/Eye"
+    "$basetexture" "models/darkborn/zombies/vanessa/Eye"
 $detail "models/darkborn/zombies/zombie1/zombie2_eyeglow"
 $detailblendmode 2
 $detailblendfactor 0.15

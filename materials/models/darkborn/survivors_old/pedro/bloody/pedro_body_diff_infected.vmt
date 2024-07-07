@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/pedro/bloody/pedro_body_diff_infected"
-	"$nocull" "1"
-	
-	"$bumpmap" "models/darkborn/survivors_old/pedro/bloody/pedro_body_bump"
-	
-	"$model" "1"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/survivors_old/pedro/bloody/pedro_body_diff_infected"
+    "$nocull" "1"
 
-	"$phong"     "1"
-	"$phongexponent"   "70"
-	"$phongboost"   "1.25"
-	"$phongfresnelranges"   "[0.05 0.5 1]"
+    "$bumpmap" "models/darkborn/survivors_old/pedro/bloody/pedro_body_bump"
+
+    "$model" "1"
+    "$surfaceprop" "flesh"
+
+    "$phong"     "1"
+    "$phongexponent"   "70"
+    "$phongboost"   "1.25"
+    "$phongfresnelranges"   "[0.05 0.5 1]"
 }

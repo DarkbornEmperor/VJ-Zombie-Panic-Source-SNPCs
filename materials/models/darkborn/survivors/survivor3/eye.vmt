@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor3/Jess"
+    "$basetexture" "models/darkborn/survivors/survivor3/Jess"
 "$bumpmap" "models/darkborn/survivors/shared/flat"
 $phong 1
 $phongexponent 300

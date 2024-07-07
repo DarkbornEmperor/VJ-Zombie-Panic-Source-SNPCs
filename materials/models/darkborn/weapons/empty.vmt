@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/darkborn/weapons/empty"
-	"$alphatest"	"1"
-	"$nodecal"		"1"
+    "$basetexture"    "models/darkborn/weapons/empty"
+    "$alphatest"    "1"
+    "$nodecal"        "1"
 }

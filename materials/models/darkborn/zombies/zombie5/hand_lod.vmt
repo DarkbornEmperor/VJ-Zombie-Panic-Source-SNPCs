@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/student/deadstudent_hand_diff"
+    "$basetexture" "models/darkborn/viewmodels/student/deadstudent_hand_diff"
 }

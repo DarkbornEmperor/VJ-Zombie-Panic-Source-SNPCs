@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/survivor4/newhands"
+    "$basetexture" "models/darkborn/survivors/survivor4/newhands"
 $halflambert 1
 }
 

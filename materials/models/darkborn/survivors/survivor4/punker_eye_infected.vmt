@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-"$basetexture"			"models/darkborn/survivors/survivor4/001_Punker_Head_Color_Infected"
+"$basetexture"            "models/darkborn/survivors/survivor4/001_Punker_Head_Color_Infected"
 "$bumpmap" "models/darkborn/survivors/shared/flat"
 $phong 1
 $phongexponent 600

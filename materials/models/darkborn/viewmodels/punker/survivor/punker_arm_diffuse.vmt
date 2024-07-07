@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/punker/survivor/punker_arm_diffuse"
-	"$bumpmap" "models/darkborn/viewmodels/punker/survivor/punker_arm_normal"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/viewmodels/punker/survivor/punker_arm_diffuse"
+    "$bumpmap" "models/darkborn/viewmodels/punker/survivor/punker_arm_normal"
+    "$phong"     "1"
 
 
 }

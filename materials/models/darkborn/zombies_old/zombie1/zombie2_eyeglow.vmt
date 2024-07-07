@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies_old/zombie1/zombie2_eyeglow"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/zombies_old/zombie1/zombie2_eyeglow"
+    "$surfaceprop" "flesh"
 
 }

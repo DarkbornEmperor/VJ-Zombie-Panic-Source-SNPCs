@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody_infected"
-	
+    "$basetexture" "models/darkborn/survivors/pedro/bloody/survivor7_bloody_infected"
+
 }

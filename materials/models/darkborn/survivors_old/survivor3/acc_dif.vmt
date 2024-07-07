@@ -1,19 +1,19 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor3/acc_dif"
-	"$bumpmap" "models/darkborn/survivors_old/survivor3/acc_norm"
-	"$surfaceprop" "flesh"
-	"$nocull"	"1"
+    "$basetexture" "models/darkborn/survivors_old/survivor3/acc_dif"
+    "$bumpmap" "models/darkborn/survivors_old/survivor3/acc_norm"
+    "$surfaceprop" "flesh"
+    "$nocull"    "1"
 
-	//phong parameters
-	"$phong"     "1"
+    //phong parameters
+    "$phong"     "1"
 
-	"$phongexponent"   "50"
-	"$phongboost"   ".05"
-	"$phongfresnelranges"   "[0.04 5 1]"
-	
-	//rimlight parameters
-	"$rimlight" "1"
-	"$rimlightexponent" "20"
-	"$rimlightboost" "0.4"
+    "$phongexponent"   "50"
+    "$phongboost"   ".05"
+    "$phongfresnelranges"   "[0.04 5 1]"
+
+    //rimlight parameters
+    "$rimlight" "1"
+    "$rimlightexponent" "20"
+    "$rimlightboost" "0.4"
 }

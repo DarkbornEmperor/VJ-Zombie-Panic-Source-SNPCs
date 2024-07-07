@@ -1,7 +1,7 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie1/zombie1_diffuse"
-	"$bumpmap" "models/darkborn/zombies/zombie1/zombie1_normal"
-	"$nocull" "1"
+    "$basetexture" "models/darkborn/zombies/zombie1/zombie1_diffuse"
+    "$bumpmap" "models/darkborn/zombies/zombie1/zombie1_normal"
+    "$nocull" "1"
 $halflambert 1
 }

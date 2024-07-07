@@ -1,10 +1,10 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/pot01_diff"
-	"$surfaceprop" "metal"
-    "$bumpmap" "models/darkborn/weapons/pot01_norm" 
-	"$phong" "1"
-	"$phongexponent" "13"
-	"$phongboost" "1"	
-	"$phongfresnelranges"	"[0 1 2]"
+    "$basetexture" "models/darkborn/weapons/pot01_diff"
+    "$surfaceprop" "metal"
+    "$bumpmap" "models/darkborn/weapons/pot01_norm"
+    "$phong" "1"
+    "$phongexponent" "13"
+    "$phongboost" "1"
+    "$phongfresnelranges"    "[0 1 2]"
 }

@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/w_mp5/w_mp5_low"
+    "$basetexture" "models/darkborn/weapons/w_mp5/w_mp5_low"
 }

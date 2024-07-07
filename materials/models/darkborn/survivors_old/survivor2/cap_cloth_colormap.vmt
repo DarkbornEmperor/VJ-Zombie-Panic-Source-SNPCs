@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor2/cap_cloth_colormap"
-	"$bumpmap" "models/darkborn/survivors_old/survivor2/cap_cloth_nm"
-	"$nocull"	"1"
+    "$basetexture" "models/darkborn/survivors_old/survivor2/cap_cloth_colormap"
+    "$bumpmap" "models/darkborn/survivors_old/survivor2/cap_cloth_nm"
+    "$nocull"    "1"
 
-	"$phong"     "1"
-	"$phongexponent"   "5"
-	"$phongboost"   ".1"
-	"$phongfresnelranges"   "[0.1 5 1]"
+    "$phong"     "1"
+    "$phongexponent"   "5"
+    "$phongboost"   ".1"
+    "$phongfresnelranges"   "[0.1 5 1]"
 }

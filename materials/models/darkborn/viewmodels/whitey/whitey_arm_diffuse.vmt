@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/whitey/whitey_arm_diffuse"
-	"$bumpmap" "models/darkborn/viewmodels/whitey/whitey_arm_normal"
-	"$phong"     "1"
+    "$basetexture" "models/darkborn/viewmodels/whitey/whitey_arm_diffuse"
+    "$bumpmap" "models/darkborn/viewmodels/whitey/whitey_arm_normal"
+    "$phong"     "1"
 }

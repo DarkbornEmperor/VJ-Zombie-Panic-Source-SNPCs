@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/shared/eye_brown_infected"
-	"$halflambert" 1
-	"$nodecal" "1"
+    "$basetexture" "models/darkborn/survivors_old/shared/eye_brown_infected"
+    "$halflambert" 1
+    "$nodecal" "1"
 }

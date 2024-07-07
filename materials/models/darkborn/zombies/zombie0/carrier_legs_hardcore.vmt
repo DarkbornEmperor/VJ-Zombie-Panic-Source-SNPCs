@@ -1,15 +1,14 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie0/carrier_legs_hardcore"
-	"$bumpmap" "models/darkborn/zombies/zombie0/carrier_legs_normal"
-	"$phong"     "1"
-	"$phongexponent"   "3"
-	"$phongboost"   ".1"
-	"$phongfresnelranges"   "[0.1 5 1]"
+    "$basetexture" "models/darkborn/zombies/zombie0/carrier_legs_hardcore"
+    "$bumpmap" "models/darkborn/zombies/zombie0/carrier_legs_normal"
+    "$phong"     "1"
+    "$phongexponent"   "3"
+    "$phongboost"   ".1"
+    "$phongfresnelranges"   "[0.1 5 1]"
    "$rimlight" "1"
         "$rimlightboost" "2"
         "$rimlightexponent" "90"
         "$rimmask" "1"
 $halflambert 1
 }
- 

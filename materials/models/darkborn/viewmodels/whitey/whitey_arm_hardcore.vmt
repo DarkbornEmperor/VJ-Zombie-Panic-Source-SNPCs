@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/whitey/whitey_arm_hardcore"
-	"$bumpmap" "models/darkborn/viewmodels/whitey/whitey_arm_normal"
-	"$phong"     "1"
-	"$phongboost"   ".3"
-	"$phongfresnelranges"   "[0.4 3 1]"
+    "$basetexture" "models/darkborn/viewmodels/whitey/whitey_arm_hardcore"
+    "$bumpmap" "models/darkborn/viewmodels/whitey/whitey_arm_normal"
+    "$phong"     "1"
+    "$phongboost"   ".3"
+    "$phongfresnelranges"   "[0.4 3 1]"
 "$phongexponent" "12"
 $lightwarptexture "models/darkborn/zombies/zombie0/hardcore_lightwarp"
-	$rimlight               1
-	$rimlightexponent       20
-	$rimlightboost          0.4
+    $rimlight               1
+    $rimlightexponent       20
+    $rimlightboost          0.4
 $rimmask 1
 }
 

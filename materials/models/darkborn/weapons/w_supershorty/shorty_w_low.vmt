@@ -1,4 +1,4 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/w_supershorty/shorty_w_low"
+    "$basetexture" "models/darkborn/weapons/w_supershorty/shorty_w_low"
 }

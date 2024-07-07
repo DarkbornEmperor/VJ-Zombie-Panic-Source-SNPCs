@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor3/head_blin"
-	"$alphatest"   "1"
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/survivors_old/survivor3/head_blin"
+    "$alphatest"   "1"
+    "$surfaceprop" "flesh"
 }

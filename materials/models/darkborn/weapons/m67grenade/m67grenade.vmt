@@ -2,34 +2,34 @@
 // Ver 1.4 Beta
 "VertexLitGeneric"
 {
-	// BASE SETTINGS
-	$basetexture				"models/darkborn/weapons/m67grenade/m67_d"
-	$bumpmap					"models/darkborn/weapons/m67grenade/m67_n"
+    // BASE SETTINGS
+    $basetexture                "models/darkborn/weapons/m67grenade/m67_d"
+    $bumpmap                    "models/darkborn/weapons/m67grenade/m67_n"
 
-	$halflambert				"1"
-	$model						"1"
-	$nocull						"1"
+    $halflambert                "1"
+    $model                        "1"
+    $nocull                        "1"
 
-	// PHONG SHADING
-	$phongexponenttexture		"models/darkborn/weapons/m67grenade/m67_g"
-	$phong						"1"
-	$phongboost					"2"
-	$phongfresnelranges			"[1 2.6 .6]"
-	$phongtint					"[0.8 0.8 1]"   
-	$phongalbedotint			"1"
-	$phongexponent				"25"
-	$normalmapalphaphongmask	"1"
+    // PHONG SHADING
+    $phongexponenttexture        "models/darkborn/weapons/m67grenade/m67_g"
+    $phong                        "1"
+    $phongboost                    "2"
+    $phongfresnelranges            "[1 2.6 .6]"
+    $phongtint                    "[0.8 0.8 1]"
+    $phongalbedotint            "1"
+    $phongexponent                "25"
+    $normalmapalphaphongmask    "1"
 
-	// ENVIRONMENT REFLECTION
-	$normalmapalphaenvmapmask	"1"
-	$envmap						"env_cubemap"
-	$envmaptint					"[0.04 0.04 0.04]"
-	$envmapfresnel				"1"
-	$envmapFresnelMinMaxExp		"[0 0 .5]"
+    // ENVIRONMENT REFLECTION
+    $normalmapalphaenvmapmask    "1"
+    $envmap                        "env_cubemap"
+    $envmaptint                    "[0.04 0.04 0.04]"
+    $envmapfresnel                "1"
+    $envmapFresnelMinMaxExp        "[0 0 .5]"
 
-	// RIM LIGHT
-	$rimlight					"1"
-	$rimlightexponent			"45"
-	$rimlightboost				".05"
-	$rimmask					"1"
+    // RIM LIGHT
+    $rimlight                    "1"
+    $rimlightexponent            "45"
+    $rimlightboost                ".05"
+    $rimmask                    "1"
 }

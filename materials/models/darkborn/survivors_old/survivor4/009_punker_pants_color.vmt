@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors_old/survivor4/009_punker_pants_color"
-	"$normalmapalphaenvmapmask" 1
-	"$surfaceprop" "flesh"
+    "$basetexture" "models/darkborn/survivors_old/survivor4/009_punker_pants_color"
+    "$normalmapalphaenvmapmask" 1
+    "$surfaceprop" "flesh"
 }

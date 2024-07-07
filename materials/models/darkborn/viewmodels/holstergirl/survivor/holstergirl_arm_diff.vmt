@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/holstergirl/survivor/holstergirl_arm_diff"
-	"$bumpmap" "models/darkborn/viewmodels/holstergirl/survivor/holstergirl_arm_norm"
+    "$basetexture" "models/darkborn/viewmodels/holstergirl/survivor/holstergirl_arm_diff"
+    "$bumpmap" "models/darkborn/viewmodels/holstergirl/survivor/holstergirl_arm_norm"
 "$phong" "1"
 }

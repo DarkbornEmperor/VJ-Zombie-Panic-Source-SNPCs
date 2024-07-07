@@ -1,10 +1,10 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/survivors/larry/protector_diff"
-	"$bumpmap" "models/darkborn/survivors/larry/protector_norm"
-	"$nocull" "1"
-	"$phong"     "1"
-	"$phongexponent"   "40"
-	"$phongboost"   "2"
-	"$phongfresnelranges"   "[0.5 0.5 0.5]"
+    "$basetexture" "models/darkborn/survivors/larry/protector_diff"
+    "$bumpmap" "models/darkborn/survivors/larry/protector_norm"
+    "$nocull" "1"
+    "$phong"     "1"
+    "$phongexponent"   "40"
+    "$phongboost"   "2"
+    "$phongfresnelranges"   "[0.5 0.5 0.5]"
 }

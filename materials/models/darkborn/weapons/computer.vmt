@@ -1,4 +1,4 @@
 VertexLitGeneric
 {
-	"$basetexture"	"models/darkborn/weapons/computer"
+    "$basetexture"    "models/darkborn/weapons/computer"
 }

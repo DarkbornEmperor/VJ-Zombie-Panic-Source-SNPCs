@@ -1,11 +1,11 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/jess/survivor/ring"
-	"$bumpmap" "models/darkborn/viewmodels/jess/survivor/ring_n"
+    "$basetexture" "models/darkborn/viewmodels/jess/survivor/ring"
+    "$bumpmap" "models/darkborn/viewmodels/jess/survivor/ring_n"
         $detail "models/zombies/zombie3/bloody/detail"
         $detailscale 0.1
-	"$phong"     "1"
-	"$phongexponent"   "10"
-	"$phongboost"   "0.4"
-	"$phongfresnelranges"   "[0.3 0.5 1]"
+    "$phong"     "1"
+    "$phongexponent"   "10"
+    "$phongboost"   "0.4"
+    "$phongfresnelranges"   "[0.3 0.5 1]"
 }

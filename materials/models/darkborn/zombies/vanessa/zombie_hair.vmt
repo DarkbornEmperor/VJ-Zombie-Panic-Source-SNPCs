@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/vanessa/vanessa_zombie_diff"
-	"$nocull" "1"
-	"$alphatest" 1
+    "$basetexture" "models/darkborn/zombies/vanessa/vanessa_zombie_diff"
+    "$nocull" "1"
+    "$alphatest" 1
 $halflambert 1
 }

@@ -1,9 +1,9 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie3/hair"
+    "$basetexture" "models/darkborn/zombies/zombie3/hair"
 "$bumpmap" "models/darkborn/survivors/shared/flat"
-	"$nocull"	"1"
-	"$translucent" 1
-	"$phong"     "1"
+    "$nocull"    "1"
+    "$translucent" 1
+    "$phong"     "1"
 $halflambert 1
 }

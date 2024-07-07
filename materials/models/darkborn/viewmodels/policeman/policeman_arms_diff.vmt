@@ -1,10 +1,10 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/viewmodels/policeman/policeman_arms_diff"
-	"$bumpmap" "models/darkborn/viewmodels/policeman/policeman_arm_norm"
-	"$phong"     "1"
-	"$phongexponent"   "15"
-	"$phongboost"   ".02"
-	"$phongfresnelranges"   "[0.2 5 1]"
+    "$basetexture" "models/darkborn/viewmodels/policeman/policeman_arms_diff"
+    "$bumpmap" "models/darkborn/viewmodels/policeman/policeman_arm_norm"
+    "$phong"     "1"
+    "$phongexponent"   "15"
+    "$phongboost"   ".02"
+    "$phongfresnelranges"   "[0.2 5 1]"
 
 }

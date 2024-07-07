@@ -1,15 +1,15 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/weapons/crowbar_cyl"
-	"$bumpmap" "models/darkborn/weapons/crowbar_normal"
-	
-	"$phong"     "1"
-	"$phongexponent"   "28"
-	"$phongboost"   "10"
-	"$phongfresnelranges"   "[0.5 0.5 1]"
-	
-	//rimlight parameters
-	"$rimlight" "1"
-	"$rimlightexponent" "20"
-	"$rimlightboost" "0.3"
+    "$basetexture" "models/darkborn/weapons/crowbar_cyl"
+    "$bumpmap" "models/darkborn/weapons/crowbar_normal"
+
+    "$phong"     "1"
+    "$phongexponent"   "28"
+    "$phongboost"   "10"
+    "$phongfresnelranges"   "[0.5 0.5 1]"
+
+    //rimlight parameters
+    "$rimlight" "1"
+    "$rimlightexponent" "20"
+    "$rimlightboost" "0.3"
 }

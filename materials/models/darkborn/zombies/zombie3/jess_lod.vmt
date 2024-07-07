@@ -1,5 +1,5 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/darkborn/zombies/zombie3/jess"
-  
+    "$basetexture" "models/darkborn/zombies/zombie3/jess"
+
 }
