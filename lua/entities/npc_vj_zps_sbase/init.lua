@@ -2322,19 +2322,21 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAllyDeath(ent)
- if self.VJ_IsBeingControlled or self.IsGuard then return end
- if math.random(1,5) == 1 && CurTime() > self.ZPS_NextPanicT && !self.ZPS_Panic then
-    timer.Simple(0, function() if IsValid(self) && !self.Dead then
-    self.ZPS_Panic = true
-    self:StopMoving()
-    self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = false x.CanTurnWhileMoving = false x.FaceData = {Type = VJ.NPC_FACE_NONE} x.DisableChasingEnemy = true
-end)
-        self.TakingCoverT = CurTime() + 10
-        self.NextChaseTime = CurTime() + 10
+ if self.VJ_IsBeingControlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > CurTime() then return end
+    if math.random(1,5) == 1 && !self.ZPS_Panic then
+        self.ZPS_Panic = true
         self:PlaySoundSystem("CallForHelp")
-        self.ZPS_NextPanicT = CurTime() + math.Rand(10,20)
-        timer.Simple(10, function() if IsValid(self) then self.ZPS_Panic = false end end) end end)
     end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:SelectSchedule()
+	self.BaseClass.SelectSchedule(self)
+	-- Hide after an ally is killed
+	if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
+		self.ZPS_Panic = false
+		self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
+		self.NextDoAnyAttackT = CurTime() + 5
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.JumpHeight = 200

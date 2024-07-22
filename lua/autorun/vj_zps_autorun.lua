@@ -469,7 +469,7 @@ end)
             for _,v in pairs(ents.GetAll()) do
             local classType = v:GetClass()
             if (v:IsNPC() && classType != "obj_vj_bullseye" or v:IsPlayer()) && !v:IsFlagSet(FL_NOTARGET) then
-            if (classType == "npc_vj_zps_zeugene" or classType == "npc_vj_zps_zmarcus" or classType == "npc_vj_zps_zjessica" or classType == "npc_vj_zps_zpaul" or classType == "npc_vj_zps_zlea" or classType == "npc_vj_zps_zvanessa" or classType == "npc_vj_zps_zpedro" or classType == "npc_vj_zps_zlarry" or classType == "npc_vj_zps_zinf" or classType == "npc_vj_zps_zinf_ply") && classType != "npc_vj_zps_zcarrier" then
+            if string.find(classType,"npc_vj_zps_z") && classType != "npc_vj_zps_zcarrier" then
                 table.insert(tbFri,v)
                 elseif classType == "npc_vj_zps_zcarrier" then
                 table.insert(tbCar,v)
