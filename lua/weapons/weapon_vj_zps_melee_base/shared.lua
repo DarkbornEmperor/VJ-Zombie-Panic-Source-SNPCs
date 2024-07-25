@@ -29,7 +29,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:PrimaryAttack(UseAlt)    -- Heavily modified PrimaryAttack function to have melee weapons work better and more fluid
+function SWEP:PrimaryAttack(UseAlt) -- Heavily modified PrimaryAttack function to have melee weapons work better and more fluid
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
     local owner = self:GetOwner()
     local isNPC = owner:IsNPC()

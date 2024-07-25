@@ -2776,7 +2776,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
- if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
+ if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end
  if hitgroup == HITGROUP_HEAD then
     VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)

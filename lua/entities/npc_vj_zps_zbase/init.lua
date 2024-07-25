@@ -1178,7 +1178,7 @@ end
         self.AnimationPlaybackRate = self.ZPS_BerserkSpeed
         local berserkSpeed = 1.2
         self:SetLocalVelocity(self:GetMoveVelocity() *berserkSpeed)
-    else
+    elseif !self.ZPS_Berserk then
         self.AnimationPlaybackRate = 1
         self:SetLocalVelocity(self:GetMoveVelocity() *0)
     end
@@ -1270,7 +1270,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
  if IsValid(self.Bonemerge) then
     corpseEnt:VJ_ZPS_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)
 end
- if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
+ if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end
  if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) then
     VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
@@ -1296,7 +1296,7 @@ end
         bleedOut:Fire("Start","",0)
 end
  -- For bonemerged Zombies
- if IsValid(self.Bonemerge) && (self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/eugene.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/jessica.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/larry.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/lea.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/marcus.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/paul.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/pedro.mdl" or self.Bonemerge:GetModel() == "models/darkborn/zps/survivors/vanessa.mdl") then
+ if IsValid(self.Bonemerge) && (string.find(self.Bonemerge:GetModel(),"models/darkborn/zps/survivors/") or string.find(self.Bonemerge:GetModel(),"models/darkborn/zps/survivors/pms/")) then
  if hitgroup == HITGROUP_HEAD then
     VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
     corpseEnt.Bonemerge:RemoveAllDecals()
