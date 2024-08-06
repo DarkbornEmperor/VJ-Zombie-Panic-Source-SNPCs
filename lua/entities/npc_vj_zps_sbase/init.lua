@@ -22,7 +22,6 @@ ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
-ENT.MeleeAttackAnimationAllowOtherTasks = true
 ENT.WeaponReload_FindCover = false
 //ENT.HasGrenadeAttack = true -- We use a seperate weapon for Grenade attack
 ENT.GrenadeAttackEntity = "obj_vj_zps_grenade"

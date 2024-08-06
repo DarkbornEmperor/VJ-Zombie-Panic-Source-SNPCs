@@ -21,7 +21,6 @@ ENT.MeleeAttackDamage = 25
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
-ENT.MeleeAttackAnimationAllowOtherTasks = true
 ENT.SlowPlayerOnMeleeAttack = true
 ENT.SlowPlayerOnMeleeAttackTime = 0.5
 ENT.HasMeleeAttackSlowPlayerSound = false
@@ -1002,7 +1001,7 @@ end
  if newAct == ACT_LAND then
     self:SetNavType(NAV_GROUND)
 end
-    return self.BaseClass.OnChangeActivity(newAct)
+    return self.BaseClass.OnChangeActivity(self,newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAlert(ent)
@@ -1038,16 +1037,16 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
  if !self.ZPS_Crouching then
-    if self:GetClass() == "npc_vj_zps_zcarrier" && (act == ACT_RUN or act == ACT_WALK) then
+    if (act == ACT_WALK or act == ACT_RUN) && self:GetClass() == "npc_vj_zps_zcarrier" then
         return ACT_RUN
-    elseif self:GetClass() != "npc_vj_zps_zcarrier" && (act == ACT_RUN or act == ACT_WALK) then
+    elseif (act == ACT_WALK or act == ACT_RUN) && self:GetClass() != "npc_vj_zps_zcarrier" then
         return ACT_WALK
     end
 end
  if self.ZPS_Crouching then
     if act == ACT_IDLE then
         return ACT_IDLE_STEALTH
-    elseif act == ACT_RUN or act == ACT_WALK then
+    elseif act == ACT_WALK or act == ACT_RUN then
         return ACT_WALK_STEALTH
     end
 end
