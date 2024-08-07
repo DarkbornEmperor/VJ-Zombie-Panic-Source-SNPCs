@@ -1,6 +1,6 @@
 /* Note: All credits go to Cpt. Hazama. I take no credit for this. */
 AddCSLuaFile("shared.lua")
-include('shared.lua')
+include("shared.lua")
 
 local table_insert = table.insert
 local table_remove = table.remove

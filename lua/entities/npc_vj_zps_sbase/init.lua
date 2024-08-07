@@ -2329,13 +2329,13 @@ function ENT:CustomOnAllyDeath(ent)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SelectSchedule()
-	self.BaseClass.SelectSchedule(self)
-	-- Hide after an ally is killed
-	if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
-		self.ZPS_Panic = false
-		self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
-		self.NextDoAnyAttackT = CurTime() + 5
-	end
+    self.BaseClass.SelectSchedule(self)
+    -- Hide after an ally is killed
+    if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
+        self.ZPS_Panic = false
+        self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
+        self.NextDoAnyAttackT = CurTime() + 5
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.JumpHeight = 200
