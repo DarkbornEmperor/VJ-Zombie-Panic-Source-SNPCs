@@ -48,7 +48,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     if IsValid(self.Gre_LastShotEnt) then return true end -- Wait until the last Grenade has detonated
     //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
     local grenade = ents.Create("obj_vj_zps_grenade")
-    grenade:SetPos(self:GetNW2Vector("VJ_CurBulletPos"))
+    grenade:SetPos(self:GetBulletPos())
     grenade:SetAngles(self:GetOwner():GetAngles())
     grenade:SetOwner(self:GetOwner())
     grenade:Spawn()
@@ -58,7 +58,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
 
     local phys = grenade:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetNW2Vector("VJ_CurBulletPos"), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200))
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200))
             end
         /*end
     end)*/
