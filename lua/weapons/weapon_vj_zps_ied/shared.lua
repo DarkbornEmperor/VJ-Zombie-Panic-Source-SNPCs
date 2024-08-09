@@ -9,7 +9,7 @@ SWEP.Category = "Zombie Panic! Source"
 SWEP.NPC_NextPrimaryFire = 2.5
 SWEP.NPC_TimeUntilFire = 0.8
 SWEP.NPC_FiringDistanceScale = 0.2
-SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/explosives/ied/ied_pull-01.wav","darkborn/zps/weapons/explosives/ied/ied_pull-02.wav"}
+SWEP.NPC_ReloadSound = "darkborn/zps/weapons/explosives/ied/ied_pull-01.wav","darkborn/zps/weapons/explosives/ied/ied_pull-02.wav"
 SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ SWEP.MadeForNPCsOnly = true
 -- NPC Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.NPC_NextPrimaryFire = 1.5
 SWEP.NPC_CustomSpread = 2.5
-SWEP.NPC_ExtraFireSound = {"darkborn/zps/weapons/firearms/remington870/pump.wav"}
+SWEP.NPC_ExtraFireSound = "darkborn/zps/weapons/firearms/remington870/pump.wav"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.NPC_FiringDistanceScale = 0.5
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,10 +24,10 @@ SWEP.Primary.NumberOfShots = 8
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"
-SWEP.Primary.Sound = {"darkborn/zps/weapons/firearms/remington870/fire.wav"}
+SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/remington870/fire.wav"
 SWEP.PrimaryEffects_ShellType = "ShotgunShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.DryFireSound = {"darkborn/zps/weapons/firearms/remington870/dryfire.wav"}
+SWEP.DryFireSound = "darkborn/zps/weapons/firearms/remington870/dryfire.wav"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
     local owner = self:GetOwner()

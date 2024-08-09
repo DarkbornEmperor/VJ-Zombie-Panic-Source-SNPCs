@@ -6,17 +6,18 @@
 AddCSLuaFile()
 if (!file.Exists("autorun/vj_base_autorun.lua","LUA")) then return end
 
-ENT.Type            = "anim"
-ENT.Base            = "obj_vj_grenade"
-ENT.PrintName       = "IED"
-ENT.Author          = "Darkborn"
-ENT.Contact         = "http://steamcommunity.com/groups/vrejgaming"
-ENT.Information     = "Projectiles for my addons"
-ENT.Category        = "VJ Base"
-ENT.Spawnable = true
+ENT.Type = "anim"
+ENT.Base = "obj_vj_grenade"
+ENT.PrintName = "IED"
+ENT.Author = "Darkborn"
+ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
+ENT.Information = "Projectiles for my addons"
+ENT.Category = "VJ Base"
+ENT.Spawnable = false
 
 ENT.VJTag_ID_Grenade = false
 ENT.VJTag_IsPickupable = false
+ENT.VJTag_IsAttackable = true
 
 if CLIENT then
     local Name = "IED"

@@ -14,17 +14,17 @@ SWEP.MadeForNPCsOnly = true
 -- NPC Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.NPC_TimeUntilFire = 0.11
 SWEP.NPC_CustomSpread = 0.8
-SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/firearms/glock18c/reload.wav"}
+SWEP.NPC_ReloadSound = "darkborn/zps/weapons/firearms/glock18c/reload.wav"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 30
 SWEP.Primary.ClipSize = 17
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Pistol"
-SWEP.Primary.Sound = {"darkborn/zps/weapons/firearms/glock18c/fire.wav"}
+SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/glock18c/fire.wav"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_ShellType = "ShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.DryFireSound = {"darkborn/zps/weapons/firearms/glock18c/dryfire.wav"}
+SWEP.DryFireSound = "darkborn/zps/weapons/firearms/glock18c/dryfire.wav"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     local Brt = math.random(1,3)

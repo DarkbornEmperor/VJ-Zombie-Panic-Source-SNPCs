@@ -9,7 +9,7 @@ SWEP.Category = "Zombie Panic! Source"
 SWEP.NPC_NextPrimaryFire = 2.5
 SWEP.NPC_TimeUntilFire = 0.8
 SWEP.NPC_FiringDistanceScale = 0.65
-SWEP.NPC_ReloadSound = {"darkborn/zps/weapons/explosives/grenade/nade_draw.wav"}
+SWEP.NPC_ReloadSound = "darkborn/zps/weapons/explosives/grenade/nade_draw.wav"
 SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ SWEP.Primary.Damage = 1
 SWEP.Primary.ClipSize = 3
 ///SWEP.Primary.TakeAmmo = 0
 SWEP.Primary.Ammo = "grenade"
-SWEP.Primary.Sound = {"darkborn/zps/weapons/explosives/grenade/nade_throw.wav"}
+SWEP.Primary.Sound = "darkborn/zps/weapons/explosives/grenade/nade_throw.wav"
 SWEP.Primary.DisableBulletCode = true
 SWEP.HasDryFireSound = false
 SWEP.PrimaryEffects_SpawnMuzzleFlash = false
