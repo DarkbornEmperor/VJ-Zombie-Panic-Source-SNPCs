@@ -2718,7 +2718,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
  if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
  if self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
     dmginfo:ScaleDamage(0.80)
-    if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70)
+    if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70)
     local spark = ents.Create("env_spark")
     spark:SetKeyValue("Magnitude","1")
     spark:SetKeyValue("Spark Trail Length","1")
