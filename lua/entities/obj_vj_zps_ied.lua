@@ -4,7 +4,6 @@
     without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
 AddCSLuaFile()
-if (!file.Exists("autorun/vj_base_autorun.lua","LUA")) then return end
 
 ENT.Type = "anim"
 ENT.Base = "obj_vj_grenade"
@@ -30,10 +29,10 @@ end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end
 
-ENT.Model = {"models/darkborn/zps/weapons/w_ied_planted.mdl"}
+ENT.Model = "models/darkborn/zps/weapons/w_ied_planted.mdl"
 ENT.RadiusDamage = 350
 ENT.RadiusDamageRadius = 250
-ENT.SoundTbl_OnRemove = {"darkborn/zps/weapons/explosives/ied/ied_explode.wav"}
+ENT.SoundTbl_OnRemove = "darkborn/zps/weapons/explosives/ied/ied_explode.wav"
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/explosives/ied/ied_drop-01.wav","darkborn/zps/weapons/explosives/ied/ied_drop-02.wav","darkborn/zps/weapons/explosives/ied/ied_drop-03.wav","darkborn/zps/weapons/explosives/ied/ied_drop-04.wav","darkborn/zps/weapons/explosives/ied/ied_drop-05.wav"}
 ENT.OnRemoveSoundLevel = 100
 -- Custom
