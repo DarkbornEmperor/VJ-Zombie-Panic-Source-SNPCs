@@ -32,9 +32,7 @@ if !SERVER then return end
 ENT.Model = "models/darkborn/zps/weapons/w_ied_planted.mdl"
 ENT.RadiusDamage = 350
 ENT.RadiusDamageRadius = 250
-ENT.SoundTbl_OnRemove = "darkborn/zps/weapons/explosives/ied/ied_explode.wav"
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/explosives/ied/ied_drop-01.wav","darkborn/zps/weapons/explosives/ied/ied_drop-02.wav","darkborn/zps/weapons/explosives/ied/ied_drop-03.wav","darkborn/zps/weapons/explosives/ied/ied_drop-04.wav","darkborn/zps/weapons/explosives/ied/ied_drop-05.wav"}
-ENT.OnRemoveSoundLevel = 100
 -- Custom
 ENT.IED_ArmT = 2
 ENT.IED_Armed = false
@@ -73,16 +71,18 @@ local vezZ100 = Vector(0, 0, 100)
 function ENT:Detonate()
     self.VJTag_ID_Danger = true
     self:SetSkin(1)
-    VJ.CreateSound(self,{"darkborn/zps/weapons/explosives/ied/ied_alarm.wav"},75,100)
+    VJ.CreateSound(self,"darkborn/zps/weapons/explosives/ied/ied_alarm.wav",75,100)
     timer.Simple(SoundDuration("darkborn/zps/weapons/explosives/ied/ied_alarm.wav"),function() if IsValid(self) then
-    local selfPos = self:GetPos()
+    local myPos = self:GetPos()
 
-    ParticleEffect("vj_zps_IED", self:GetPos(), defAngle, nil)
+    ParticleEffect("vj_zps_IED", myPos, defAngle, nil)
+    VJ.EmitSound(self,"darkborn/zps/weapons/explosives/ied/ied_explode.wav",80,100)
+    util.ScreenShake(myPos, 100, 200, 1, 2500)
 
     local expLight = ents.Create("light_dynamic")
     expLight:SetKeyValue("brightness", "4")
     expLight:SetKeyValue("distance", "300")
-    expLight:SetLocalPos(selfPos)
+    expLight:SetLocalPos(myPos)
     expLight:SetLocalAngles(self:GetAngles())
     expLight:Fire("Color", "255 150 0")
     //expLight:SetParent(self)
@@ -90,12 +90,12 @@ function ENT:Detonate()
     expLight:Activate()
     expLight:Fire("TurnOn", "", 0)
     expLight:Fire("Kill","",0.08)
-    util.ScreenShake(self:GetPos(), 100, 200, 1, 2500)
+    //self:DeleteOnRemove(expLight)
 
-    self:SetLocalPos(selfPos + vecZ4) -- Because the entity is too close to the ground
+    self:SetLocalPos(myPos + vecZ4) -- Because the entity is too close to the ground
     local tr = util.TraceLine({
-        start = self:GetPos(),
-        endpos = self:GetPos() - vezZ100,
+        start = myPos,
+        endpos = myPos - vezZ100,
         filter = self
     })
     util.Decal(VJ.PICK(self.DecalTbl_DeathDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
