@@ -321,15 +321,15 @@ if VJExists == true then
                 VJ_ZPS_BloodDecals = "1",
 }
                 Panel:AddControl("ComboBox", vj_zpsreset_cs)
-                 Panel:AddControl( "Label", {Text = "Client-Side Options:"})
+                Panel:AddControl("Label", {Text = "Client-Side Options:"})
                 Panel:AddControl("Checkbox", {Label ="Enable Screen Overlay When Controlling Zombies?", Command ="VJ_ZPS_ZombieOverlay"})
                 Panel:AddControl("Checkbox", {Label ="Enable Blood Decals For Infected Players/NPCs?", Command ="VJ_ZPS_BloodDecals"})
             if !game.SinglePlayer() && !LocalPlayer():IsAdmin() then
                 Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.not"})
-                Panel:AddControl( "Label", {Text = "#vjbase.menu.general.admin.only"})
+                Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
     return
 end
-            Panel:AddControl( "Label", {Text = "#vjbase.menu.general.admin.only"})
+            Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
             local vj_zpsreset = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
             vj_zpsreset.Options["#vjbase.menugeneral.default"] = {
                 VJ_ZPS_Infection = "1",
@@ -356,12 +356,12 @@ end
 }
             Panel:AddControl("ComboBox", vj_zpsreset)
             Panel:ControlHelp("Note: Only future spawned SNPCs will be affected.")
-            Panel:AddControl( "Label", {Text = "General Options:"})
+            Panel:AddControl("Label", {Text = "General Options:"})
             Panel:AddControl("Checkbox", {Label ="Enable Head Gibbing?", Command ="VJ_ZPS_HeadGib"})
             Panel:AddControl("Checkbox", {Label ="Enable Gibbing?", Command ="VJ_ZPS_Gib"})
             Panel:AddControl("Checkbox", {Label ="Enable Jumping?", Command ="VJ_ZPS_Jump"})
             Panel:AddControl("Checkbox", {Label ="Enable Legacy Models?", Command ="VJ_ZPS_OldModels"})
-            Panel:AddControl( "Label", {Text = "Survivor Options:"})
+            Panel:AddControl("Label", {Text = "Survivor Options:"})
             //Panel:AddControl("Checkbox", {Label ="Enable Survivors Having Flashlights?", Command ="VJ_ZPS_Flashlight"})
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Having Melee Attack?", Command ="VJ_ZPS_Melee"})
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Switching Weapons?", Command ="VJ_ZPS_WeaponSwitch"})
@@ -370,7 +370,7 @@ end
             Panel:ControlHelp("Note: You must disable the Reload Cover option to have this work.")
             Panel:AddControl("Checkbox", {Label ="Enable Survivors Using Zombie Models From Infection?", Command ="VJ_ZPS_ZombieModels"})
             Panel:ControlHelp("Ex: ZPS Survivors will use their Zombie versions instead of bonemerge when turned.")
-            Panel:AddControl( "Label", {Text = "Zombie Options:"})
+            Panel:AddControl("Label", {Text = "Zombie Options:"})
             Panel:AddControl("Checkbox", {Label ="Enable Infection System?", Command ="VJ_ZPS_Infection"})
             Panel:AddControl("Checkbox", {Label ="Enable Infection Sounds & Effects?", Command ="VJ_ZPS_InfectionEffects"})
             Panel:ControlHelp("Note: Only ValveBiped models will be affected.")
@@ -380,7 +380,7 @@ end
             Panel:AddControl("Checkbox", {Label ="Enable Zombies Breaking Entities Classified As 'func_door_rotating?'", Command ="VJ_ZPS_BreakDoors_Func"})
             Panel:AddControl("Checkbox", {Label ="Enable Zombies Alerting Each Other?", Command ="VJ_ZPS_Alert"})
             Panel:AddControl("Checkbox", {Label ="Enable Hardcore Mode?", Command ="VJ_ZPS_Hardcore"})
-            Panel:AddControl( "Label", {Text = "Modifiers:"})
+            Panel:AddControl("Label", {Text = "Modifiers:"})
             Panel:AddControl("Slider", {Label ="Infection Chance",Command ="VJ_ZPS_InfectionChance", Min = "1", Max = "100"})
             Panel:AddControl("Slider", {Label ="Carrier Infection Chance",Command ="VJ_ZPS_CarrierInfectionChance", Min = "1", Max = "100"})
             Panel:ControlHelp("Chance to be infected by a Zombie.")
@@ -398,17 +398,17 @@ end)
                 VJ_ZPS_MapSpawner_AmbienceVolume = "30",
 }
                 Panel:AddControl("ComboBox", vj_zpsreset_mapspawner_cs)
-                 Panel:AddControl( "Label", {Text = "Client-Side Options:"})
+                Panel:AddControl("Label", {Text = "Client-Side Options:"})
                 Panel:AddControl("Checkbox", {Label ="Enable Music?", Command ="VJ_ZPS_MapSpawner_Music"})
                 Panel:AddControl("Checkbox", {Label ="Enable Ambience?", Command ="VJ_ZPS_MapSpawner_Ambient"})
-                Panel:AddControl("Slider", { Label     = "Music Volume", Command = "VJ_ZPS_MapSpawner_MusicVolume", Type = "Float", Min = "10", Max = "100"})
-                Panel:AddControl("Slider", { Label     = "Ambience Volume", Command = "VJ_ZPS_MapSpawner_AmbienceVolume", Type = "Float", Min = "10", Max = "100"})
+                Panel:AddControl("Slider", {Label = "Music Volume", Command = "VJ_ZPS_MapSpawner_MusicVolume", Type = "Float", Min = "10", Max = "100"})
+                Panel:AddControl("Slider", {Label = "Ambience Volume", Command = "VJ_ZPS_MapSpawner_AmbienceVolume", Type = "Float", Min = "10", Max = "100"})
             if !game.SinglePlayer() && !LocalPlayer():IsAdmin() then
                 Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.not"})
-                Panel:AddControl( "Label", {Text = "#vjbase.menu.general.admin.only"})
+                Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
     return
 end
-            Panel:AddControl( "Label", {Text = "#vjbase.menu.general.admin.only"})
+            Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
             local vj_zpsreset_mapspawner = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
             vj_zpsreset_mapspawner.Options["#vjbase.menugeneral.default"] = {
                 VJ_ZPS_MapSpawner_Enabled = "1",
@@ -423,18 +423,18 @@ end
                 VJ_ZPS_MapSpawner_DelayMax = "3",
 }
             Panel:AddControl("ComboBox", vj_zpsreset_mapspawner)
-            Panel:AddControl( "Label", {Text = "Options:"})
+            Panel:AddControl("Label", {Text = "Options:"})
             Panel:AddControl("Checkbox", {Label = "Enable Map Spawner processing?", Command = "VJ_ZPS_MapSpawner_Enabled"})
-            Panel:AddControl( "Label", {Text = "Modifiers:"})
-            Panel:AddControl("Slider", { Label     = "Max Zombies", Command = "VJ_ZPS_MapSpawner_MaxZom", Type = "Float", Min = "5", Max = "400"})
-            Panel:AddControl("Slider", { Label     = "Min Distance they can spawn from players", Command = "VJ_ZPS_MapSpawner_SpawnMin", Type = "Float", Min = "150", Max = "30000"})
-            Panel:AddControl("Slider", { Label     = "Max Distance they can spawn from players", Command = "VJ_ZPS_MapSpawner_SpawnMax", Type = "Float", Min = "150", Max = "30000"})
-            Panel:AddControl("Slider", { Label     = "Min time between spawns", Command = "VJ_ZPS_MapSpawner_DelayMin", Type = "Float", Min = "0.1", Max = "15"})
-            Panel:AddControl("Slider", { Label     = "Max time between spawns", Command = "VJ_ZPS_MapSpawner_DelayMax", Type = "Float", Min = "0.2", Max = "15"})
-            Panel:AddControl("Slider", { Label     = "Max Zombie horde", Command = "VJ_ZPS_MapSpawner_HordeCount", Type = "Float", Min = "5", Max = "400"})
-            Panel:AddControl("Slider", { Label     = "Chance that a horde will appear", Command = "VJ_ZPS_MapSpawner_HordeChance", Type = "Float", Min = "1", Max = "500"})
-            Panel:AddControl("Slider", { Label     = "Min cooldown time for horde spawns", Command = "VJ_ZPS_MapSpawner_HordeCooldownMin", Type = "Float", Min = "1", Max = "800"})
-            Panel:AddControl("Slider", { Label     = "Max cooldown time for horde spawns", Command = "VJ_ZPS_MapSpawner_HordeCooldownMax", Type = "Float", Min = "1", Max = "800"})
+            Panel:AddControl("Label", {Text = "Modifiers:"})
+            Panel:AddControl("Slider", {Label = "Max Zombies", Command = "VJ_ZPS_MapSpawner_MaxZom", Type = "Float", Min = "5", Max = "400"})
+            Panel:AddControl("Slider", {Label = "Min Distance they can spawn from players", Command = "VJ_ZPS_MapSpawner_SpawnMin", Type = "Float", Min = "150", Max = "30000"})
+            Panel:AddControl("Slider", {Label = "Max Distance they can spawn from players", Command = "VJ_ZPS_MapSpawner_SpawnMax", Type = "Float", Min = "150", Max = "30000"})
+            Panel:AddControl("Slider", {Label = "Min time between spawns", Command = "VJ_ZPS_MapSpawner_DelayMin", Type = "Float", Min = "0.1", Max = "15"})
+            Panel:AddControl("Slider", {Label = "Max time between spawns", Command = "VJ_ZPS_MapSpawner_DelayMax", Type = "Float", Min = "0.2", Max = "15"})
+            Panel:AddControl("Slider", {Label = "Max Zombie horde", Command = "VJ_ZPS_MapSpawner_HordeCount", Type = "Float", Min = "5", Max = "400"})
+            Panel:AddControl("Slider", {Label = "Chance that a horde will appear", Command = "VJ_ZPS_MapSpawner_HordeChance", Type = "Float", Min = "1", Max = "500"})
+            Panel:AddControl("Slider", {Label = "Min cooldown time for horde spawns", Command = "VJ_ZPS_MapSpawner_HordeCooldownMin", Type = "Float", Min = "1", Max = "800"})
+            Panel:AddControl("Slider", {Label = "Max cooldown time for horde spawns", Command = "VJ_ZPS_MapSpawner_HordeCooldownMax", Type = "Float", Min = "1", Max = "800"})
         end)
     end)
 end

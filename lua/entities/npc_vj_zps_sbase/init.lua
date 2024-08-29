@@ -22,7 +22,7 @@ ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
-ENT.WeaponReload_FindCover = false
+ENT.Weapon_FindCoverOnReload = false
 //ENT.HasGrenadeAttack = true -- We use a seperate weapon for Grenade attack
 ENT.GrenadeAttackEntity = "obj_vj_zps_grenade"
 ENT.GrenadeAttackModel = "models/darkborn/zps/weapons/w_grenade_thrown.mdl"
@@ -151,7 +151,7 @@ end
     self.HasMeleeAttack = true
 end
  if GetConVar("VJ_ZPS_ReloadCover"):GetInt() == 1 then
-    self.WeaponReload_FindCover = true
+    self.Weapon_FindCoverOnReload = true
 end
  if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList then return end
     for _,category in pairs(self.WeaponsList) do
@@ -2460,8 +2460,8 @@ function ENT:CustomOnWeaponReload()
     self.DisableWeaponReloadAnimation = false
     end
 end
- //if self.WeaponReload_FindCover then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
- if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.WeaponReload_FindCover or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:VJ_ForwardIsHidingZone(self:NearestPoint(self:GetPos() + self:OBBCenter()), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) == true then return end
+ //if self.Weapon_FindCoverOnReload then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
+ if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:VJ_ForwardIsHidingZone(self:NearestPoint(self:GetPos() + self:OBBCenter()), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) == true then return end
  timer.Simple(0,function()
     local moveCheck = VJ.PICK(self:VJ_CheckAllFourSides(math.random(150, 400), true, "0111"))
     if moveCheck then
