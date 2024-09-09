@@ -45,8 +45,7 @@ ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextBerserkT = 0
 ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextMeleeAnimT = 0
-    -- ====== File Path Variables ====== --
-    -- Leave blank if you don't want any sounds to play
+    -- ====== Sound File Paths ====== --
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/zombies/z_attack/hit/z_hit-01.wav",
 "darkborn/zps/zombies/z_attack/hit/z_hit-02.wav",

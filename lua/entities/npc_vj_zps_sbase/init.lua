@@ -61,8 +61,7 @@ ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextPanicT = 0
 ENT.ZPS_NextSelfHealT = 0
 ENT.ZPS_NextCoughT = 0
-    -- ====== File Path Variables ====== --
-        -- Leave blank if you don't want any sounds to play
+    -- ====== Sound File Paths ====== --
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-01.wav",
 "darkborn/zps/weapons/melee/push/push_hit-02.wav",
@@ -2320,7 +2319,7 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnAllyDeath(ent)
+function ENT:OnAllyKilled(ent)
  if self.VJ_IsBeingControlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > CurTime() then return end
     if math.random(1,5) == 1 && !self.ZPS_Panic then
         self.ZPS_Panic = true
@@ -2470,7 +2469,7 @@ end
     self:VJ_TASK_GOTO_LASTPOS(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:CustomOnDoChangeWeapon(newWeapon,oldWeapon,invSwitch)
+/*function ENT:OnChangeWeapon(newWeapon,oldWeapon,invSwitch)
     if invSwitch then
         self:VJ_ACT_PLAYACTIVITY("vjges_throw_arms",true,false,false)
     end
