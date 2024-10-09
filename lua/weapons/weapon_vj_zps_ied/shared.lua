@@ -49,7 +49,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     if IsValid(self.IED_LastShotEnt) then return true end -- Wait until the last IED has detonated
     //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
     local ied = ents.Create("obj_vj_zps_ied")
-    ied:SetPos(self:GetNW2Vector("VJ_CurBulletPos"))
+    ied:SetPos(self:GetBulletPos())
     ied:SetAngles(self:GetOwner():GetAngles())
     ied:SetOwner(self:GetOwner())
     ied:Spawn()
@@ -58,7 +58,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
 
     local phys = ied:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetNW2Vector("VJ_CurBulletPos"), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 300))
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 300))
             end
         /*end
     end)*/

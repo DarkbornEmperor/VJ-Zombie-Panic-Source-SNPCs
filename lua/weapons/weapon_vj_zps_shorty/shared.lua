@@ -17,7 +17,6 @@ SWEP.NPC_NextPrimaryFire = 1.5
 SWEP.NPC_CustomSpread = 3
 SWEP.NPC_ExtraFireSound = "darkborn/zps/weapons/firearms/super_shorty/pump.wav"
 SWEP.NPC_FiringDistanceScale = 0.5
-SWEP.NPC_ReloadSound = "vj_weapons/reload_shotgun.wav"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 16
 SWEP.Primary.Force = 1
