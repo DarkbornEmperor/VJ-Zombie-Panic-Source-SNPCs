@@ -74,6 +74,8 @@ function ENT:Initialize()
     self.NextAICheckTime = CurTime() +5
     self.NextZombieSpawnTime = CurTime() +1
     self.NextHordeSpawnTime = CurTime() +math.Rand(self.ZPS_HordeCooldownMin,self.ZPS_HordeCooldownMax)
+    self.DidStartMusic = false
+    self.NextMusicSwitchT = CurTime() +1
     self.NextAIBossCheckTime = CurTime() +5
     self.HordeSpawnRate = 0.19
 
