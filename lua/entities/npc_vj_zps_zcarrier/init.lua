@@ -10,7 +10,7 @@ ENT.Model = {"models/darkborn/zps/zombies/carrier.mdl"}
 ENT.StartHealth = 250
 ENT.MeleeAttackDamage = 35
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnPreInitialize()
+function ENT:Zombie_PreInit()
     if GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then
        self.Model = {"models/darkborn/zps/zombies_old/carrier.mdl"}
     end
@@ -35,7 +35,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 local berserkSpeed = 1.4
 --
-function ENT:Zombie_CustomOnThink_AIEnabled()
+function ENT:Zombie_OnThinkActive()
  if self:IsMoving() && self:IsOnGround() then
     if self.ZPS_Berserk then
         self.AnimationPlaybackRate = self.ZPS_BerserkSpeed

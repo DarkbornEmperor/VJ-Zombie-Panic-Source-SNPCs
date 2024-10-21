@@ -14,11 +14,11 @@ ENT.VJC_Data = {
     FirstP_Offset = Vector(0, 0, 5), -- The offset for the controller when the camera is in first person
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnPreInitialize()
+function ENT:Zombie_PreInit()
     if self:GetClass() == "npc_vj_zps_zinf_ply" then
         self.Model = {
-            "models/darkborn/zps/breen_ply.mdl",
-        }
+        "models/darkborn/zps/breen_ply.mdl",
+}
     end
 end
 /*-----------------------------------------------

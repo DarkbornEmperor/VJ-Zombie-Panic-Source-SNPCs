@@ -14,8 +14,8 @@ ENT.Purpose = "Spawn it and fight with it!"
 ENT.Instructions = "Click on the spawnicon to spawn it."
 ENT.Category = "Zombie Panic! Source"
 
-ENT.Spawnable        = false
-ENT.AdminSpawnable    = false
+ENT.Spawnable = false
+ENT.AdminSpawnable = false
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end
 

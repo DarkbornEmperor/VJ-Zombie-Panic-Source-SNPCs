@@ -45,6 +45,7 @@ ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextBerserkT = 0
 ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextMeleeAnimT = 0
+ENT.IsZPSZombie = true
     -- ====== Sound File Paths ====== --
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/zombies/z_attack/hit/z_hit-01.wav",
@@ -69,10 +70,10 @@ ENT.SoundTbl_Impact = {
 "darkborn/zps/shared/impacts/flesh_impact-04.wav"
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnAcceptInput(key,activator,caller,data)
+function ENT:OnInput(key,activator,caller,data)
     if key == "step" then
         self:FootStepSoundCode()
-        self:CustomOnFootStepSound()
+        self:OnFootstepSound()
     elseif key == "melee" then
         self:MeleeAttackCode()
 end
@@ -125,20 +126,20 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnPreInitialize()
-     self:Zombie_CustomOnPreInitialize()
+function ENT:PreInit()
+     self:Zombie_PreInit()
      if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 1 then
         self.ZPS_CanBreakDoors = true
         self.CanOpenDoors = false
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnPreInitialize() end
+function ENT:Zombie_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()
+function ENT:Init()
    self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
    self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
-   self:Zombie_CustomOnInitialize()
+   self:Zombie_Init()
    self:ZombieVoices()
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
    if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
@@ -147,7 +148,7 @@ function ENT:CustomOnInitialize()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnInitialize() end
+function ENT:Zombie_Init() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieVoices()
  local cType = self:GetClass()
@@ -1003,7 +1004,7 @@ end
     return self.BaseClass.OnChangeActivity(self,newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnAlert(ent)
+function ENT:OnAlert(ent)
     self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1055,7 +1056,7 @@ end
     return self.BaseClass.TranslateActivity(self,act)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink()
+function ENT:OnThink()
    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
       if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
          if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
@@ -1148,8 +1149,8 @@ function ENT:Crouch(bCrouch)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink_AIEnabled()
-  self:Zombie_CustomOnThink_AIEnabled()
+function ENT:OnThinkActive()
+  self:Zombie_OnThinkActive()
   if GetConVar("VJ_ZPS_Crouch"):GetInt() == 1 then
   local curAct = self:GetSequenceActivity(self:GetIdealSequence())
      if IsValid(self:GetEnemy()) && self:GetEnemy():IsPlayer() && !self.VJ_IsBeingControlled && curAct != ACT_OPEN_DOOR then
@@ -1190,7 +1191,7 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnThink_AIEnabled() end
+function ENT:Zombie_OnThinkActive() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
  if self.MeleeAttack_DoingPropAttack or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
@@ -1223,15 +1224,13 @@ end
     return false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-     if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 /*&& dmginfo:IsBulletDamage()*/ then
-        dmginfo:ScaleDamage(0.50)
-    end
+function ENT:OnDamaged(dmginfo,hitgroup,status)
+ -- Unique headshot sounds
+ if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
+    self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
-    if hitgroup == HITGROUP_HEAD then
-        self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
+     if status == "PreDamage" && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 /*&& dmginfo:IsBulletDamage()*/ then
+        dmginfo:ScaleDamage(0.50)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1239,7 +1238,7 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
     self.HasDeathSounds = false
     VJ.EmitSound(self,"darkborn/zps/shared/impacts/flesh_bodyexplode1.wav",75,100)
- if self.HasGibDeathParticles then
+ if self.HasGibOnDeathEffects then
     ParticleEffect("vj_zps_blood_explode_01",self:GetPos(),self:GetAngles())
 end
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_head.mdl",{Pos=self:LocalToWorld(Vector(0,0,68)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
@@ -1264,7 +1263,7 @@ end
     return true,{AllowCorpse=false}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
+function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
  if IsValid(self.Bonemerge) then
     corpseEnt:VJ_ZPS_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)
 end
@@ -1281,7 +1280,7 @@ end
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
 end
-    if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) && self.HasGibDeathParticles && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
+    if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
         VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
         local bleedOut = ents.Create("info_particle_system")
         bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
@@ -1306,7 +1305,7 @@ end
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
 end
-    if hitgroup == HITGROUP_HEAD && self.HasGibDeathParticles && (corpseEnt.Bonemerge:GetBodygroup(0) != 0 or corpseEnt.Bonemerge:GetBodygroup(1) != 0 or corpseEnt.Bonemerge:GetBodygroup(2) != 0 or corpseEnt.Bonemerge:GetBodygroup(3) != 0) then
+    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt.Bonemerge:GetBodygroup(0) != 0 or corpseEnt.Bonemerge:GetBodygroup(1) != 0 or corpseEnt.Bonemerge:GetBodygroup(2) != 0 or corpseEnt.Bonemerge:GetBodygroup(3) != 0) then
         VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
         local bleedOut = ents.Create("info_particle_system")
         bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
@@ -1580,7 +1579,7 @@ ENT.Carrier_FootSteps = {
     }
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnFootStepSound()
+function ENT:OnFootstepSound()
     if !self:IsOnGround() then return end
     local tr = util.TraceLine({
         start = self:GetPos(),

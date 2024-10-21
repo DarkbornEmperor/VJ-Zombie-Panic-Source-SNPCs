@@ -767,7 +767,7 @@ end
         zombie:ZombieVoice_InfectedFemale()
 end
      if victim.IsVJBaseSNPC then
-        victim.HasDeathRagdoll = false
+        victim.HasDeathCorpse = false
         victim.HasDeathAnimation = false
 end
      if victim:IsPlayer() then

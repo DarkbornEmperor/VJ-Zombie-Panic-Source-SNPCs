@@ -15,7 +15,7 @@ ENT.FriendsWithAllPlayerAllies = true
 ENT.BloodColor = "Red"
 ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 //ENT.CustomBlood_Decal = {"VJ_ZPS_Blood_Red"}
-ENT.NextMoveRandomlyWhenShootingTime = VJ.SET(2,3)
+ENT.Weapon_WaitOnOcclusionTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
 ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
@@ -40,7 +40,7 @@ ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_em
 ENT.CallForBackUpOnDamageAnimation = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
-ENT.OnlyDoKillEnemyWhenClear = false
+ENT.OnKilledEnemy_OnlyLast = false
 ENT.DisableFootStepSoundTimer = true
 ENT.GeneralSoundPitch1 = 100
     -- ====== Controller Data ====== --
@@ -61,6 +61,7 @@ ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextPanicT = 0
 ENT.ZPS_NextSelfHealT = 0
 ENT.ZPS_NextCoughT = 0
+ENT.IsZPSSurvivor = true
     -- ====== Sound File Paths ====== --
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-01.wav",
@@ -113,7 +114,7 @@ ENT.WeaponsList_Cont = {
     },
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnAcceptInput(key,activator,caller,data)
+function ENT:OnInput(key,activator,caller,data)
     if key == "step" then
         self:FootStepSoundCode()
     elseif key == "melee" or (key == "melee_weapon" && IsValid(self:GetActiveWeapon()) && self:GetActiveWeapon().IsMeleeWeapon) then
@@ -123,16 +124,16 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnPreInitialize()
-    self:Survivor_CustomOnPreInitialize()
+function ENT:PreInit()
+    self:Survivor_PreInit()
     if math.random(1,2) == 1 then
         self.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Survivor_CustomOnPreInitialize() end
+function ENT:Survivor_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()
+function ENT:Init()
  self:SurvivorVoices()
  self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
  self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
@@ -141,9 +142,9 @@ function ENT:CustomOnInitialize()
  if math.random(1,5) == 1 then self.ZPS_Armor = true end
  if !self.DisableWeapons then
  if !self.WeaponInventory_MeleeList then
-      self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
+    self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
  else
-     self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
+    self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
     end
 end
  if GetConVar("VJ_ZPS_Melee"):GetInt() == 1 then
@@ -2232,7 +2233,7 @@ end
     return self.BaseClass.TranslateActivity(self,act)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink()
+function ENT:OnThink()
    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
       if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
          if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
@@ -2275,20 +2276,20 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink_AIEnabled()
+function ENT:OnThinkActive()
  if self.ZPS_InfectedVictim && CurTime() > self.ZPS_NextCoughT then
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.random(1,30)
 end
  if self.IsMedicSNPC && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
-    self:CustomOnMedic_BeforeHeal()
+    self:OnMedicBehavior("BeforeHeal","OnHeal")
      self:VJ_ACT_PLAYACTIVITY("vjges_gesture_inoculator_inject_self",true,false,false)
  if IsValid(self:GetEnemy()) then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
     timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
     local CurHP = self:Health()
     self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
     self:InoculatorInject()
-    self:CustomOnMedic_OnHeal()
+    self:OnMedicBehavior()
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
     self:RemoveAllDecals()
@@ -2364,48 +2365,49 @@ end
     self:ForceMoveJump(self:CalculateProjectile("Curve", self:GetPos(), self:GetPos() +((((pos or self:GetPos() +self:GetUp() *100) -self:GetPos()):GetNormalized() *50) +(self:GetUp() *25)), 250))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMedic_BeforeHeal()
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
-    local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
-    self.Inoculator = ents.Create("prop_vj_animatable")
-    self.Inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
-    self.Inoculator:SetSkin(math.random(0,2))
-    self.Inoculator:SetPos(att.Pos)
-    self.Inoculator:SetAngles(att.Ang)
-    self.Inoculator:SetParent(self)
-    self.Inoculator:Fire("SetParentAttachment","anim_attachment_RH")
-    self.Inoculator:Spawn()
-    self.Inoculator:AddEffects(EF_BONEMERGE)
-    self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-    self:DeleteOnRemove(self.Inoculator)
-    SafeRemoveEntityDelayed(self.Inoculator,1.2)
-  if self.Inoculator:GetSkin() == 0 then
-    self.Medic_HealthAmount = 20
-  elseif self.Inoculator:GetSkin() == 1 then
-    self.Medic_HealthAmount = 0
-  elseif self.Inoculator:GetSkin() == 2 then
-    self.Medic_HealthAmount = 100
+function ENT:OnMedicBehavior(status,statusData)
+    if status == "BeforeHeal" then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
+        self.Inoculator = ents.Create("prop_vj_animatable")
+        self.Inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
+        self.Inoculator:SetSkin(math.random(0,2))
+        self.Inoculator:SetPos(att.Pos)
+        self.Inoculator:SetAngles(att.Ang)
+        self.Inoculator:SetParent(self)
+        self.Inoculator:Fire("SetParentAttachment","anim_attachment_RH")
+        self.Inoculator:Spawn()
+        self.Inoculator:AddEffects(EF_BONEMERGE)
+        self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self:DeleteOnRemove(self.Inoculator)
+        SafeRemoveEntityDelayed(self.Inoculator,1.2)
+    if self.Inoculator:GetSkin() == 0 then
+        self.Medic_HealthAmount = 20
+    elseif self.Inoculator:GetSkin() == 1 then
+        self.Medic_HealthAmount = 0
+    elseif self.Inoculator:GetSkin() == 2 then
+        self.Medic_HealthAmount = 100
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMedic_OnHeal(ent)
- if IsValid(ent) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
-    if ent.ZPS_InfectedVictim then ent.ZPS_InfectedVictim = false end
-    ent.HasHealthRegeneration = true
-    VJ.CreateSound(ent,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-    timer.Simple(25,function() if IsValid(ent) then ent.HasHealthRegeneration = false end end)
+ if status == "OnHeal" then
+    if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
+        if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
+        statusData.HasHealthRegeneration = true
+        VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+        timer.Simple(25,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false end end)
 end
-    timer.Simple(0.5,function() if IsValid(self) then
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end
+        timer.Simple(0.5,function() if IsValid(self) then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end
+        end)
     end
-end) return true end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:InoculatorInject()
  if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
     if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
-    self.HasHealthRegeneration = true
-    VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-    timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false end end)
+        self.HasHealthRegeneration = true
+        VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+        timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false end end)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2426,21 +2428,21 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnWeaponAttack()
+function ENT:OnWeaponAttack()
  if self.VJ_IsBeingControlled then return end
  local wep = self.CurrentWeaponEntity
  if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
- if self.MoveRandomlyWhenShooting && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.DoingWeaponAttack && CurTime() > self.NextMoveRandomlyWhenShootingT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
+ if self.Weapon_StrafeWhileFiring && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.DoingWeaponAttack && CurTime() > self.NextWeaponStrafeWhileFiringT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
  timer.Simple(0,function()
     local moveCheck = VJ.PICK(self:VJ_CheckAllFourSides(math.random(150, 250), true, "0111"))
     if moveCheck then
     self:StopMoving()
-    self.NextMoveRandomlyWhenShootingT = CurTime() + math.Rand(self.NextMoveRandomlyWhenShootingTime.a, self.NextMoveRandomlyWhenShootingTime.b)
+    self.NextWeaponStrafeWhileFiringT = CurTime() + math.Rand(self.Weapon_StrafeWhileFiringDelay.a, self.Weapon_StrafeWhileFiringDelay.b)
     self:SetLastPosition(moveCheck)
     self:VJ_TASK_GOTO_LASTPOS("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end end) end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMoveRandomlyWhenShooting()
+function ENT:OnWeaponStrafeWhileFiring()
   if self.VJ_IsBeingControlled then self.ZPS_Crouching = false return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
@@ -2449,7 +2451,7 @@ function ENT:CustomOnMoveRandomlyWhenShooting()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnWeaponReload()
+function ENT:OnWeaponReload()
  if IsValid(self:GetActiveWeapon()) then
  local wep = self:GetActiveWeapon()
  local wepHoldType = wep:GetHoldType()
@@ -2712,33 +2714,31 @@ end
     self.AnimationTranslations[ACT_LAND] = defLand
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
- -- For Armor
- if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
- if self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
-    dmginfo:ScaleDamage(0.80)
-    if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70)
-    local spark = ents.Create("env_spark")
-    spark:SetKeyValue("Magnitude","1")
-    spark:SetKeyValue("Spark Trail Length","1")
-    spark:SetPos(dmginfo:GetDamagePosition())
-    spark:SetAngles(self:GetAngles())
-    spark:SetParent(self)
-    spark:Spawn()
-    spark:Activate()
-    spark:Fire("StartSpark","",0)
-    spark:Fire("StopSpark","",0.001)
-    self:DeleteOnRemove(spark) end end
+function ENT:OnDamaged(dmginfo,hitgroup,status)
+ -- Unique headshot sounds
+ if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
+    self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
+end
+    -- For Armor
+    if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
+    if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
+        dmginfo:ScaleDamage(0.80)
+        if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70)
+        local spark = ents.Create("env_spark")
+        spark:SetKeyValue("Magnitude","1")
+        spark:SetKeyValue("Spark Trail Length","1")
+        spark:SetPos(dmginfo:GetDamagePosition())
+        spark:SetAngles(self:GetAngles())
+        spark:SetParent(self)
+        spark:Spawn()
+        spark:Activate()
+        spark:Fire("StartSpark","",0)
+        spark:Fire("StopSpark","",0.001)
+        self:DeleteOnRemove(spark) end end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
-    if hitgroup == HITGROUP_HEAD then
-        self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnDropWeapon(dmginfo,hitgroup,wepEnt)
+function ENT:OnDeathWeaponDrop(dmginfo,hitgroup,wepEnt)
     if wepEnt:GetClass() == "weapon_vj_zps_fists" then
         wepEnt:Remove()
     end
@@ -2748,7 +2748,7 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
     self.HasDeathSounds = false
     VJ.EmitSound(self,"darkborn/zps/shared/impacts/flesh_bodyexplode1.wav",75,100)
- if self.HasGibDeathParticles then
+ if self.HasGibOnDeathEffects then
     ParticleEffect("vj_zps_blood_explode_01",self:GetPos(),self:GetAngles())
 end
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_head.mdl",{Pos=self:LocalToWorld(Vector(0,0,68)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
@@ -2773,7 +2773,7 @@ end
     return true,{AllowCorpse=false}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
+function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
  if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
  if dmginfo:GetDamageForce():Length() < 800 then return end
  if hitgroup == HITGROUP_HEAD then
@@ -2788,7 +2788,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
 end
-    if hitgroup == HITGROUP_HEAD && self.HasGibDeathParticles && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
+    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
         VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
         local bleedOut = ents.Create("info_particle_system")
         bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
@@ -2934,7 +2934,7 @@ ENT.FootSteps = {
     }
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnFootStepSound()
+function ENT:OnFootstepSound()
     if !self:IsOnGround() then return end
     local tr = util.TraceLine({
         start = self:GetPos(),
@@ -2957,7 +2957,7 @@ function ENT:FootStepSoundCode(customSd)
             local sdtbl = VJ.PICK(self.SoundTbl_FootStep)
             if customTbl then sdtbl = customTbl end
             VJ.EmitSound(self, sdtbl, self.FootStepSoundLevel, self:VJ_DecideSoundPitch(self.FootStepPitch.a, self.FootStepPitch.b))
-            local funcCustom = self.CustomOnFootStepSound; if funcCustom then funcCustom(self, "Event", sdtbl) end
+            local funcCustom = self.OnFootstepSound; if funcCustom then funcCustom(self, "Event", sdtbl) end
             if self.HasWorldShakeOnMove then util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude or 10, self.WorldShakeOnMoveFrequency or 100, self.WorldShakeOnMoveDuration or 0.4, self.WorldShakeOnMoveRadius or 1000) end -- !!!!!!!!!!!!!! DO NOT USE THESE !!!!!!!!!!!!!! [Backwards Compatibility!]
             return
         elseif self:IsMoving() && CurTime() > self.FootStepT && self:GetInternalVariable("m_flMoveWaitFinished") <= 0 then
@@ -2967,13 +2967,13 @@ function ENT:FootStepSoundCode(customSd)
             local curSched = self.CurrentSchedule
             if !self.DisableFootStepOnRun && ((VJ.HasValue(self.AnimTbl_Run, self:GetMovementActivity())) or (curSched != nil && curSched.MoveType == 1)) then
                 VJ.EmitSound(self, sdtbl, self.FootStepSoundLevel, self:VJ_DecideSoundPitch(self.FootStepPitch.a, self.FootStepPitch.b))
-                local funcCustom = self.CustomOnFootStepSound; if funcCustom then funcCustom(self, "Run", sdtbl) end
+                local funcCustom = self.OnFootstepSound; if funcCustom then funcCustom(self, "Run", sdtbl) end
                 if self.HasWorldShakeOnMove then util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude or 10, self.WorldShakeOnMoveFrequency or 100, self.WorldShakeOnMoveDuration or 0.4, self.WorldShakeOnMoveRadius or 1000) end -- !!!!!!!!!!!!!! DO NOT USE THESE !!!!!!!!!!!!!! [Backwards Compatibility!]
                 self.FootStepT = CurTime() + self.FootStepTimeRun
                 return
             elseif !self.DisableFootStepOnWalk && (VJ.HasValue(self.AnimTbl_Walk, self:GetMovementActivity()) or (curSched != nil && curSched.MoveType == 0)) then
                 VJ.EmitSound(self, sdtbl, self.FootStepSoundLevel, self:VJ_DecideSoundPitch(self.FootStepPitch.a, self.FootStepPitch.b))
-                local funcCustom = self.CustomOnFootStepSound; if funcCustom then funcCustom(self, "Walk", sdtbl) end
+                local funcCustom = self.OnFootstepSound; if funcCustom then funcCustom(self, "Walk", sdtbl) end
                 if self.HasWorldShakeOnMove then util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude or 10, self.WorldShakeOnMoveFrequency or 100, self.WorldShakeOnMoveDuration or 0.4, self.WorldShakeOnMoveRadius or 1000) end -- !!!!!!!!!!!!!! DO NOT USE THESE !!!!!!!!!!!!!! [Backwards Compatibility!]
                 self.FootStepT = CurTime() + self.FootStepTimeWalk
                 return

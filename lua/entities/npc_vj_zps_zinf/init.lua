@@ -8,11 +8,11 @@ include("shared.lua")
 -----------------------------------------------*/
 ENT.Model = {"models/darkborn/zps/breen.mdl"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnPreInitialize()
+function ENT:Zombie_PreInit()
     if self:GetClass() == "npc_vj_zps_zinf" then
         self.Model = {
-            "models/darkborn/zps/breen.mdl",
-        }
+        "models/darkborn/zps/breen.mdl",
+}
     end
 end
 /*-----------------------------------------------

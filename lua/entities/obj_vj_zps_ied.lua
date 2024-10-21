@@ -38,11 +38,11 @@ ENT.IED_ArmT = 2
 ENT.IED_Armed = false
 ENT.IED_NextBlinkT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()
+function ENT:Init()
     timer.Simple(self.IED_ArmT,function() if IsValid(self) then self.IED_Armed = true end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink()
+function ENT:OnThink()
     if !IsValid(self:GetOwner()) && self.IED_Armed then self:Detonate() return end
     if !self.IED_Armed then return end
     if self.IED_Armed && CurTime() > self.IED_NextBlinkT then

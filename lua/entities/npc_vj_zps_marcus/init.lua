@@ -8,7 +8,7 @@ include("shared.lua")
 -----------------------------------------------*/
 ENT.Model = {"models/darkborn/zps/survivors/marcus.mdl"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Survivor_CustomOnPreInitialize()
+function ENT:Survivor_PreInit()
     if GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then
        self.Model = {"models/darkborn/zps/survivors_old/marcus.mdl"}
     end

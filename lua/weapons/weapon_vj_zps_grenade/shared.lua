@@ -29,7 +29,7 @@ SWEP.HasDryFireSound = false
 SWEP.PrimaryEffects_SpawnMuzzleFlash = false
 SWEP.PrimaryEffects_SpawnShells = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnInitialize()
+function SWEP:Init()
     self.Gre_LastShotEnt = NULL
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
