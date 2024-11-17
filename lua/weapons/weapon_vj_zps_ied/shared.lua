@@ -34,17 +34,18 @@ function SWEP:Init()
     self.IED_LastShotEnt = NULL
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomBulletSpawnPosition()
+function SWEP:OnGetBulletPos()
     local owner = self:GetOwner()
 
     return owner:GetPos() + owner:GetUp() + Vector(0,-18,40)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnPrimaryAttackEffects()
-    return false
+function SWEP:PrimaryAttackEffects(owner)
+    return
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnPrimaryAttack_BeforeShoot()
+function SWEP:OnPrimaryAttack(status,statusData)
+    if status == "Initial" then
     if CLIENT then return end
     if IsValid(self.IED_LastShotEnt) then return true end -- Wait until the last IED has detonated
     //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
@@ -63,6 +64,7 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
         /*end
     end)*/
 end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:CustomOnPrimaryAttack_AfterShoot()
     if self:Clip1() <= 0 then
@@ -70,10 +72,12 @@ function SWEP:CustomOnPrimaryAttack_AfterShoot()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnReload()
+function SWEP:OnReload(status)
+    if status == "Start" then
     timer.Simple(1.6, function()
         if IsValid(self) then
             self.WorldModel_Invisible = false
         end
     end)
+end
 end

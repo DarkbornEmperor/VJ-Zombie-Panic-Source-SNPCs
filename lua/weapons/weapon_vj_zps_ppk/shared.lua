@@ -24,7 +24,8 @@ SWEP.PrimaryEffects_ShellType = "ShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound = "darkborn/zps/weapons/firearms/ppk/dryfire.wav"
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnPrimaryAttack_BeforeShoot()
+function SWEP:OnPrimaryAttack(status,statusData)
+    if status == "Initial" then
     local Brt = math.random(1,3)
     local Num = 0.35
     if Brt == 1 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2}
@@ -35,8 +36,10 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     self.NPC_NextPrimaryFire = math.Rand(2.05,2.25)
     end
 end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnReload()
+function SWEP:OnReload(status)
+    if status == "Start" then
     self:SetBodygroup(1,1)
     timer.Simple(1.6, function()
         if IsValid(self) then
@@ -44,11 +47,12 @@ function SWEP:CustomOnReload()
         end
     end)
 end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
     local owner = self:GetOwner()
     owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
     owner.NextChaseTime = 0
-    self:CustomOnReload()
+    self:OnReload()
     if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end

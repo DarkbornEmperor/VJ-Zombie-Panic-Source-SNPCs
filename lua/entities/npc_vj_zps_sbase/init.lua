@@ -2738,11 +2738,11 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnDeathWeaponDrop(dmginfo,hitgroup,wepEnt)
+/*function ENT:OnDeathWeaponDrop(dmginfo,hitgroup,wepEnt)
     if wepEnt:GetClass() == "weapon_vj_zps_fists" then
         wepEnt:Remove()
     end
-end
+end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end

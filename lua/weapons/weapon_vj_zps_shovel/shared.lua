@@ -12,7 +12,7 @@ SWEP.ZPS_HType = "2handheavy"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 96
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnEquip(newOwner)
+function SWEP:OnEquip(newOwner)
     local owner = self:GetOwner()
     owner.MeleeAttackDamage = self.Primary.Damage
     owner.MeleeAttackDamageType = DMG_CLUB

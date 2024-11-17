@@ -11,7 +11,7 @@ SWEP.HoldType = "melee2"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 45
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnEquip(newOwner)
+function SWEP:OnEquip(newOwner)
     local owner = self:GetOwner()
     owner.MeleeAttackDamage = self.Primary.Damage
     owner.MeleeAttackDamageType = DMG_SLASH

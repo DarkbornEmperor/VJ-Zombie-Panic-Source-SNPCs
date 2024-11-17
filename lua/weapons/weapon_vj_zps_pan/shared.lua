@@ -10,7 +10,7 @@ SWEP.WorldModel = "models/darkborn/zps/weapons/w_fryingpan.mdl"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 57
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnEquip(newOwner)
+function SWEP:OnEquip(newOwner)
     local owner = self:GetOwner()
     owner.MeleeAttackDamage = self.Primary.Damage
     owner.MeleeAttackDamageType = DMG_CLUB

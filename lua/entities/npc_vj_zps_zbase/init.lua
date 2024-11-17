@@ -1020,7 +1020,7 @@ function ENT:Controller_Initialize(ply)
         net.WriteEntity(self)
     net.Send(ply)
 
-    function self.VJ_TheControllerEntity:CustomOnStopControlling()
+    function self.VJ_TheControllerEntity:OnStopControlling()
         net.Start("VJ_ZPS_Zombie_HUD")
             net.WriteBool(true)
             net.WriteEntity(self)

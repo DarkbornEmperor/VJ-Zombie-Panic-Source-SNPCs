@@ -33,7 +33,8 @@ function SWEP:Init()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnPrimaryAttack_BeforeShoot()
+function SWEP:OnPrimaryAttack(status,statusData)
+    if status == "Initial" then
     local Brt = math.random(1,8)
     local Num = 0.08
     if Brt == 1 then self.NPC_TimeUntilFireExtraTimers = {Num,Num*2}
@@ -54,8 +55,10 @@ function SWEP:CustomOnPrimaryAttack_BeforeShoot()
     self.NPC_NextPrimaryFire = math.Rand(1.55,1.85)
     end
 end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnReload()
+function SWEP:OnReload(status)
+    if status == "Start" then
     self:SetBodygroup(1,1)
     timer.Simple(1.8, function()
         if IsValid(self) then
@@ -63,11 +66,12 @@ function SWEP:CustomOnReload()
         end
     end)
 end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
     local owner = self:GetOwner()
     owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
     owner.NextChaseTime = 0
-    self:CustomOnReload()
+    self:OnReload()
     if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end
