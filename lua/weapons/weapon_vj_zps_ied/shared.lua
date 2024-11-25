@@ -48,26 +48,22 @@ function SWEP:OnPrimaryAttack(status,statusData)
     if status == "Initial" then
     if CLIENT then return end
     if IsValid(self.IED_LastShotEnt) then return true end -- Wait until the last IED has detonated
-    //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
-    local ied = ents.Create("obj_vj_zps_ied")
-    ied:SetPos(self:GetBulletPos())
-    ied:SetAngles(self:GetOwner():GetAngles())
-    ied:SetOwner(self:GetOwner())
-    ied:Spawn()
-    ied:Activate()
-    self.IED_LastShotEnt = ied
+        //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
+        local ied = ents.Create("obj_vj_zps_ied")
+        ied:SetPos(self:GetBulletPos())
+        ied:SetAngles(self:GetOwner():GetAngles())
+        ied:SetOwner(self:GetOwner())
+        ied:Spawn()
+        ied:Activate()
+        self.IED_LastShotEnt = ied
 
     local phys = ied:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 300))
-            end
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 300)) end
         /*end
     end)*/
 end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:CustomOnPrimaryAttack_AfterShoot()
-    if self:Clip1() <= 0 then
+    if status == "PostFire" && self:Clip1() <= 0 then
         self.WorldModel_Invisible = true
     end
 end
@@ -76,8 +72,7 @@ function SWEP:OnReload(status)
     if status == "Start" then
     timer.Simple(1.6, function()
         if IsValid(self) then
-            self.WorldModel_Invisible = false
-        end
-    end)
-end
+            self.WorldModel_Invisible = false end
+        end)
+    end
 end
