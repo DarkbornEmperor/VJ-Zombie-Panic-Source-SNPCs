@@ -2283,13 +2283,13 @@ function ENT:OnThinkActive()
 end
  if self.IsMedicSNPC && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:OnMedicBehavior("BeforeHeal","OnHeal")
-     self:VJ_ACT_PLAYACTIVITY("vjges_gesture_inoculator_inject_self",true,false,false)
+    self:VJ_ACT_PLAYACTIVITY("vjges_gesture_inoculator_inject_self",true,false,false)
  if IsValid(self:GetEnemy()) then self:VJ_TASK_COVER_FROM_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
     timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
     local CurHP = self:Health()
     self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
     self:InoculatorInject()
-    self:OnMedicBehavior()
+    self:OnMedicBehavior("OnHeal")
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
     self:RemoveAllDecals()
