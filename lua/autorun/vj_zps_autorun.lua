@@ -693,6 +693,23 @@ end*/
             zombie:Spawn()
             undo.ReplaceEntity(victim,zombie)
             zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+    if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" then
+            zombie:ZombieVoice_Eugene()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/jessica.mdl" then
+            zombie:ZombieVoice_Jessica()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/larry.mdl" then
+            zombie:ZombieVoice_Larry()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/lea.mdl" then
+            zombie:ZombieVoice_Lea()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/marcus.mdl" then
+            zombie:ZombieVoice_Marcus()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/paul.mdl" then
+            zombie:ZombieVoice_Paul()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/pedro.mdl" then
+            zombie:ZombieVoice_Pedro()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/vanessa.mdl" then
+            zombie:ZombieVoice_Vanessa()
+    end
 end
     if victim.IsZPSSurvivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
             zombie = ents.Create("npc_vj_zps_zinf")

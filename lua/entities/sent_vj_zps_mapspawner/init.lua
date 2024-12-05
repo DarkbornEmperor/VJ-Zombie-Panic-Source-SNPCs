@@ -396,7 +396,7 @@ function ENT:SpawnZombie(ent,pos,isMob)
     Zombie:Spawn()
     table_insert(self.tbl_SpawnedNPCs,Zombie)
     if isMob then
-        Zombie.FindEnemy_UseSphere = true
+        Zombie.SightAngle = 360
         Zombie.FindEnemy_CanSeeThroughWalls = true
         Zombie:DrawShadow(false)
         timer.Simple(0,function()
