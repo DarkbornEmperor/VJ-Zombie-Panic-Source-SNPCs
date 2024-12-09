@@ -1102,7 +1102,7 @@ end
             if curAct != ACT_OPEN_DOOR && self.ZPS_NextMeleeAnimT < CurTime() then
                 local ang = self:GetAngles()
                 self:SetAngles(Angle(ang.x,(self.ZPS_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
-                self:VJ_ACT_PLAYACTIVITY(ACT_OPEN_DOOR,false,false,false,0,{AlwaysUseGesture=true})
+                self:PlayAnim(ACT_OPEN_DOOR,false,false,false,0,{AlwaysUseGesture=true})
                 self:SetState(VJ_STATE_ONLY_ANIMATION)
                 self.ZPS_NextMeleeAnimT = CurTime() + VJ.AnimDuration(self,ACT_OPEN_DOOR)
     end
