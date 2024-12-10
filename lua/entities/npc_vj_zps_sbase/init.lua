@@ -138,7 +138,7 @@ function ENT:Init()
  self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
  self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
  self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
- if math.random(1,5) == 1 then self.IsMedicSNPC = true end
+ if math.random(1,5) == 1 then self.IsMedic = true end
  if math.random(1,5) == 1 then self.ZPS_Armor = true end
  if !self.DisableWeapons then
  if !self.WeaponInventory_MeleeList then
@@ -2211,7 +2211,7 @@ function ENT:Controller_Initialize(ply)
     ply:ChatPrint("DUCK: Crouch")
     ply:ChatPrint("JUMP: Jump")
     ply:ChatPrint("WALK: Switch Weapon")
- if !self.IsMedicSNPC then return end
+ if !self.IsMedic then return end
     ply:ChatPrint("USE: Heal")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2281,7 +2281,7 @@ function ENT:OnThinkActive()
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.random(1,30)
 end
- if self.IsMedicSNPC && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+ if self.IsMedic && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:OnMedicBehavior("BeforeHeal","OnHeal")
     self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
  if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
@@ -2356,6 +2356,7 @@ function ENT:Jump(pos)
     self:SetMoveType(MOVETYPE_STEP)
     if self.CurrentSchedule then
         self.CurrentSchedule = nil
+        self.CurrentScheduleName = nil
         self.CurrentTask = nil
         self.CurrentTaskID = nil
 end
