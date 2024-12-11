@@ -2216,8 +2216,8 @@ function ENT:Controller_Initialize(ply)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
-    if self.ZPS_Crouching && self.HasShootWhileMoving && IsValid(self:GetEnemy()) then
-    if (self.EnemyData.IsVisible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving == true && self:IsAbleToShootWeapon(true, false) == true then
+    if self.ZPS_Crouching && self.Weapon_CanFireWhileMoving && IsValid(self:GetEnemy()) then
+    if (self.EnemyData.IsVisible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving == true && self:CanFireWeapon(true, false) == true then
         self.DoingWeaponAttack = true
         self.DoingWeaponAttack_Standing = false
     if act == ACT_WALK then
@@ -2229,6 +2229,15 @@ function ENT:TranslateActivity(act)
 end
     if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
         return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
+end
+    if self.ZPS_Crouching then
+    if act == ACT_IDLE then
+        return self:TranslateActivity(act == ACT_IDLE and ACT_COVER_LOW)
+    elseif act == ACT_WALK then
+        return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
+    elseif act == ACT_RUN then
+        return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
+    end
 end
     return self.BaseClass.TranslateActivity(self,act)
 end
@@ -2447,7 +2456,7 @@ function ENT:OnWeaponStrafeWhileFiring()
   if self.VJ_IsBeingControlled then self.ZPS_Crouching = false return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
-    else
+    elseif math.random(1,2) == 1 && self.ZPS_Crouching then
         self.ZPS_Crouching = false
     end
 end
