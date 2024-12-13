@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+    "$basetexture"            "models/darkborn/weapons/snowball"
+    "$bumpmap"                "models/darkborn/weapons/snowball_bump"
+
+    "$detail"                "models/darkborn/weapons/detail/plaster_detail_01"
+    "$detailscale"            "1.5"
+    "$detailblendfactor"    "0.35"
+    "$detailblendmode"        "0"
+    "$phong"                "1"
+}

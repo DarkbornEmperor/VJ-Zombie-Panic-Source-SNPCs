@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+    $basetexture                "models/darkborn/weapons/tennisball/diffuse"
+"$bumpmap" "models/darkborn/weapons/tennisball/normal"
+$phong 1
+$rimlight 1
+$rimlightboost 2
+
+}

@@ -1,0 +1,8 @@
+"Subrect"
+{
+	"$Material"	"decals/decals_lit"
+	"$Pos"		"512 0"
+	"$Size"		"256 256"
+	"$decalscale" 	0.25
+	"$modelmaterial" "decals/vj_zps/decal_snowball_splat"
+}
