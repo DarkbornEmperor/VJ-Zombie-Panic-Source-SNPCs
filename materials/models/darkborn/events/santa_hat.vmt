@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture"				"models/darkborn/events/santa_hat_diff"
+	"$bumpmap"					"models/darkborn/events/santa_hat_norm"
+	"$surfaceprop"				"cloth"
+	"$model"					"1"
+}

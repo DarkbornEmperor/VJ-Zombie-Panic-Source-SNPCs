@@ -56,8 +56,8 @@ if VJExists == true then
     VJ.AddNPCWeapon("VJ_ZPS_Revolver", "weapon_vj_zps_revolver",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_HE_Grenade", "weapon_vj_zps_grenade",spawnCategory)
     VJ.AddNPCWeapon("VJ_ZPS_IED", "weapon_vj_zps_ied",spawnCategory)
-    //VJ.AddNPCWeapon("VJ_ZPS_Snowball", "weapon_vj_zps_snowball",spawnCategory)
-    //VJ.AddNPCWeapon("VJ_ZPS_Tennis_Ball", "weapon_vj_zps_tennisball",spawnCategory)
+    VJ.AddNPCWeapon("VJ_ZPS_Snowball", "weapon_vj_zps_snowball",spawnCategory)
+    VJ.AddNPCWeapon("VJ_ZPS_Tennis_Ball", "weapon_vj_zps_tennisball",spawnCategory)
 
     -- Melee Weapons --
     VJ.AddNPCWeapon("VJ_ZPS_Baguette", "weapon_vj_zps_baguette",spawnCategory)
@@ -100,8 +100,8 @@ if VJExists == true then
         "weapon_vj_zps_glock17",
         "weapon_vj_zps_grenade",
         "weapon_vj_zps_ied",
-        //"weapon_vj_zps_snowball",
-        //"weapon_vj_zps_tennisball"
+        "weapon_vj_zps_snowball",
+        "weapon_vj_zps_tennisball"
     }
     VJ_ZPS_MELEEWEAPONS = {
         "weapon_vj_zps_baguette",

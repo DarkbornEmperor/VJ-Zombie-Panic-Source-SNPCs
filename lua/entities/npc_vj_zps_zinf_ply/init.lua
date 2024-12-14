@@ -16,9 +16,8 @@ ENT.VJC_Data = {
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_PreInit()
     if self:GetClass() == "npc_vj_zps_zinf_ply" then
-        self.Model = {
-        "models/darkborn/zps/breen_ply.mdl",
-}
+        self.Model =
+        "models/darkborn/zps/breen_ply.mdl"
     end
 end
 /*-----------------------------------------------

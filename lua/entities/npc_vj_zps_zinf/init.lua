@@ -6,13 +6,12 @@ include("shared.lua")
     No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
     without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.Model = {"models/darkborn/zps/breen.mdl"}
+ENT.Model = "models/darkborn/zps/breen.mdl"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_PreInit()
     if self:GetClass() == "npc_vj_zps_zinf" then
-        self.Model = {
-        "models/darkborn/zps/breen.mdl",
-}
+        self.Model =
+        "models/darkborn/zps/breen.mdl"
     end
 end
 /*-----------------------------------------------

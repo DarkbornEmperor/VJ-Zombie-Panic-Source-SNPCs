@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "decals/vj_zps/decal_snowball_splat"
-	"$decalscale" 0.25
-	"$translucent" 1
-	"$decal" 1
+    "$basetexture" "decals/vj_zps/decal_snowball_splat"
+    "$decalscale" 0.25
+    "$translucent" 1
+    "$decal" 1
 }

@@ -6,19 +6,21 @@
 AddCSLuaFile()
 
 ENT.Type = "anim"
-ENT.Base = "obj_vj_projectile_base"
-ENT.PrintName = "Snowball"
+ENT.Base = "obj_vj_grenade"
+ENT.PrintName = "Tennis Ball"
 ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
 ENT.Information = "Projectiles for my addons"
 ENT.Category = "VJ Base"
 ENT.Spawnable = false
 
+ENT.VJTag_ID_Grenade = false
+ENT.VJTag_IsPickupable = false
 ENT.VJTag_ID_Danger = false
 
 if CLIENT then
-    local Name = "Snowball"
-    local LangName = "obj_vj_zps_snowball"
+    local Name = "Tennis Ball"
+    local LangName = "obj_vj_zps_tennisball"
     language.Add(LangName, Name)
     killicon.Add(LangName,"HUD/killicons/default",Color(255,80,0,255))
     language.Add("#"..LangName, Name)
@@ -27,20 +29,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end
 
-ENT.Model = "models/darkborn/zps/weapons/w_snowball.mdl"
+ENT.Model = "models/darkborn/zps/weapons/w_tennisball.mdl"
 ENT.DoesDirectDamage = false
-ENT.DecalTbl_DeathDecals = {"VJ_ZPS_Snow"}
-ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"}
-ENT.SoundTbl_OnRemove = {""}
+ENT.DoesRadiusDamage = false
+ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/tennisball/impact01.wav","darkborn/zps/weapons/physics/tennisball/impact02.wav","darkborn/zps/weapons/physics/tennisball/impact03.wav"}
+-- Custom
+ENT.FussTime = 10
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomPhysicsObjectOnInitialize(phys)
-    phys:Wake()
-    phys:EnableGravity(true)
-    phys:EnableDrag(false)
-    phys:SetBuoyancyRatio(0)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:DeathEffects(data,phys)
-    ParticleEffect("vj_zps_impact_snowball", data.HitPos, Angle(0,0,0), nil)
-    VJ.EmitSound(self,{"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"},75,100)
+function ENT:DeathEffects()
+    self:Remove()
 end

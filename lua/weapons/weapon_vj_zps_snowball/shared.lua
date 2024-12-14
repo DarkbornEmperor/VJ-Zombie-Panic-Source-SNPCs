@@ -14,14 +14,14 @@ SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.MadeForNPCsOnly = true
-SWEP.WorldModel = "models/darkborn/zps/weapons/w_grenade.mdl"
+SWEP.WorldModel = "models/darkborn/zps/weapons/w_snowball.mdl"
 SWEP.HoldType = "grenade"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 1
-SWEP.Primary.ClipSize = 3
-///SWEP.Primary.TakeAmmo = 0
+SWEP.Primary.ClipSize = 8
+//SWEP.Primary.TakeAmmo = 0
 SWEP.Primary.Ammo = "grenade"
 SWEP.Primary.Sound = "darkborn/zps/weapons/slam/throw.wav"
 SWEP.Primary.DisableBulletCode = true
@@ -58,7 +58,7 @@ function SWEP:OnPrimaryAttack(status,statusData)
 
     local phys = snowball:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200)) end
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Curve", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200)) end
         /*end
     end)*/
 end

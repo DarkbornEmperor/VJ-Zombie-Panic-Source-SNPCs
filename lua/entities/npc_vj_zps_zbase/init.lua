@@ -1175,11 +1175,11 @@ end
 end
  if self:GetClass() != "npc_vj_zps_zcarrier" && self:IsMoving() && self:IsOnGround() then
     if self.ZPS_Berserk then
-        self.AnimationPlaybackRate = self.ZPS_BerserkSpeed
+        self:SetPlaybackRate(self.ZPS_BerserkSpeed)
         local berserkSpeed = 1.2
         self:SetLocalVelocity(self:GetMoveVelocity() *berserkSpeed)
     elseif !self.ZPS_Berserk then
-        self.AnimationPlaybackRate = 1
+        self:SetPlaybackRate(1)
         self:SetLocalVelocity(self:GetMoveVelocity() *0)
     end
 end
@@ -1265,6 +1265,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
+ self:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
  if IsValid(self.Bonemerge) then
     corpseEnt:VJ_ZPS_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)
 end
@@ -1320,6 +1321,8 @@ end
         end
     end
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt) end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomGibOnDeathSounds(dmginfo,hitgroup) return false end
 ---------------------------------------------------------------------------------------------------------------------------------------------

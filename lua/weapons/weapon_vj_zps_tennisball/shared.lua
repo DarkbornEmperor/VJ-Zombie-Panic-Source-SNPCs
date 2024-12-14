@@ -14,14 +14,14 @@ SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.MadeForNPCsOnly = true
-SWEP.WorldModel = "models/darkborn/zps/weapons/w_grenade.mdl"
+SWEP.WorldModel = "models/darkborn/zps/weapons/w_tennisball.mdl"
 SWEP.HoldType = "grenade"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.Primary.Damage = 1
-SWEP.Primary.ClipSize = 3
-///SWEP.Primary.TakeAmmo = 0
+SWEP.Primary.ClipSize = 2
+//SWEP.Primary.TakeAmmo = 0
 SWEP.Primary.Ammo = "grenade"
 SWEP.Primary.Sound = "darkborn/zps/weapons/slam/throw.wav"
 SWEP.Primary.DisableBulletCode = true
@@ -48,7 +48,7 @@ function SWEP:OnPrimaryAttack(status,statusData)
     if CLIENT then return end
     if IsValid(self.Ten_LastShotEnt) then return true end -- Wait until the last Tennis Ball has detonated
         //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
-        local tennisBall = ents.Create("obj_vj_zps_snowball")
+        local tennisBall = ents.Create("obj_vj_zps_tennisball")
         tennisBall:SetPos(self:GetBulletPos())
         tennisBall:SetAngles(self:GetOwner():GetAngles())
         tennisBall:SetOwner(self:GetOwner())
@@ -58,7 +58,7 @@ function SWEP:OnPrimaryAttack(status,statusData)
 
     local phys = tennisBall:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Line", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200)) end
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Curve", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200)) end
         /*end
     end)*/
 end

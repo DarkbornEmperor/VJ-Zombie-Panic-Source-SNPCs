@@ -6,15 +6,29 @@ include("shared.lua")
     No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
     without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.Model = {"models/darkborn/zps/zombies/carrier.mdl"}
+ENT.Model = "models/darkborn/zps/zombies/carrier.mdl"
 ENT.StartHealth = 250
 ENT.MeleeAttackDamage = 35
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_PreInit()
     if GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then
-       self.Model = {"models/darkborn/zps/zombies_old/carrier.mdl"}
+       self.Model = "models/darkborn/zps/zombies_old/carrier.mdl"
     end
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*function ENT:Zombie_Init()
+    local santaHat = ents.Create("prop_vj_animatable")
+    santaHat:SetModel("models/darkborn/zps/festive/santahat.mdl")
+    santaHat:SetLocalPos(self:GetPos())
+    santaHat:SetOwner(self)
+    santaHat:SetParent(self)
+    santaHat:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+    santaHat:Spawn()
+    santaHat:Activate()
+    santaHat:SetSolid(SOLID_NONE)
+    santaHat:AddEffects(EF_BONEMERGE)
+    self.SantaHat = santaHat
+end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt,isProp)
  if self:IsOnFire() then hitEnt:Ignite(4) end
@@ -38,14 +52,22 @@ local berserkSpeed = 1.4
 function ENT:Zombie_OnThinkActive()
  if self:IsMoving() && self:IsOnGround() then
     if self.ZPS_Berserk then
-        self.AnimationPlaybackRate = self.ZPS_BerserkSpeed
+        self:SetPlaybackRate(self.ZPS_BerserkSpeed)
         self:SetLocalVelocity(self:GetMoveVelocity() *berserkSpeed)
     else
-        self.AnimationPlaybackRate = 1
+        self:SetPlaybackRate(1)
         self:SetLocalVelocity(self:GetMoveVelocity() *0)
         end
     end
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*function ENT:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
+    if IsValid(self.SantaHat) then self:CreateGibEntity("prop_physics","models/darkborn/zps/festive/santahat.mdl",{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_Head")).Pos,Ang=self:GetAngles(),Vel="UseDamageForce"}) return end
+    if IsValid(self.SantaHat) && self:GetBodygroup(3) == 0 then
+        self.SantaHat:SetOwner(corpseEnt)
+        self.SantaHat:SetParent(corpseEnt)
+    end
+end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 /*for _,v in ipairs(ents.FindInSphere(self:GetPos(),3000)) do
     if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((self.VJ_IsBeingControlled == false) or (self.VJ_IsBeingControlled == true && self.VJ_TheController:KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then
