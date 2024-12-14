@@ -34,7 +34,7 @@ ENT.DoesDirectDamage = false
 ENT.DoesRadiusDamage = false
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/tennisball/impact01.wav","darkborn/zps/weapons/physics/tennisball/impact02.wav","darkborn/zps/weapons/physics/tennisball/impact03.wav"}
 -- Custom
-ENT.FussTime = 10
+ENT.FuseTime = 10
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:DeathEffects()
     self:Remove()

@@ -29,10 +29,6 @@ SWEP.HasDryFireSound = false
 SWEP.PrimaryEffects_SpawnMuzzleFlash = false
 SWEP.PrimaryEffects_SpawnShells = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:Init()
-    self.Sno_LastShotEnt = NULL
-end
----------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnGetBulletPos()
     local owner = self:GetOwner()
 
@@ -46,7 +42,6 @@ end
 function SWEP:OnPrimaryAttack(status,statusData)
     if status == "Initial" then
     if CLIENT then return end
-    if IsValid(self.Sno_LastShotEnt) then return true end -- Wait until the last Snowball has detonated
         //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
         local snowball = ents.Create("obj_vj_zps_snowball")
         snowball:SetPos(self:GetBulletPos())
@@ -54,7 +49,6 @@ function SWEP:OnPrimaryAttack(status,statusData)
         snowball:SetOwner(self:GetOwner())
         snowball:Spawn()
         snowball:Activate()
-        self.Sno_LastShotEnt = snowball
 
     local phys = snowball:GetPhysicsObject()
     if IsValid(phys) then

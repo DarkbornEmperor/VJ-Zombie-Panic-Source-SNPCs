@@ -29,10 +29,6 @@ SWEP.HasDryFireSound = false
 SWEP.PrimaryEffects_SpawnMuzzleFlash = false
 SWEP.PrimaryEffects_SpawnShells = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:Init()
-    self.Ten_LastShotEnt = NULL
-end
----------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnGetBulletPos()
     local owner = self:GetOwner()
 
@@ -46,7 +42,6 @@ end
 function SWEP:OnPrimaryAttack(status,statusData)
     if status == "Initial" then
     if CLIENT then return end
-    if IsValid(self.Ten_LastShotEnt) then return true end -- Wait until the last Tennis Ball has detonated
         //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
         local tennisBall = ents.Create("obj_vj_zps_tennisball")
         tennisBall:SetPos(self:GetBulletPos())
@@ -54,7 +49,6 @@ function SWEP:OnPrimaryAttack(status,statusData)
         tennisBall:SetOwner(self:GetOwner())
         tennisBall:Spawn()
         tennisBall:Activate()
-        self.Ten_LastShotEnt = tennisBall
 
     local phys = tennisBall:GetPhysicsObject()
     if IsValid(phys) then
