@@ -1268,7 +1268,15 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
- self:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
+    if IsValid(self.SantaHat) then
+    if hitgroup == HITGROUP_HEAD then
+        self:CreateGibEntity("prop_physics","models/darkborn/zps/festive/santahat.mdl",{Pos=self:LocalToWorld(Vector(8,0,-5)),Ang=self:GetAngles(),Vel="UseDamageForce"})
+        self.SantaHat:Remove()
+    else
+        self.SantaHat:SetOwner(corpseEnt)
+        self.SantaHat:SetParent(corpseEnt)
+    end
+end
  if IsValid(self.Bonemerge) then
     corpseEnt:VJ_ZPS_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)
 end
@@ -1324,8 +1332,6 @@ end
         end
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt) end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomGibOnDeathSounds(dmginfo,hitgroup) return false end
 ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -16,19 +16,21 @@ function ENT:Zombie_PreInit()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:Zombie_Init()
-    local santaHat = ents.Create("prop_vj_animatable")
-    santaHat:SetModel("models/darkborn/zps/festive/santahat.mdl")
-    santaHat:SetLocalPos(self:GetPos())
-    santaHat:SetOwner(self)
-    santaHat:SetParent(self)
-    santaHat:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-    santaHat:Spawn()
-    santaHat:Activate()
-    santaHat:SetSolid(SOLID_NONE)
-    santaHat:AddEffects(EF_BONEMERGE)
-    self.SantaHat = santaHat
-end*/
+function ENT:Zombie_Init()
+    if GetConVar("VJ_ZPS_SantaHat"):GetInt() == 1 then
+        local santaHat = ents.Create("prop_vj_animatable")
+        santaHat:SetModel("models/darkborn/zps/festive/santahat.mdl")
+        santaHat:SetLocalPos(self:GetPos())
+        santaHat:SetOwner(self)
+        santaHat:SetParent(self)
+        santaHat:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        santaHat:Spawn()
+        santaHat:Activate()
+        santaHat:SetSolid(SOLID_NONE)
+        santaHat:AddEffects(EF_BONEMERGE)
+        self.SantaHat = santaHat
+    end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt,isProp)
  if self:IsOnFire() then hitEnt:Ignite(4) end
@@ -60,14 +62,6 @@ function ENT:Zombie_OnThinkActive()
         end
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:Zombie_OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
-    if IsValid(self.SantaHat) then self:CreateGibEntity("prop_physics","models/darkborn/zps/festive/santahat.mdl",{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_Head")).Pos,Ang=self:GetAngles(),Vel="UseDamageForce"}) return end
-    if IsValid(self.SantaHat) && self:GetBodygroup(3) == 0 then
-        self.SantaHat:SetOwner(corpseEnt)
-        self.SantaHat:SetParent(corpseEnt)
-    end
-end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 /*for _,v in ipairs(ents.FindInSphere(self:GetPos(),3000)) do
     if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((self.VJ_IsBeingControlled == false) or (self.VJ_IsBeingControlled == true && self.VJ_TheController:KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then

@@ -301,6 +301,7 @@ if VJExists == true then
     VJ.AddConVar("VJ_ZPS_WeaponSwitch", 1, {FCVAR_ARCHIVE})
     VJ.AddConVar("VJ_ZPS_OldModels", 0, {FCVAR_ARCHIVE})
     VJ.AddConVar("VJ_ZPS_ZombieModels", 0, {FCVAR_ARCHIVE})
+    VJ.AddConVar("VJ_ZPS_SantaHat", 0, {FCVAR_ARCHIVE})
     VJ.AddConVar("VJ_ZPS_InfectionChance", 10, {FCVAR_ARCHIVE})
     VJ.AddConVar("VJ_ZPS_CarrierInfectionChance", 5, {FCVAR_ARCHIVE})
     VJ.AddConVar("VJ_ZPS_InfectionTime1", 30, {FCVAR_ARCHIVE})
@@ -359,6 +360,7 @@ end
                 VJ_ZPS_WeaponSwitch = "1",
                 VJ_ZPS_OldModels = "0",
                 VJ_ZPS_ZombieModels = "0",
+                VJ_ZPS_SantaHat = "0",
                 VJ_ZPS_InfectionChance = "10",
                 VJ_ZPS_CarrierInfectionChance = "5",
                 VJ_ZPS_InfectionTime1 = "30",
@@ -390,6 +392,7 @@ end
             Panel:AddControl("Checkbox", {Label ="Enable Zombies Breaking Entities Classified As 'func_door_rotating?'", Command ="VJ_ZPS_BreakDoors_Func"})
             Panel:AddControl("Checkbox", {Label ="Enable Zombies Alerting Each Other?", Command ="VJ_ZPS_Alert"})
             Panel:AddControl("Checkbox", {Label ="Enable Hardcore Mode?", Command ="VJ_ZPS_Hardcore"})
+            Panel:AddControl("Checkbox", {Label ="Enable Santa Hat For Carrier?", Command ="VJ_ZPS_SantaHat"})
             Panel:AddControl("Label", {Text = "Modifiers:"})
             Panel:AddControl("Slider", {Label ="Infection Chance",Command ="VJ_ZPS_InfectionChance", Min = "1", Max = "100"})
             Panel:AddControl("Slider", {Label ="Carrier Infection Chance",Command ="VJ_ZPS_CarrierInfectionChance", Min = "1", Max = "100"})
