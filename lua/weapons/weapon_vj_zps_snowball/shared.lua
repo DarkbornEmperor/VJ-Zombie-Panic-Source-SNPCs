@@ -9,7 +9,7 @@ SWEP.Category = "Zombie Panic! Source"
 SWEP.NPC_NextPrimaryFire = 2.5
 SWEP.NPC_TimeUntilFire = 0.8
 SWEP.NPC_FiringDistanceScale = 0.65
-SWEP.NPC_ReloadSound = false
+SWEP.NPC_ReloadSound = {"darkborn/zps/shared/footsteps/snow1.wav","darkborn/zps/shared/footsteps/snow2.wav","darkborn/zps/shared/footsteps/snow3.wav","darkborn/zps/shared/footsteps/snow4.wav"}
 SWEP.NPC_CanBePickedUp = false
 SWEP.MadeForNPCsOnly = true
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
