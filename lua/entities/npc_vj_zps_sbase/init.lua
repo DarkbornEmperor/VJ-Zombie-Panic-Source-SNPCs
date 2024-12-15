@@ -96,7 +96,9 @@ ENT.WeaponsList = {
         "weapon_vj_zps_mp5",
         "weapon_vj_zps_ak47",
         "weapon_vj_zps_m4",
-        "weapon_vj_zps_grenade"
+        "weapon_vj_zps_grenade",
+        "weapon_vj_zps_snowball",
+        "weapon_vj_zps_tennisball"
     },
 }
 ENT.WeaponsList_Cont = {
@@ -112,7 +114,9 @@ ENT.WeaponsList_Cont = {
         "weapon_vj_zps_shorty",
         "weapon_vj_zps_winchester",
         "weapon_vj_zps_grenade",
-        "weapon_vj_zps_ied"
+        "weapon_vj_zps_ied",
+        "weapon_vj_zps_snowball",
+        "weapon_vj_zps_tennisball"
     },
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
