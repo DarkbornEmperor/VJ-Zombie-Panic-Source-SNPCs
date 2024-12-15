@@ -2288,11 +2288,12 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThinkActive()
+ if self.ZPS_Crouching && self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT then self.ZPS_Crouching = false end
  if self.ZPS_InfectedVictim && CurTime() > self.ZPS_NextCoughT then
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.random(1,30)
 end
- if self.IsMedic && !self:IsBusy() && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+ if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:OnMedicBehavior("BeforeHeal","OnHeal")
     self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
  if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
@@ -2455,7 +2456,7 @@ function ENT:OnWeaponAttack()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnWeaponStrafeWhileFiring()
-  if self.VJ_IsBeingControlled then self.ZPS_Crouching = false return end
+  if self.VJ_IsBeingControlled then return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
     elseif math.random(1,2) == 1 && self.ZPS_Crouching then
