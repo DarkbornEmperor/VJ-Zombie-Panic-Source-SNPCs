@@ -35,7 +35,7 @@ local defAngle = Angle(0, 0, 0)
 local vecZ4 = Vector(0, 0, 4)
 local vezZ100 = Vector(0, 0, 100)
 --
-function ENT:DeathEffects()
+function ENT:OnDestroy()
     local myPos = self:GetPos()
 
     ParticleEffect("vj_zps_grenade_explosion_01", self:GetPos(), defAngle, nil)
@@ -61,9 +61,8 @@ function ENT:DeathEffects()
         endpos = myPos - vezZ100,
         filter = self
     })
-    util.Decal(VJ.PICK(self.DecalTbl_DeathDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
+    util.Decal(VJ.PICK(self.CollisionDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
 
-    self:DoDamageCode()
-    self:SetDeathVariablesTrue(nil, nil, false)
+    self:DealDamage()
     self:Remove()
 end

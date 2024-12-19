@@ -36,6 +36,6 @@ ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/tennisball/impact01.wav"
 -- Custom
 ENT.FuseTime = 10
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:DeathEffects()
+function ENT:OnDestroy()
     self:Remove()
 end

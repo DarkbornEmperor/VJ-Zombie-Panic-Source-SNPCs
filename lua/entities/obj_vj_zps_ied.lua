@@ -98,10 +98,9 @@ function ENT:Detonate()
         endpos = myPos - vezZ100,
         filter = self
     })
-    util.Decal(VJ.PICK(self.DecalTbl_DeathDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
+    util.Decal(VJ.PICK(self.CollisionDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
 
-    self:DoDamageCode()
-    self:SetDeathVariablesTrue(nil, nil, false)
+    self:DealDamage()
     self:Remove()
         end
     end)
