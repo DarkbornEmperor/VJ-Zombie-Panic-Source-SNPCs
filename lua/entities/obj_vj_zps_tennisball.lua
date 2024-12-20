@@ -36,6 +36,13 @@ ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/tennisball/impact01.wav"
 -- Custom
 ENT.FuseTime = 10
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InitPhys()
+    local phys = self:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:AddAngleVelocity(Vector(math.Rand(500, 500), math.Rand(500, 500), math.Rand(500, 500)))
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnDestroy()
     self:Remove()
 end

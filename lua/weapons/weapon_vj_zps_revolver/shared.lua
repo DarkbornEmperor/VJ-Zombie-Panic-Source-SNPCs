@@ -20,7 +20,7 @@ SWEP.Primary.Damage = 88
 SWEP.Primary.Force = 1.6
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.Ammo = "357"
-SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/magnum/fire.wav"
+SWEP.Primary.Sound = "VJ.ZPS_Revolver.Single"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_SpawnShells = false
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------

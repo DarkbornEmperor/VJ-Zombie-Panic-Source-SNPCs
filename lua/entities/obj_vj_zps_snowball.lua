@@ -33,6 +33,13 @@ ENT.DoesDirectDamage = false
 ENT.CollisionDecals = "VJ_ZPS_Snow"
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InitPhys()
+    local phys = self:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:AddAngleVelocity(Vector(math.Rand(500, 500), math.Rand(500, 500), math.Rand(500, 500)))
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnDestroy(data,phys)
     ParticleEffect("vj_zps_impact_snowball", data.HitPos, Angle(0,0,0), nil)
     VJ.EmitSound(self,{"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"},75,100)

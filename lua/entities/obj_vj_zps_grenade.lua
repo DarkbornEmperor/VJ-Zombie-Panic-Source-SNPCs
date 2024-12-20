@@ -31,6 +31,13 @@ ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/explosives/grenade/nade_bounce-0
 -- Custom
 ENT.FussTime = 3
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InitPhys()
+    local phys = self:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:AddAngleVelocity(Vector(math.Rand(500, 500), math.Rand(500, 500), math.Rand(500, 500)))
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 local defAngle = Angle(0, 0, 0)
 local vecZ4 = Vector(0, 0, 4)
 local vezZ100 = Vector(0, 0, 100)
@@ -39,7 +46,7 @@ function ENT:OnDestroy()
     local myPos = self:GetPos()
 
     ParticleEffect("vj_zps_grenade_explosion_01", self:GetPos(), defAngle, nil)
-    VJ.EmitSound(self,"darkborn/zps/weapons/explosives/grenade/nade_blast.wav",80,100)
+    VJ.EmitSound(self,"VJ.ZPS_HEGrenade_Explosion")
     util.ScreenShake(myPos, 100, 200, 1, 2500)
 
     local expLight = ents.Create("light_dynamic")

@@ -24,11 +24,23 @@ SWEP.Primary.NumberOfShots = 8
 SWEP.Primary.ClipSize = 2
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"
-SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/doublebarrel_shotgun/fire.wav"
+SWEP.Primary.Sound = "VJ.ZPS_Winchester.Single"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_SpawnShells = false
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound = "darkborn/zps/weapons/firearms/doublebarrel_shotgun/dryfire.wav"
+---------------------------------------------------------------------------------------------------------------------------------------------
+function SWEP:OnPrimaryAttack(status,statusData)
+    if status == "Initial" && math.random(1,5) == 1 && self:Clip1() > 1 then
+        self.Primary.Sound = "VJ.ZPS_Winchester.Double"
+        self.Primary.NumberOfShots = 16
+        self.Primary.TakeAmmo = 2
+    else
+        self.Primary.Sound = "VJ.ZPS_Winchester.Single"
+        self.Primary.NumberOfShots = 8
+        self.Primary.TakeAmmo = 1
+    end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:NPC_Reload()
     local owner = self:GetOwner()

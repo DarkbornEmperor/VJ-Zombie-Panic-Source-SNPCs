@@ -153,6 +153,121 @@ if VJExists == true then
     VJ.AddParticle("particles/vj_zps_weaponparticles.pcf", {
     "vj_zps_muzzle",
 })
+
+-- Weapon Sounds --
+sound.Add({
+    name = "VJ.ZPS_AK47.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/ak-47/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Glock17.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/glock/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Glock18c.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/glock18c/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_M4.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/m4/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_MP5.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/mp5/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_PPK.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/ppk/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Remington870.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/remington870/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Revolver.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/magnum/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_SuperShorty.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/super_shorty/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_USP.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/usp/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Winchester.Single",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/doublebarrel_shotgun/fire.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_Winchester.Double",
+    channel = CHAN_WEAPON,
+    volume = 1.0,
+    level = 140,
+    pitch = {90,110},
+    sound = "^darkborn/zps/weapons/firearms/doublebarrel_shotgun/fire_double.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_HEGrenade_Explosion",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    level = 140,
+    pitch = 100,
+    sound = "^darkborn/zps/weapons/explosives/grenade/nade_blast.wav"
+})
+sound.Add({
+    name = "VJ.ZPS_IED_Explosion",
+    channel = CHAN_STATIC,
+    volume = 1.0,
+    level = 140,
+    pitch = 100,
+    sound = "^darkborn/zps/weapons/explosives/ied/ied_explode.wav"
+})
+
     -- Precache Models --
     /*util.PrecacheModel("models/darkborn/zps/survivors/eugene.mdl")
     util.PrecacheModel("models/darkborn/zps/survivors/jessica.mdl")

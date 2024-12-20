@@ -24,7 +24,7 @@ SWEP.Primary.NumberOfShots = 8
 SWEP.Primary.ClipSize = 3
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"
-SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/super_shorty/fire.wav"
+SWEP.Primary.Sound = "VJ.ZPS_SuperShorty.Single"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_ShellType = "ShotgunShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------

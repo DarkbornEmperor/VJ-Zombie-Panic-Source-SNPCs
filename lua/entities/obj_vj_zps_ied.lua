@@ -42,6 +42,13 @@ function ENT:Init()
     timer.Simple(self.IED_ArmT,function() if IsValid(self) then self.IED_Armed = true end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InitPhys()
+    local phys = self:GetPhysicsObject()
+    if IsValid(phys) then
+        phys:AddAngleVelocity(Vector(math.Rand(500, 500), math.Rand(500, 500), math.Rand(500, 500)))
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThink()
     if !IsValid(self:GetOwner()) && self.IED_Armed then self:Detonate() return end
     if !self.IED_Armed then return end
@@ -76,7 +83,7 @@ function ENT:Detonate()
     local myPos = self:GetPos()
 
     ParticleEffect("vj_zps_IED", myPos, defAngle, nil)
-    VJ.EmitSound(self,"darkborn/zps/weapons/explosives/ied/ied_explode.wav",80,100)
+    VJ.EmitSound(self,"VJ.ZPS_IED_Explosion")
     util.ScreenShake(myPos, 100, 200, 1, 2500)
 
     local expLight = ents.Create("light_dynamic")

@@ -21,7 +21,7 @@ SWEP.NPC_ReloadSound = "darkborn/zps/weapons/firearms/mp5/reload.wav"
 SWEP.Primary.Damage = 21
 SWEP.Primary.ClipSize = 30
 SWEP.Primary.Ammo = "SMG1"
-SWEP.Primary.Sound = "darkborn/zps/weapons/firearms/mp5/fire.wav"
+SWEP.Primary.Sound = "VJ.ZPS_MP5.Single"
 SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
 SWEP.PrimaryEffects_ShellType = "ShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
