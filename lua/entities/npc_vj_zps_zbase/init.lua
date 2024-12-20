@@ -76,7 +76,6 @@ ENT.SoundTbl_Impact = {
 function ENT:OnInput(key,activator,caller,data)
     if key == "step" then
         self:FootStepSoundCode()
-        self:OnFootstepSound()
     elseif key == "melee" then
         self:MeleeAttackCode()
 end
