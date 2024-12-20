@@ -59,7 +59,7 @@ function SWEP:OnPrimaryAttack(status,statusData)
 
     local phys = grenade:GetPhysicsObject()
     if IsValid(phys) then
-        phys:SetVelocity(self:GetOwner():CalculateProjectile("Curve", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1000)) end
+        phys:SetVelocity(self:GetOwner():CalculateProjectile("Curve", self:GetBulletPos(), self:GetOwner():GetEnemy():GetPos() + self:GetOwner():GetEnemy():OBBCenter(), 1200)) end
         /*end
     end)*/
 end
