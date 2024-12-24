@@ -2407,13 +2407,14 @@ function ENT:OnMedicBehavior(status,statusData)
     end
 end
  if status == "OnHeal" then
-    if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
+    if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
         if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
         statusData.HasHealthRegeneration = true
         statusData.ZPS_ImmuneInfection = true
         VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
         timer.Remove(statusData:EntIndex().."VJ_ZPS_Infection")
-        timer.Simple(25,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
+        hook.Remove("Think","VJ_ZPS_VictimCough")
+        timer.Create(statusData:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
 end
         timer.Simple(0.5,function() if IsValid(self) then
         if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end
@@ -2428,7 +2429,8 @@ function ENT:InoculatorInject()
         self.ZPS_ImmuneInfection = true
         VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
         timer.Remove(self:EntIndex().."VJ_ZPS_Infection")
-        timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false self.ZPS_ImmuneInfection = false end end)
+        hook.Remove("Think","VJ_ZPS_VictimCough")
+        timer.Create(self:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
