@@ -53,6 +53,7 @@ ENT.ZPS_Armor = false
 ENT.ZPS_ArmorHP = 100
 ENT.ZPS_Crouching = false
 ENT.ZPS_Panic = false
+ENT.ZPS_ImmuneInfection = false
 ENT.ZPS_NextMeleeSoundT = 0
 ENT.ZPS_NextWepSwitchT = 0
 ENT.ZPS_NextJumpT = 0
@@ -2293,7 +2294,7 @@ function ENT:OnThinkActive()
  if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.DoingWeaponAttack*/ then self.ZPS_Crouching = false end
  if self.ZPS_InfectedVictim && CurTime() > self.ZPS_NextCoughT then
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
-    self.ZPS_NextCoughT = CurTime() + math.random(1,30)
+    self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
 end
  if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:OnMedicBehavior("BeforeHeal","OnHeal")
@@ -2384,32 +2385,35 @@ function ENT:OnMedicBehavior(status,statusData)
     if status == "BeforeHeal" then
         if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
         local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
-        self.Inoculator = ents.Create("prop_vj_animatable")
-        self.Inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
-        self.Inoculator:SetSkin(math.random(0,2))
-        self.Inoculator:SetPos(att.Pos)
-        self.Inoculator:SetAngles(att.Ang)
-        self.Inoculator:SetParent(self)
-        self.Inoculator:Fire("SetParentAttachment","anim_attachment_RH")
-        self.Inoculator:Spawn()
-        self.Inoculator:AddEffects(EF_BONEMERGE)
-        self.Inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-        self:DeleteOnRemove(self.Inoculator)
-        SafeRemoveEntityDelayed(self.Inoculator,1.2)
-    if self.Inoculator:GetSkin() == 0 then
+        local inoculator = ents.Create("prop_vj_animatable")
+        inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
+        inoculator:SetSkin(math.random(0,2))
+        inoculator:SetPos(att.Pos)
+        inoculator:SetAngles(att.Ang)
+        inoculator:SetParent(self)
+        inoculator:Fire("SetParentAttachment","anim_attachment_RH")
+        inoculator:Spawn()
+        inoculator:AddEffects(EF_BONEMERGE)
+        inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self.Inoculator = inoculator
+        self:DeleteOnRemove(inoculator)
+        SafeRemoveEntityDelayed(inoculator,1.2)
+    if inoculator:GetSkin() == 0 then
         self.Medic_HealthAmount = 20
-    elseif self.Inoculator:GetSkin() == 1 then
+    elseif inoculator:GetSkin() == 1 then
         self.Medic_HealthAmount = 0
-    elseif self.Inoculator:GetSkin() == 2 then
+    elseif inoculator:GetSkin() == 2 then
         self.Medic_HealthAmount = 100
     end
 end
  if status == "OnHeal" then
-    if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
+    if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
         if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
         statusData.HasHealthRegeneration = true
+        statusData.ZPS_ImmuneInfection = true
         VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-        timer.Simple(25,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false end end)
+        timer.Remove(statusData:EntIndex().."VJ_ZPS_Infection")
+        timer.Simple(25,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
 end
         timer.Simple(0.5,function() if IsValid(self) then
         if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end
@@ -2421,8 +2425,10 @@ function ENT:InoculatorInject()
  if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
     if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
         self.HasHealthRegeneration = true
+        self.ZPS_ImmuneInfection = true
         VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-        timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false end end)
+        timer.Remove(self:EntIndex().."VJ_ZPS_Infection")
+        timer.Simple(25,function() if IsValid(self) then self.HasHealthRegeneration = false self.ZPS_ImmuneInfection = false end end)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
