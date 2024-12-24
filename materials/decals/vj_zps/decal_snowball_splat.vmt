@@ -1,7 +1,8 @@
 "LightmappedGeneric"
 {
     "$basetexture" "decals/vj_zps/decal_snowball_splat"
-	"$modelmaterial" "decals/vj_zps/decal_snowball_splat"
+	"$modelmaterial" "decals/vj_zps/decal_snowball_splat_model"
+	"$translucent" 1
     "$decal" 1
     "$decalscale" 0.25
 	"$vertexcolor" 1

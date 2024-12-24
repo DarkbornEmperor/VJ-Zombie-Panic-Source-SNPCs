@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "decals/vj_zps/decal_snowball_splat"
+    "$translucent" "1"
+}
