@@ -2297,17 +2297,32 @@ function ENT:OnThinkActive()
     self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
 end
  if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
-    self:OnMedicBehavior("BeforeHeal","OnHeal")
     self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
+    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+    local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
+    local inoculator = ents.Create("prop_vj_animatable")
+    inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
+    inoculator:SetSkin(math.random(0,2))
+    inoculator:SetPos(att.Pos)
+    inoculator:SetAngles(att.Ang)
+    inoculator:SetParent(self)
+    inoculator:Fire("SetParentAttachment","anim_attachment_RH")
+    inoculator:Spawn()
+    inoculator:AddEffects(EF_BONEMERGE)
+    inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+    self.Inoculator = inoculator
+    self:DeleteOnRemove(inoculator)
+    SafeRemoveEntityDelayed(inoculator,1.2)
  if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.NPC_FACE_ENEMY} end) end
     timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
     local CurHP = self:Health()
-    self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
     self:InoculatorInject()
-    self:OnMedicBehavior("OnHeal")
+    self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
     self:RemoveAllDecals()
+    timer.Simple(0.5,function() if IsValid(self) then
+    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end end)
     end
 end)
     self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
@@ -2423,7 +2438,15 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:InoculatorInject()
- if IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
+    if IsValid(self.Inoculator) then
+    if self.Inoculator:GetSkin() == 0 then
+        self.Medic_HealthAmount = 20
+    elseif self.Inoculator:GetSkin() == 1 then
+        self.Medic_HealthAmount = 0
+    elseif self.Inoculator:GetSkin() == 2 then
+        self.Medic_HealthAmount = 100
+end
+ if self.Inoculator:GetSkin() == 1 then
     if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
         self.HasHealthRegeneration = true
         self.ZPS_ImmuneInfection = true
@@ -2431,6 +2454,7 @@ function ENT:InoculatorInject()
         timer.Remove(self:EntIndex().."VJ_ZPS_Infection")
         hook.Remove("Think","VJ_ZPS_VictimCough")
         timer.Create(self:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
+        end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

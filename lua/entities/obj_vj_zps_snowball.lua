@@ -42,5 +42,5 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnDestroy(data,phys)
     ParticleEffect("vj_zps_impact_snowball", data.HitPos, Angle(0,0,0), nil)
-    VJ.EmitSound(self,{"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"},75,100)
+    //VJ.EmitSound(self,{"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"},75,100)
 end

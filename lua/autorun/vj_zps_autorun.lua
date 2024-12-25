@@ -652,7 +652,7 @@ function VJ_ZPS_InfectionApply(victim,zombie)
  if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.IsZPSZombie or victim.ZPS_ImmuneInfection or (victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class,"CLASS_ZOMBIE")) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
  local victimModel = victim:GetModel()
  victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
- if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 then
+ if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
     hook.Add("Think","VJ_ZPS_VictimCough",function()
     if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
     if !victim.IsZPSSurvivor && CurTime() > victim.ZPS_NextCoughT then
@@ -707,7 +707,7 @@ end
 function VJ_ZPS_Infect(victim,inflictor,attacker,isPlayer)
 if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) or victim:IsNextBot() then return end
     if !isPlayer then
-        if inflictor.ZPS_VirusInfection then
+        if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
           if inflictor == attacker && victim != inflictor then
             if victim.ZPS_VictimIsInfected then return end
                victim.ZPS_VictimIsInfected = true
@@ -715,7 +715,7 @@ if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or 
     end
 end
      else
-        if inflictor.ZPS_VirusInfection then
+        if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
             if inflictor == attacker && victim != inflictor then
                 VJ_ZPS_CreateZombie(victim,inflictor)
             end
