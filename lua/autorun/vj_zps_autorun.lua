@@ -635,8 +635,12 @@ end
     util.AddNetworkString("VJ_ZPS_InfectionScreenEffect")
 
     hook.Add("PlayerSpawn","VJ_ZPS_InfectionCheck",function(ply)
+    timer.Remove(ply:EntIndex().."VJ_ZPS_Immunity")
+    timer.Remove(ply:EntIndex().."VJ_ZPS_Regen_Player")
     if ply.ZPS_InfectedVictim then
         ply.ZPS_InfectedVictim = false
+    elseif ply.ZPS_ImmuneInfection then
+        ply.ZPS_ImmuneInfection = false
     end
 end)
 

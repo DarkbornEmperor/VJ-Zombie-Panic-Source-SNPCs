@@ -2291,7 +2291,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThinkActive()
- if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.DoingWeaponAttack*/ then self.ZPS_Crouching = false end
+ //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.DoingWeaponAttack*/ then self.ZPS_Crouching = false end
  if self.ZPS_InfectedVictim && CurTime() > self.ZPS_NextCoughT then
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
@@ -2424,6 +2424,7 @@ end
  if status == "OnHeal" then
     if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
         if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
+        if statusData:IsPlayer() then timer.Create(statusData:EntIndex().."VJ_ZPS_Regen_Player",1,25,function() if IsValid(statusData) then local CurHP = statusData:Health() statusData:SetHealth(math.Clamp(CurHP + 1, CurHP, statusData:GetMaxHealth())) end end) end
         statusData.HasHealthRegeneration = true
         statusData.ZPS_ImmuneInfection = true
         VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
@@ -2493,7 +2494,8 @@ function ENT:OnWeaponStrafeWhileFiring()
   if self.VJ_IsBeingControlled then return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
-    elseif math.random(1,2) == 1 && self.ZPS_Crouching then
+    //elseif math.random(1,2) == 1 && self.ZPS_Crouching then
+    else
         self.ZPS_Crouching = false
     end
 end
