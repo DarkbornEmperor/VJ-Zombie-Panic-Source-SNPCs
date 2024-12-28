@@ -2233,7 +2233,7 @@ end
     if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
         return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
 end
-    if self.ZPS_Crouching then
+    /*if self.ZPS_Crouching then
     if act == ACT_IDLE then
         return self:TranslateActivity(act == ACT_IDLE and ACT_COVER_LOW)
     elseif act == ACT_WALK then
@@ -2241,7 +2241,7 @@ end
     elseif act == ACT_RUN then
         return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
     end
-end
+end*/
     return self.BaseClass.TranslateActivity(self,act)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

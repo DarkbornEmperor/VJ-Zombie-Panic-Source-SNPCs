@@ -172,8 +172,8 @@ function ENT:ZombieVoices()
         self:ZombieVoice_Pedro()
  elseif cType == "npc_vj_zps_zvanessa" then
         self:ZombieVoice_Vanessa()
- elseif cType == "npc_vj_zps_zinf" or cType == "npc_vj_zps_zinf_ply" then
-        self:ZombieVoice_InfectedMale()
+ /*elseif cType == "npc_vj_zps_zinf" or cType == "npc_vj_zps_zinf_ply" then
+        self:ZombieVoice_InfectedMale()*/
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

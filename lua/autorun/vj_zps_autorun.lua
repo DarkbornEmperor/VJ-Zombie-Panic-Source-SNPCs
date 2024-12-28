@@ -658,19 +658,19 @@ function VJ_ZPS_InfectionApply(victim,zombie)
  victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
  if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
     hook.Add("Think","VJ_ZPS_VictimCough",function()
-    if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
-    if !victim.IsZPSSurvivor && CurTime() > victim.ZPS_NextCoughT then
-    if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
-       VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,120)
-    else
-       VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,100)
+ if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
+ if !victim.IsZPSSurvivor && CurTime() > victim.ZPS_NextCoughT then
+ if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
+    VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,120)
+ else
+    VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,100)
 end
-    if victim:IsPlayer() then
-        net.Start("VJ_ZPS_InfectionScreenEffect")
-            net.WriteEntity(victim)
-        net.Send(victim)
+ if victim:IsPlayer() then
+    net.Start("VJ_ZPS_InfectionScreenEffect")
+    net.WriteEntity(victim)
+    net.Send(victim)
 end
-            victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
+        victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
         end
     end)
 end
@@ -678,104 +678,99 @@ end
  if victim:IsPlayer() then
     deaths = victim:Deaths()
 end
-    timer.Create(victim:EntIndex().."VJ_ZPS_Infection",math.random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(),GetConVar("VJ_ZPS_InfectionTime2"):GetInt()),1,function()
-    if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
-    if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_Infection") return end
-    if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
-        victim:Kill()
-        VJ_ZPS_CreateZombie(victim,victim)
+ timer.Create(victim:EntIndex().."VJ_ZPS_Infection",math.random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(),GetConVar("VJ_ZPS_InfectionTime2"):GetInt()),1,function()
+ if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
+ if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_Infection") return end
+ if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
+    victim:Kill()
+    VJ_ZPS_CreateZombie(victim,victim)
 end
-    if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
-        VJ_ZPS_SetPlayerZombie(victim,victim)
+ if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
+    VJ_ZPS_SetPlayerZombie(victim,victim)
 end
-    if victim:IsNPC() then
-       VJ_ZPS_CreateZombie(victim,victim)
+ if victim:IsNPC() then
+    VJ_ZPS_CreateZombie(victim,victim)
 end
-    if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.IsZPSSurvivor then
-    if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
-       VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,120)
-    else
-       VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,100)
+ if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.IsZPSSurvivor then
+ if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
+    VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,120)
+ else
+    VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,100)
 end
-       VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
-       VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100)
+    VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
+    VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100)
 end
     if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && victim.IsZPSSurvivor then
-       VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
-       VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100)
-end
+        VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
+        VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100) end
         end
     end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_Infect(victim,inflictor,attacker,isPlayer)
-if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) or victim:IsNextBot() then return end
+    if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) or victim:IsNextBot() then return end
     if !isPlayer then
-        if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
-          if inflictor == attacker && victim != inflictor then
-            if victim.ZPS_VictimIsInfected then return end
-               victim.ZPS_VictimIsInfected = true
-                VJ_ZPS_CreateZombie(victim,inflictor)
+    if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
+    if inflictor == attacker && victim != inflictor then
+    if victim.ZPS_VictimIsInfected then return end
+        victim.ZPS_VictimIsInfected = true
+        VJ_ZPS_CreateZombie(victim,inflictor)
     end
 end
-     else
-        if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
-            if inflictor == attacker && victim != inflictor then
-                VJ_ZPS_CreateZombie(victim,inflictor)
-            end
+    else
+    if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
+    if inflictor == attacker && victim != inflictor then
+        VJ_ZPS_CreateZombie(victim,inflictor) end
         end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_SetPlayerZombie(victim,inflictor,attacker)
-   if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJTag_IsControllingNPC or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
-      local zombie = NULL
-      local oldModel = victim:GetModel()
-      local oldSkin = victim:GetSkin()
-      local oldMaterial = victim:GetMaterial()
-      local oldColor = victim:GetColor()
-      local oldPlayerColor = victim:GetPlayerColor()
-     if victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-        zombie = ents.Create("npc_vj_zps_zinf_ply")
-        zombie:SetPos(victim:GetPos())
-        zombie:SetAngles(victim:GetAngles())
-        zombie.GodMode = true
-        zombie:Spawn()
-        zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
-    if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" then
-            zombie:ZombieVoice_Eugene()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/jessica.mdl" then
-            zombie:ZombieVoice_Jessica()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/larry.mdl" then
-            zombie:ZombieVoice_Larry()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/lea.mdl" then
-            zombie:ZombieVoice_Lea()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/marcus.mdl" then
-            zombie:ZombieVoice_Marcus()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/paul.mdl" then
-            zombie:ZombieVoice_Paul()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/pedro.mdl" then
-            zombie:ZombieVoice_Pedro()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/vanessa.mdl" then
-            zombie:ZombieVoice_Vanessa()
+ if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJTag_IsControllingNPC or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
+ local zombie = NULL
+ local oldModel = victim:GetModel()
+ local oldSkin = victim:GetSkin()
+ local oldMaterial = victim:GetMaterial()
+ local oldColor = victim:GetColor()
+ local oldPlayerColor = victim:GetPlayerColor()
+ if victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
+    zombie = ents.Create("npc_vj_zps_zinf_ply")
+    zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+ elseif victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
+    zombie = ents.Create("npc_vj_zps_zcarrier")
+end
+    zombie:SetPos(victim:GetPos())
+    zombie:SetAngles(victim:GetAngles())
+    zombie.GodMode = true
+    zombie:Spawn()
+    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
+    if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/pms/eugene_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/eugene_zombie.mdl" then
+        zombie:ZombieVoice_Eugene()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/jessica.mdl" or oldModel == "models/darkborn/zps/zombies/pms/jessica_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/jessica_zombie.mdl" then
+        zombie:ZombieVoice_Jessica()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/larry.mdl" or oldModel == "models/darkborn/zps/zombies/pms/larry_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/larry_zombie.mdl" then
+        zombie:ZombieVoice_Larry()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/lea.mdl" or oldModel == "models/darkborn/zps/zombies/pms/lea_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/lea_zombie.mdl" then
+        zombie:ZombieVoice_Lea()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/marcus.mdl" or oldModel == "models/darkborn/zps/zombies/pms/marcus_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/marcus_zombie.mdl" then
+        zombie:ZombieVoice_Marcus()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/paul.mdl" or oldModel == "models/darkborn/zps/zombies/pms/paul_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/paul_zombie.mdl" then
+        zombie:ZombieVoice_Paul()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/pedro.mdl" or oldModel == "models/darkborn/zps/zombies/pms/pedro_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/pedro_zombie.mdl" then
+        zombie:ZombieVoice_Pedro()
+    elseif oldModel == "models/darkborn/zps/survivors/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/zombies/pms/vanessa_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/vanessa_zombie.mdl" then
+        zombie:ZombieVoice_Vanessa()
     end
 end
-     if victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
-        zombie = ents.Create("npc_vj_zps_zcarrier")
-        zombie:SetPos(victim:GetPos())
-        zombie:SetAngles(victim:GetAngles())
-        zombie.GodMode = true
-        zombie:Spawn()
+ if !IsValid(SpawnControllerObject) then
+    local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
+    SpawnControllerObject.VJCE_Player = victim
+    SpawnControllerObject:SetControlledNPC(zombie)
+    SpawnControllerObject:Spawn()
+    SpawnControllerObject:StartControlling()
 end
-     if !IsValid(SpawnControllerObject) then
-        local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
-        SpawnControllerObject.VJCE_Player = victim
-        SpawnControllerObject:SetControlledNPC(zombie)
-        SpawnControllerObject:Spawn()
-        SpawnControllerObject:StartControlling()
-end
-    if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
-        zombie.CurrentPossibleEnemies = {}
+ if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+    zombie.CurrentPossibleEnemies = {}
 end
     timer.Simple(1,function() if IsValid(zombie) then
         zombie.GodMode = false
@@ -787,26 +782,26 @@ end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_CreateZombie(victim,inflictor)
-     local findPos = victim:GetPos()
-     local findMDL = victim:GetModel()
-     timer.Simple(0.01,function()
-        for _,v in pairs(ents.FindInSphere(findPos,75)) do
-          if GetConVar("ai_serverragdolls"):GetInt() == 1 && v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL && !v.IsVJBaseCorpse then
-            v:Remove()
+    local findPos = victim:GetPos()
+    local findMDL = victim:GetModel()
+    timer.Simple(0.01,function()
+    for _,v in pairs(ents.FindInSphere(findPos,75)) do
+    if GetConVar("ai_serverragdolls"):GetInt() == 1 && v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL && !v.IsVJBaseCorpse then
+        v:Remove()
         end
     end
 end)
-      local zombie = NULL
-      //local sndTbl = nil
-      local survName = victim:GetClass()
-      local oldModel = victim:GetModel()
-      local oldSkin = victim:GetSkin()
-      local oldMaterial = victim:GetMaterial()
-      local oldColor = victim:GetColor()
-   if victim.GetPlayerColor && victim:GetPlayerColor() then
-      oldPlayerColor = victim:GetPlayerColor()
-   else
-      oldPlayerColor = false
+ local zombie = NULL
+ //local sndTbl = nil
+ local survName = victim:GetClass()
+ local oldModel = victim:GetModel()
+ local oldSkin = victim:GetSkin()
+ local oldMaterial = victim:GetMaterial()
+ local oldColor = victim:GetColor()
+ if victim.GetPlayerColor && victim:GetPlayerColor() then
+    oldPlayerColor = victim:GetPlayerColor()
+ else
+    oldPlayerColor = false
 end
     /*local DefaultFootSteps = {"npc/metropolice/gear1.wav","npc/metropolice/gear2.wav","npc/metropolice/gear3.wav","npc/metropolice/gear4.wav","npc/metropolice/gear5.wav","npc/metropolice/gear6.wav"}
     if victim.SoundTbl_FootStep && #victim.SoundTbl_FootStep > 0 && !victim.IsZPSSurvivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
@@ -816,140 +811,111 @@ end
         sndTbl = DefaultFootSteps
     end
 end*/
-    if (victim:IsNPC() or victim:IsPlayer()) && victim.ZPS_InfectedVictim then
-    if !victim.IsZPSSurvivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-            zombie = ents.Create("npc_vj_zps_zinf")
-            zombie:SetPos(victim:GetPos())
-            zombie:SetAngles(victim:GetAngles())
-            zombie.GodMode = true
-            zombie:Spawn()
-            undo.ReplaceEntity(victim,zombie)
-            zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
-    if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" then
-            zombie:ZombieVoice_Eugene()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/jessica.mdl" then
-            zombie:ZombieVoice_Jessica()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/larry.mdl" then
-            zombie:ZombieVoice_Larry()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/lea.mdl" then
-            zombie:ZombieVoice_Lea()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/marcus.mdl" then
-            zombie:ZombieVoice_Marcus()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/paul.mdl" then
-            zombie:ZombieVoice_Paul()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/pedro.mdl" then
-            zombie:ZombieVoice_Pedro()
-    elseif oldModel == "models/darkborn/zps/survivors/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/vanessa.mdl" then
-            zombie:ZombieVoice_Vanessa()
-    end
+ if (victim:IsNPC() or victim:IsPlayer()) && victim.ZPS_InfectedVictim then
+ if !victim.IsZPSSurvivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
+    zombie = ents.Create("npc_vj_zps_zinf")
+    zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+ elseif victim.IsZPSSurvivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
+    zombie = ents.Create("npc_vj_zps_zinf")
+    zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+ elseif victim.IsZPSSurvivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 1 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
+ if survName == "npc_vj_zps_eugene" then
+    zombie = ents.Create("npc_vj_zps_zeugene")
+ elseif survName == "npc_vj_zps_jessica" then
+    zombie = ents.Create("npc_vj_zps_zjessica")
+ elseif survName == "npc_vj_zps_larry" then
+    zombie = ents.Create("npc_vj_zps_zlarry")
+ elseif survName == "npc_vj_zps_lea" then
+    zombie = ents.Create("npc_vj_zps_zlea")
+ elseif survName == "npc_vj_zps_marcus" then
+    zombie = ents.Create("npc_vj_zps_zmarcus")
+ elseif survName == "npc_vj_zps_paul" then
+    zombie = ents.Create("npc_vj_zps_zpaul")
+ elseif survName == "npc_vj_zps_pedro" then
+    zombie = ents.Create("npc_vj_zps_zpedro")
+ elseif survName == "npc_vj_zps_vanessa" then
+    zombie = ents.Create("npc_vj_zps_zvanessa")
 end
-    if victim.IsZPSSurvivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-            zombie = ents.Create("npc_vj_zps_zinf")
-            zombie:SetPos(victim:GetPos())
-            zombie:SetAngles(victim:GetAngles())
-            zombie.GodMode = true
-            zombie:Spawn()
-            undo.ReplaceEntity(victim,zombie)
-            zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
-    if survName == "npc_vj_zps_eugene" then
-            zombie:ZombieVoice_Eugene()
-    elseif survName == "npc_vj_zps_jessica" then
-            zombie:ZombieVoice_Jessica()
-    elseif survName == "npc_vj_zps_larry" then
-            zombie:ZombieVoice_Larry()
-    elseif survName == "npc_vj_zps_lea" then
-            zombie:ZombieVoice_Lea()
-    elseif survName == "npc_vj_zps_marcus" then
-            zombie:ZombieVoice_Marcus()
-    elseif survName == "npc_vj_zps_paul" then
-            zombie:ZombieVoice_Paul()
-    elseif survName == "npc_vj_zps_pedro" then
-            zombie:ZombieVoice_Pedro()
-    elseif survName == "npc_vj_zps_vanessa" then
-            zombie:ZombieVoice_Vanessa()
-    end
+ elseif GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
+    zombie = ents.Create("npc_vj_zps_zcarrier")
 end
-    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
-            zombie = ents.Create("npc_vj_zps_zcarrier")
-            zombie:SetPos(victim:GetPos())
-            zombie:SetAngles(victim:GetAngles())
-            zombie.GodMode = true
-            zombie:Spawn()
-            undo.ReplaceEntity(victim,zombie)
-end
-    if victim.IsZPSSurvivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 1 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-    if survName == "npc_vj_zps_eugene" then
-            zombie = ents.Create("npc_vj_zps_zeugene")
-    elseif survName == "npc_vj_zps_jessica" then
-            zombie = ents.Create("npc_vj_zps_zjessica")
-    elseif survName == "npc_vj_zps_larry" then
-            zombie = ents.Create("npc_vj_zps_zlarry")
-    elseif survName == "npc_vj_zps_lea" then
-            zombie = ents.Create("npc_vj_zps_zlea")
-    elseif survName == "npc_vj_zps_marcus" then
-            zombie = ents.Create("npc_vj_zps_zmarcus")
-    elseif survName == "npc_vj_zps_paul" then
-            zombie = ents.Create("npc_vj_zps_zpaul")
-    elseif survName == "npc_vj_zps_pedro" then
-            zombie = ents.Create("npc_vj_zps_zpedro")
-    elseif survName == "npc_vj_zps_vanessa" then
-            zombie = ents.Create("npc_vj_zps_zvanessa")
-end
-            zombie:SetPos(victim:GetPos())
-            zombie:SetAngles(victim:GetAngles())
-            zombie.GodMode = true
-            zombie:Spawn()
-            undo.ReplaceEntity(victim,zombie)
+    zombie:SetPos(victim:GetPos())
+    zombie:SetAngles(victim:GetAngles())
+    zombie.GodMode = true
+    zombie:Spawn()
+    undo.ReplaceEntity(victim,zombie)
+    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 then
+    if oldModel == "models/darkborn/zps/survivors/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/eugene.mdl" or oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/eugene.mdl" or oldModel == "models/darkborn/zps/zombies_old/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/pms/eugene_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/eugene_zombie.mdl" then
+        zombie:ZombieVoice_Eugene()
+     elseif oldModel == "models/darkborn/zps/survivors/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/jessica.mdl" or oldModel == "models/darkborn/zps/survivors/pms/jessica.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/jessica.mdl" or oldModel == "models/darkborn/zps/zombies/jessica.mdl" or oldModel == "models/darkborn/zps/zombies_old/jessica.mdl" or oldModel == "models/darkborn/zps/zombies/pms/jessica_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/jessica_zombie.mdl" then
+        zombie:ZombieVoice_Jessica()
+     elseif oldModel == "models/darkborn/zps/survivors/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/larry.mdl" or oldModel == "models/darkborn/zps/survivors/pms/larry.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/larry.mdl" or oldModel == "models/darkborn/zps/zombies/larry.mdl" or oldModel == "models/darkborn/zps/zombies_old/larry.mdl" or oldModel == "models/darkborn/zps/zombies/pms/larry_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/larry_zombie.mdl" then
+        zombie:ZombieVoice_Larry()
+     elseif oldModel == "models/darkborn/zps/survivors/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/lea.mdl" or oldModel == "models/darkborn/zps/survivors/pms/lea.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/lea.mdl" or oldModel == "models/darkborn/zps/zombies/lea.mdl" or oldModel == "models/darkborn/zps/zombies_old/lea.mdl" or oldModel == "models/darkborn/zps/zombies/pms/lea_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/lea_zombie.mdl" then
+        zombie:ZombieVoice_Lea()
+     elseif oldModel == "models/darkborn/zps/survivors/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/marcus.mdl" or oldModel == "models/darkborn/zps/survivors/pms/marcus.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/marcus.mdl" or oldModel == "models/darkborn/zps/zombies/marcus.mdl" or oldModel == "models/darkborn/zps/zombies_old/marcus.mdl" or oldModel == "models/darkborn/zps/zombies/pms/marcus_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/marcus_zombie.mdl" then
+        zombie:ZombieVoice_Marcus()
+     elseif oldModel == "models/darkborn/zps/survivors/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/paul.mdl" or oldModel == "models/darkborn/zps/survivors/pms/paul.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/paul.mdl" or oldModel == "models/darkborn/zps/zombies/paul.mdl" or oldModel == "models/darkborn/zps/zombies_old/paul.mdl" or oldModel == "models/darkborn/zps/zombies/pms/paul_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/paul_zombie.mdl" then
+        zombie:ZombieVoice_Paul()
+     elseif oldModel == "models/darkborn/zps/survivors/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pedro.mdl" or oldModel == "models/darkborn/zps/survivors/pms/pedro.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/pedro.mdl" or oldModel == "models/darkborn/zps/zombies/pedro.mdl" or oldModel == "models/darkborn/zps/zombies_old/pedro.mdl" or oldModel == "models/darkborn/zps/zombies/pms/pedro_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/pedro_zombie.mdl" then
+        zombie:ZombieVoice_Pedro()
+     elseif oldModel == "models/darkborn/zps/survivors/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/vanessa.mdl" or oldModel == "models/darkborn/zps/zombies/vanessa.mdl" or oldModel == "models/darkborn/zps/zombies_old/vanessa.mdl" or oldModel == "models/darkborn/zps/zombies/pms/vanessa_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/vanessa_zombie.mdl" then
+        zombie:ZombieVoice_Vanessa()
+        end
     end
 end
     timer.Simple(1,function() if IsValid(zombie) then
         zombie.GodMode = false
     end
 end)
-    /*if sndTbl then
-        zombie.SoundTbl_FootStep = sndTbl
+ /*if sndTbl then
+    zombie.SoundTbl_FootStep = sndTbl
 end*/
-    if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
-        zombie.CurrentPossibleEnemies = {}
+ if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+    zombie.CurrentPossibleEnemies = {}
 end
+    if !victim.IsZPSSurvivor && !string.find(oldModel,"models/darkborn/zps/survivors/") && !string.find(oldModel,"models/darkborn/zps/survivors_old/") && !string.find(oldModel,"models/darkborn/zps/survivors/pms/") && !string.find(oldModel,"models/darkborn/zps/survivors_old/pms/") && !string.find(oldModel,"models/darkborn/zps/zombies/") && !string.find(oldModel,"models/darkborn/zps/zombies_old/") && !string.find(oldModel,"models/darkborn/zps/zombies/pms/") && !string.find(oldModel,"models/darkborn/zps/zombies_old/pms/") then
     if string.find(oldModel,"female") or string.find(oldModel,"alyx") or string.find(oldModel,"mossman") or string.find(oldModel,"chell") then
         zombie:ZombieVoice_InfectedFemale()
-end
-     if victim.IsVJBaseSNPC then
-        victim.HasDeathCorpse = false
-        victim.HasDeathAnimation = false
-end
-     if victim:IsPlayer() then
-        if IsValid(victim:GetRagdollEntity()) then
-           SafeRemoveEntity(victim:GetRagdollEntity())
+    else
+        zombie:ZombieVoice_InfectedMale()
     end
 end
-     if victim:IsNPC() then
-        SafeRemoveEntity(victim)
+ if victim.IsVJBaseSNPC then
+    victim.HasDeathCorpse = false
+    victim.HasDeathAnimation = false
 end
-        if IsValid(victim:GetActiveWeapon()) then
-           SafeRemoveEntity(victim:GetActiveWeapon())
+    if victim:IsPlayer() then
+    if IsValid(victim:GetRagdollEntity()) then
+        SafeRemoveEntity(victim:GetRagdollEntity())
+    end
+end
+ if victim:IsNPC() then
+    SafeRemoveEntity(victim)
+end
+    if IsValid(victim:GetActiveWeapon()) then
+        SafeRemoveEntity(victim:GetActiveWeapon())
         end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,bgEnt)
-     local creator = NULL
-     if zombieEnt:IsNPC() then
-        creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
-        zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())
+ local creator = NULL
+ if zombieEnt:IsNPC() then
+    creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
+    zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())
 end
-        local body = ents.Create("vj_zps_infection")
-        body:SetModel(oldModel)
-        body:SetPos(zombieEnt:GetPos())
-        body:SetAngles(zombieEnt:GetAngles())
-        body.VJ_Owner = zombieEnt
-        body:Spawn()
-        body:SetParent(zombieEnt)
-     if string.find(body:GetModel(),"models/darkborn/zps/survivors/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/") or string.find(body:GetModel(),"models/darkborn/zps/survivors/pms/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/pms/") then
-        body:SetSkin(1)
-     else
-        body:SetSkin(oldSkin)
+    local body = ents.Create("vj_zps_infection")
+    body:SetModel(oldModel)
+    body:SetPos(zombieEnt:GetPos())
+    body:SetAngles(zombieEnt:GetAngles())
+    body.VJ_Owner = zombieEnt
+    body:Spawn()
+    body:SetParent(zombieEnt)
+ if string.find(body:GetModel(),"models/darkborn/zps/survivors/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/") or string.find(body:GetModel(),"models/darkborn/zps/survivors/pms/") or string.find(body:GetModel(),"models/darkborn/zps/survivors_old/pms/") then
+    body:SetSkin(1)
+ else
+    body:SetSkin(oldSkin)
 end
         body:SetColor(oldColor)
         body:SetMaterial(oldMaterial)
