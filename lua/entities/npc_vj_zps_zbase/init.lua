@@ -1094,7 +1094,7 @@ end
     end
 end
         else
-            //local dist = self:VJ_GetNearestPointToEntityDistance(self.ZPS_DoorToBreak)
+            //local dist = self:FindNearestDistance(self.ZPS_DoorToBreak)
             if self.CurrentAttackAnimationTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self) /*or (curAct == ACT_OPEN_DOOR && dist <= 100)*/ then self.ZPS_DoorToBreak = NULL return end
             if curAct != ACT_OPEN_DOOR && self.ZPS_NextMeleeAnimT < CurTime() then
                 local ang = self:GetAngles()
@@ -1602,13 +1602,13 @@ function ENT:OnFootstepSound()
         filter = {self}
     })
     if tr.Hit && self.Zombie_FootSteps[tr.MatType] && self:GetClass() != "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if tr.Hit && self.Carrier_FootSteps[tr.MatType] && self:GetClass() == "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
     end
 end
 /*-----------------------------------------------

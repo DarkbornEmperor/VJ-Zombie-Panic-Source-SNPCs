@@ -2509,7 +2509,7 @@ function ENT:OnWeaponReload()
     end
 end
  //if self.Weapon_FindCoverOnReload then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
- if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:VJ_ForwardIsHidingZone(self:NearestPoint(self:GetPos() + self:OBBCenter()), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) == true then return end
+ if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:DoCoverTrace(self:GetPos() + self:OBBCenter(), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) then return end
  timer.Simple(0,function()
     local moveCheck = VJ.PICK(self:TraceDirections("Quick", math.random(150, 400), true, false, 8, true))
     if moveCheck then
