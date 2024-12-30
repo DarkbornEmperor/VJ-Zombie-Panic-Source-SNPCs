@@ -12,7 +12,7 @@ ENT.HealthRegenerationResetOnDmg = false
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_PLAYER_ALLY"}
 ENT.FriendsWithAllPlayerAllies = true
-ENT.BloodColor = "Red"
+ENT.BloodColor = VJ.BLOOD_COLOR_RED
 ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 //ENT.CustomBlood_Decal = {"VJ_ZPS_Blood_Red"}
 ENT.Weapon_WaitOnOcclusionTime = VJ.SET(2,3)
@@ -143,6 +143,7 @@ function ENT:Survivor_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
  self:SurvivorVoices()
+ self:CapabilitiesRemove(CAP_ANIMATEDFACE)
  self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
  self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
  self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)

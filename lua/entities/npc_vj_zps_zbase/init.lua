@@ -11,7 +11,7 @@ ENT.HealthRegenerationAmount = 4
 ENT.HealthRegenerationDelay = VJ.SET(2,2)
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
-ENT.BloodColor = "Red"
+ENT.BloodColor = VJ.BLOOD_COLOR_RED
 ENT.CustomBlood_Particle = {"vj_zps_blood_impact_red_01"}
 //ENT.CustomBlood_Decal = {"VJ_ZPS_Blood_Red"}
 ENT.PropAP_MaxSize = 5
@@ -139,10 +139,11 @@ end
 function ENT:Zombie_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
-   self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
-   self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
    self:Zombie_Init()
    self:ZombieVoices()
+   self:CapabilitiesRemove(CAP_ANIMATEDFACE)
+   self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
+   self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
    if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
         self.HealthRegenerationAmount = 4
