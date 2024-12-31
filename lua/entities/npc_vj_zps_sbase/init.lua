@@ -143,7 +143,7 @@ function ENT:Survivor_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
  self:SurvivorVoices()
- self:CapabilitiesRemove(CAP_ANIMATEDFACE)
+ //self:CapabilitiesRemove(CAP_ANIMATEDFACE)
  self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
  self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
  self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
