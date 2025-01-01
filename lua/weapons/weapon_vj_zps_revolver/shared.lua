@@ -12,7 +12,7 @@ SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 SWEP.MadeForNPCsOnly = true
 -- NPC Settings ---------------------------------------------------------------------------------------------------------------------------------------------
-SWEP.NPC_NextPrimaryFire = 0.9
+SWEP.NPC_NextPrimaryFire = 1.2
 SWEP.NPC_CustomSpread = 0.5
 SWEP.NPC_ReloadSound = "darkborn/zps/weapons/firearms/magnum/reload.wav"
 -- Primary Fire ---------------------------------------------------------------------------------------------------------------------------------------------
