@@ -1095,7 +1095,7 @@ end
     end
 end
         else
-            //local dist = self:FindNearestDistance(self.ZPS_DoorToBreak)
+            //local dist = self:GetNearestDistance(self.ZPS_DoorToBreak)
             if self.CurrentAttackAnimationTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self) /*or (curAct == ACT_OPEN_DOOR && dist <= 100)*/ then self.ZPS_DoorToBreak = NULL return end
             if curAct != ACT_OPEN_DOOR && self.ZPS_NextMeleeAnimT < CurTime() then
                 local ang = self:GetAngles()
@@ -1233,7 +1233,7 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
+function ENT:HandleGibOnDeath(dmginfo,hitgroup)
  if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
     self.HasDeathSounds = false
     VJ.EmitSound(self,"darkborn/zps/shared/impacts/flesh_bodyexplode1.wav",75,100)
@@ -1260,7 +1260,7 @@ end
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
     self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    return true,{AllowCorpse=false}
+    return true,{AllowCorpse=false,AllowSound=false}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
@@ -1328,8 +1328,6 @@ end
         end
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomGibOnDeathSounds(dmginfo,hitgroup) return false end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnRemove()
     -- If no corpse spawned, make sure to remove the hat!
