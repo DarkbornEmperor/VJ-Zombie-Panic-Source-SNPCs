@@ -40,6 +40,7 @@ ENT.ZPS_VirusInfection = true
 ENT.ZPS_Crouching = false
 ENT.ZPS_CanBreakDoors = false
 ENT.ZPS_Berserk = false
+ENT.ZPS_AttackingDoor = false
 ENT.ZPS_DoorToBreak = NULL
 ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextBerserkT = 0
@@ -1081,13 +1082,14 @@ end
     end
 end
     if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 0 or self.Dead then self.ZPS_DoorToBreak = NULL return end
-        if !IsValid(self.ZPS_DoorToBreak) then
+        if !IsValid(self.ZPS_DoorToBreak) && !self.ZPS_AttackingDoor then
           if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
             for _,v in pairs(ents.FindInSphere(self:GetPos(),40)) do
               if GetConVar("VJ_ZPS_BreakDoors_Func"):GetInt() == 1 && v:GetClass() == "func_door_rotating" && v:Visible(self) then self.ZPS_DoorToBreak = v end
                  if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
                     local anim = string.lower(v:GetSequenceName(v:GetSequence()))
                     if string.find(anim,"idle") or string.find(anim,"open") /*or string.find(anim,"locked")*/ then
+                        self.ZPS_AttackingDoor = true
                         self.ZPS_DoorToBreak = v
                 break
             end
@@ -1095,18 +1097,18 @@ end
     end
 end
         else
-            //local dist = self:GetNearestDistance(self.ZPS_DoorToBreak)
-            if self.CurrentAttackAnimationTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self) /*or (curAct == ACT_OPEN_DOOR && dist <= 100)*/ then self.ZPS_DoorToBreak = NULL return end
-            if curAct != ACT_OPEN_DOOR && self.ZPS_NextMeleeAnimT < CurTime() then
-                local ang = self:GetAngles()
-                self:SetAngles(Angle(ang.x,(self.ZPS_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
+            if IsValid(self.ZPS_DoorToBreak) then
+            local dist = self:GetNearestDistance(self.ZPS_DoorToBreak)
+            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.CurrentAttackAnimationTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self)) or dist > 40 then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
+            if curAct != ACT_OPEN_DOOR && IsValid(self.ZPS_DoorToBreak) && self.ZPS_NextMeleeAnimT < CurTime() then
+                self:SetTurnTarget(self.ZPS_DoorToBreak)
                 self:PlayAnim(ACT_OPEN_DOOR,false,false,false,0,{AlwaysUseGesture=true})
-                self:SetState(VJ_STATE_ONLY_ANIMATION)
                 self.ZPS_NextMeleeAnimT = CurTime() + VJ.AnimDuration(self,ACT_OPEN_DOOR)
+        end
     end
 end
-        if !IsValid(self.ZPS_DoorToBreak) then
-            self:SetState()
+        if !IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor then
+            self.ZPS_AttackingDoor = false
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
