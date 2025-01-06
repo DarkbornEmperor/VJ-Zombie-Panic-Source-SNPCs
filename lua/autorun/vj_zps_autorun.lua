@@ -763,7 +763,7 @@ end
     end
 end
  if !IsValid(SpawnControllerObject) then
-    local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
+    local SpawnControllerObject = ents.Create("obj_vj_controller")
     SpawnControllerObject.VJCE_Player = victim
     SpawnControllerObject:SetControlledNPC(zombie)
     SpawnControllerObject:Spawn()
