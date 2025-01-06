@@ -14,9 +14,9 @@ ENT.Information = "Projectiles for my addons"
 ENT.Category = "VJ Base"
 ENT.Spawnable = false
 
-ENT.VJTag_ID_Grenade = false
-ENT.VJTag_IsPickupable = false
-ENT.VJTag_IsAttackable = true
+ENT.VJ_ID_Grenade = false
+ENT.VJ_ID_Grabbable = false
+ENT.VJ_ID_Attackable = true
 
 if CLIENT then
     local Name = "IED"
@@ -76,7 +76,7 @@ local vecZ4 = Vector(0, 0, 4)
 local vezZ100 = Vector(0, 0, 100)
 --
 function ENT:Detonate()
-    self.VJTag_ID_Danger = true
+    self.VJ_ID_Danger = true
     self:SetSkin(1)
     VJ.CreateSound(self,"darkborn/zps/weapons/explosives/ied/ied_alarm.wav",75,100)
     timer.Simple(SoundDuration("darkborn/zps/weapons/explosives/ied/ied_alarm.wav"),function() if IsValid(self) then

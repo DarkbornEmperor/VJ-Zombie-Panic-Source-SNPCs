@@ -658,7 +658,7 @@ function VJ_ZPS_InfectionApply(victim,zombie)
  victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
  if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
     hook.Add("Think","VJ_ZPS_VictimCough",function()
- if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
+ if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
  if !victim.IsZPSSurvivor && CurTime() > victim.ZPS_NextCoughT then
  if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
     VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,120)
@@ -680,7 +680,7 @@ end
 end
  timer.Create(victim:EntIndex().."VJ_ZPS_Infection",math.random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(),GetConVar("VJ_ZPS_InfectionTime2"):GetInt()),1,function()
  if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
- if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJTag_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_Infection") return end
+ if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_Infection") return end
  if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
     victim:Kill()
     VJ_ZPS_CreateZombie(victim,victim)
@@ -726,7 +726,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_SetPlayerZombie(victim,inflictor,attacker)
- if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJTag_IsControllingNPC or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
+ if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJ_IsControllingNPC or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
  local zombie = NULL
  local oldModel = victim:GetModel()
  local oldSkin = victim:GetSkin()

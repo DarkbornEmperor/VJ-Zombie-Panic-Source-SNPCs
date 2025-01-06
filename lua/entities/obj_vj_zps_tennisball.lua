@@ -14,9 +14,9 @@ ENT.Information = "Projectiles for my addons"
 ENT.Category = "VJ Base"
 ENT.Spawnable = false
 
-ENT.VJTag_ID_Grenade = false
-ENT.VJTag_IsPickupable = false
-ENT.VJTag_ID_Danger = false
+ENT.VJ_ID_Grenade = false
+ENT.VJ_ID_Grabbable = false
+ENT.VJ_ID_Danger = false
 
 if CLIENT then
     local Name = "Tennis Ball"

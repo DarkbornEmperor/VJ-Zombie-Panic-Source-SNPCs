@@ -14,7 +14,7 @@ ENT.Information = "Projectiles for my addons"
 ENT.Category = "VJ Base"
 ENT.Spawnable = false
 
-ENT.VJTag_ID_Danger = false
+ENT.VJ_ID_Danger = false
 
 if CLIENT then
     local Name = "Snowball"
