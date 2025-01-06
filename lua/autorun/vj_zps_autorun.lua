@@ -596,7 +596,7 @@ end)
             local colCar = Color(255,191,0,255)
             for _,v in pairs(ents.GetAll()) do
             local classType = v:GetClass()
-            if (v:IsNPC() && classType != "obj_vj_bullseye" or v:IsPlayer()) && !v:IsFlagSet(FL_NOTARGET) then
+            if ((v:IsNPC() or v:IsNextBot()) && classType != "obj_vj_bullseye" or v:IsPlayer()) && !v:IsFlagSet(FL_NOTARGET) then
             if string.find(classType,"npc_vj_zps_z") && classType != "npc_vj_zps_zcarrier" then
                 table.insert(tbFri,v)
                 elseif classType == "npc_vj_zps_zcarrier" then
@@ -652,7 +652,7 @@ end)
 end)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_InfectionApply(victim,zombie)
- if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim:IsNextBot() then return end
+ if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim then return end
  if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.IsZPSZombie or victim.ZPS_ImmuneInfection or (victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class,"CLASS_ZOMBIE")) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
  local victimModel = victim:GetModel()
  victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
@@ -678,9 +678,9 @@ end
  if victim:IsPlayer() then
     deaths = victim:Deaths()
 end
- timer.Create(victim:EntIndex().."VJ_ZPS_Infection",math.random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(),GetConVar("VJ_ZPS_InfectionTime2"):GetInt()),1,function()
+ timer.Create(victim:EntIndex().."VJ_ZPS_InfectionTime",math.random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(),GetConVar("VJ_ZPS_InfectionTime2"):GetInt()),1,function()
  if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
- if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_Infection") return end
+ if (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex().."VJ_ZPS_InfectionTime") return end
  if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
     victim:Kill()
     VJ_ZPS_CreateZombie(victim,victim)
@@ -688,7 +688,7 @@ end
  if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
     VJ_ZPS_SetPlayerZombie(victim,victim)
 end
- if victim:IsNPC() then
+ if victim:IsNPC() or victim:IsNextBot() then
     VJ_ZPS_CreateZombie(victim,victim)
 end
  if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.IsZPSSurvivor then
@@ -708,7 +708,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ZPS_Infect(victim,inflictor,attacker,isPlayer)
-    if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) or victim:IsNextBot() then return end
+    if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
     if !isPlayer then
     if inflictor.ZPS_VirusInfection && !victim.ZPS_ImmuneInfection then
     if inflictor == attacker && victim != inflictor then
@@ -811,7 +811,7 @@ end
         sndTbl = DefaultFootSteps
     end
 end*/
- if (victim:IsNPC() or victim:IsPlayer()) && victim.ZPS_InfectedVictim then
+ if (victim:IsNPC() or victim:IsNextBot() or victim:IsPlayer()) && victim.ZPS_InfectedVictim then
  if !victim.IsZPSSurvivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
     zombie = ents.Create("npc_vj_zps_zinf")
     zombie:VJ_ZPS_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
@@ -890,7 +890,7 @@ end
         SafeRemoveEntity(victim:GetRagdollEntity())
     end
 end
- if victim:IsNPC() then
+ if victim:IsNPC() or victim:IsNextBot() then
     SafeRemoveEntity(victim)
 end
     if IsValid(victim:GetActiveWeapon()) then
