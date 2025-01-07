@@ -30,7 +30,7 @@ if !SERVER then return end
 ENT.Model = "models/darkborn/zps/weapons/w_snowball.mdl"
 ENT.ProjectileType = VJ.PROJ_TYPE_GRAVITY
 ENT.DoesDirectDamage = false
-ENT.CollisionDecals = "VJ_ZPS_Snow"
+ENT.CollisionDecal = "VJ_ZPS_Snow"
 ENT.SoundTbl_OnCollide = {"darkborn/zps/weapons/physics/snowball/impact01.wav","darkborn/zps/weapons/physics/snowball/impact02.wav","darkborn/zps/weapons/physics/snowball/impact03.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:InitPhys()

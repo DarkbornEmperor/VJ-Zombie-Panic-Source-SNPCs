@@ -68,7 +68,7 @@ function ENT:OnDestroy()
         endpos = myPos - vezZ100,
         filter = self
     })
-    util.Decal(VJ.PICK(self.CollisionDecals), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
+    util.Decal(VJ.PICK(self.CollisionDecal), tr.HitPos + tr.HitNormal, tr.HitPos - tr.HitNormal)
 
     self:DealDamage()
     self:Remove()
