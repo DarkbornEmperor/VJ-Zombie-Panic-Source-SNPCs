@@ -11,7 +11,7 @@ if (CLIENT) then
     local Name = "Zombie"
     local LangName = "npc_vj_zps_zinf"
     language.Add(LangName, Name)
-    killicon.Add(LangName,"HUD/killicons/default",Color(255,80,0,255))
+    killicon.Add(LangName,"zps/icons/destroy_zombie",Color(255,80,0,255))
     language.Add("#"..LangName, Name)
-    killicon.Add("#"..LangName,"HUD/killicons/default",Color(255,80,0,255))
+    killicon.Add("#"..LangName,"zps/icons/destroy_zombie",Color(255,80,0,255))
 end

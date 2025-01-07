@@ -22,9 +22,9 @@ if CLIENT then
     local Name = "IED"
     local LangName = "obj_vj_zps_ied"
     language.Add(LangName, Name)
-    killicon.Add(LangName,"HUD/killicons/default",Color(255,80,0,255))
+    killicon.Add(LangName,"zps/icons/destroy_survivor",Color(255,80,0,255))
     language.Add("#"..LangName, Name)
-    killicon.Add("#"..LangName,"HUD/killicons/default",Color(255,80,0,255))
+    killicon.Add("#"..LangName,"zps/icons/destroy_survivor",Color(255,80,0,255))
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end
