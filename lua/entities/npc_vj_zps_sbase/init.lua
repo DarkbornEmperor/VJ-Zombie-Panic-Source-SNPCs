@@ -2319,6 +2319,8 @@ end
     self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
     self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
+    timer.Remove("timer_melee_bleed"..self:EntIndex())
+    timer.Adjust("timer_melee_slowply"..self:EntIndex(), 0)
     self:RemoveAllDecals()
     timer.Simple(0.5,function() if IsValid(self) then
     if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end end)
