@@ -1293,7 +1293,18 @@ end
 end
     if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
         VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
+    if corpseEnt:GetBodygroup(0) == 1 or corpseEnt:GetBodygroup(1) == 1 or corpseEnt:GetBodygroup(2) == 1 or corpseEnt:GetBodygroup(3) == 1 then
         local bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Pos)
+        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Ang)
+        bleedOut:SetParent(corpseEnt)
+        bleedOut:Fire("SetParentAttachment","headshot1")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+    elseif corpseEnt:GetBodygroup(0) == 2 or corpseEnt:GetBodygroup(1) == 2 or corpseEnt:GetBodygroup(2) == 2 or corpseEnt:GetBodygroup(3) == 2 then
+        bleedOut = ents.Create("info_particle_system")
         bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
         bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Pos)
         bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Ang)
@@ -1302,6 +1313,17 @@ end
         bleedOut:Spawn()
         bleedOut:Activate()
         bleedOut:Fire("Start","",0)
+    elseif corpseEnt:GetBodygroup(0) == 3 or corpseEnt:GetBodygroup(1) == 3 or corpseEnt:GetBodygroup(2) == 3 or corpseEnt:GetBodygroup(3) == 3 then
+        bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Pos)
+        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Ang)
+        bleedOut:SetParent(corpseEnt)
+        bleedOut:Fire("SetParentAttachment","headshot3")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+    end
 end
  -- For bonemerged Zombies
  if IsValid(self.Bonemerge) && (string.find(self.Bonemerge:GetModel(),"models/darkborn/zps/survivors/") or string.find(self.Bonemerge:GetModel(),"models/darkborn/zps/survivors/pms/")) then
@@ -1318,7 +1340,18 @@ end
 end
     if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt.Bonemerge:GetBodygroup(0) != 0 or corpseEnt.Bonemerge:GetBodygroup(1) != 0 or corpseEnt.Bonemerge:GetBodygroup(2) != 0 or corpseEnt.Bonemerge:GetBodygroup(3) != 0) then
         VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
+    if corpseEnt.Bonemerge:GetBodygroup(0) == 1 or corpseEnt.Bonemerge:GetBodygroup(1) == 1 or corpseEnt.Bonemerge:GetBodygroup(2) == 1 or corpseEnt.Bonemerge:GetBodygroup(3) == 1 then
         local bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot1")).Pos)
+        bleedOut:SetAngles(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot1")).Ang)
+        bleedOut:SetParent(corpseEnt.Bonemerge)
+        bleedOut:Fire("SetParentAttachment","headshot1")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+    elseif corpseEnt.Bonemerge:GetBodygroup(0) == 2 or corpseEnt.Bonemerge:GetBodygroup(1) == 2 or corpseEnt.Bonemerge:GetBodygroup(2) == 2 or corpseEnt.Bonemerge:GetBodygroup(3) == 2 then
+        bleedOut = ents.Create("info_particle_system")
         bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
         bleedOut:SetPos(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot2")).Pos)
         bleedOut:SetAngles(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot2")).Ang)
@@ -1327,6 +1360,16 @@ end
         bleedOut:Spawn()
         bleedOut:Activate()
         bleedOut:Fire("Start","",0)
+    elseif corpseEnt.Bonemerge:GetBodygroup(0) == 3 or corpseEnt.Bonemerge:GetBodygroup(1) == 3 or corpseEnt.Bonemerge:GetBodygroup(2) == 3 or corpseEnt.Bonemerge:GetBodygroup(3) == 3 then
+        bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot3")).Pos)
+        bleedOut:SetAngles(corpseEnt.Bonemerge:GetAttachment(corpseEnt.Bonemerge:LookupAttachment("headshot3")).Ang)
+        bleedOut:SetParent(corpseEnt.Bonemerge)
+        bleedOut:Fire("SetParentAttachment","headshot3")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0) end
         end
     end
 end

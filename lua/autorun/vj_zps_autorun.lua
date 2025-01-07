@@ -617,10 +617,10 @@ end)
 end)
     net.Receive("VJ_ZPS_InfectionScreenEffect",function()
     local ply = net.ReadEntity()
-    local color = Color(75, 0, 0, 255)
+    local color = Color(15, 100, 0, 255)
     ply.VJ_ZPS_InfectionEffect_Time = CurTime() +0.1
     hook.Add("RenderScreenspaceEffects","VJ_ZPS_InfectionEffect" .. ply:EntIndex(),function()
-        if !IsValid(ply) or IsValid(ply) && (CurTime() > ply.VJ_ZPS_InfectionEffect_Time) then hook.Remove("RenderScreenspaceEffects","VJ_ZPS_InfectionEffect" .. ply:EntIndex()) return end
+        if !IsValid(ply) or IsValid(ply) && (CurTime() > ply.VJ_ZPS_InfectionEffect_Time) then hook.Remove("RenderScreenspaceEffects","VJ_ZPS_InfectionEffect"..ply:EntIndex()) return end
             ply:ScreenFade(SCREENFADE.IN, color, 0.5, 0)
         end)
     end)
@@ -656,21 +656,25 @@ function VJ_ZPS_InfectionApply(victim,zombie)
  if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.IsZPSZombie or victim.ZPS_ImmuneInfection or (victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class,"CLASS_ZOMBIE")) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) or (victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil) then return end
  local victimModel = victim:GetModel()
  victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
+ victim.ZPS_NextEffectT = CurTime() + math.Rand(10,35)
  if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
-    hook.Add("Think","VJ_ZPS_VictimCough",function()
- if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough") return end
+    hook.Add("Think","VJ_ZPS_VictimCough"..victim:EntIndex(),function()
+ if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or (victim.IsVJBaseSNPC && victim.Dead or victim.DeathAnimationCodeRan or victim.GodMode) then hook.Remove("Think","VJ_ZPS_VictimCough"..victim:EntIndex()) return end
  if !victim.IsZPSSurvivor && CurTime() > victim.ZPS_NextCoughT then
  if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
     VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,120)
  else
     VJ.CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,100)
 end
- if victim:IsPlayer() then
-    net.Start("VJ_ZPS_InfectionScreenEffect")
-    net.WriteEntity(victim)
-    net.Send(victim)
+    victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
 end
-        victim.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
+    if CurTime() > victim.ZPS_NextEffectT then
+        VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100)
+        victim.ZPS_NextEffectT = CurTime() + math.Rand(10,35)
+    if victim:IsPlayer() then
+        net.Start("VJ_ZPS_InfectionScreenEffect")
+        net.WriteEntity(victim)
+        net.Send(victim) end
         end
     end)
 end
@@ -691,18 +695,8 @@ end
  if victim:IsNPC() or victim:IsNextBot() then
     VJ_ZPS_CreateZombie(victim,victim)
 end
- if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.IsZPSSurvivor then
- if string.find(victimModel,"female") or string.find(victimModel,"alyx") or string.find(victimModel,"mossman") or string.find(victimModel,"chell") then
-    VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,120)
- else
-    VJ.CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,100)
-end
-    VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
-    VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100)
-end
-    if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && victim.IsZPSSurvivor then
-        VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100)
-        VJ.CreateSound(victim,"darkborn/zps/infection/jolt-0"..math.random(1,4)..".wav",75,100) end
+    if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 then
+        VJ.CreateSound(victim,{"darkborn/zps/zombies/z_vision/activate.wav","darkborn/zps/zombies/z_vision/deactivate.wav"},75,100) end
         end
     end)
 end
@@ -742,6 +736,7 @@ end
     zombie:SetPos(victim:GetPos())
     zombie:SetAngles(victim:GetAngles())
     zombie.GodMode = true
+    timer.Simple(0, function() zombie:PlaySoundSystem("Alert") end)
     zombie:Spawn()
     if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
     if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/pms/eugene_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/eugene_zombie.mdl" then
@@ -842,6 +837,7 @@ end
     zombie:SetPos(victim:GetPos())
     zombie:SetAngles(victim:GetAngles())
     zombie.GodMode = true
+    timer.Simple(0, function() zombie:PlaySoundSystem("Alert") end)
     zombie:Spawn()
     undo.ReplaceEntity(victim,zombie)
     if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 then
