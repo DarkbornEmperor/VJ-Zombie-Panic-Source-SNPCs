@@ -5,6 +5,10 @@ SWEP.Contact = "http://steamcommunity.com/groups/vrejgaming"
 SWEP.Purpose = "This weapon is made for NPCs"
 SWEP.Instructions = "Controls are like a regular weapon."
 SWEP.Category = "Zombie Panic! Source"
+-- Client Settings ---------------------------------------------------------------------------------------------------------------------------------------------
+if CLIENT then
+    VJ.AddKillIcon("weapon_vj_zps_snowball", SWEP.PrintName, "zps/icons/destroy_survivor")
+end
 -- NPC Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.NPC_NextPrimaryFire = 2.5
 SWEP.NPC_TimeUntilFire = 0.8

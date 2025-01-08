@@ -17,12 +17,7 @@ ENT.Spawnable = false
 ENT.VJ_ID_Danger = false
 
 if CLIENT then
-    local Name = "Snowball"
-    local LangName = "obj_vj_zps_snowball"
-    language.Add(LangName, Name)
-    killicon.Add(LangName,"zps/icons/destroy_survivor",Color(255,80,0,255))
-    language.Add("#"..LangName, Name)
-    killicon.Add("#"..LangName,"zps/icons/destroy_survivor",Color(255,80,0,255))
+    VJ.AddKillIcon("obj_vj_zps_snowball", ENT.PrintName, "zps/icons/destroy_survivor")
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end

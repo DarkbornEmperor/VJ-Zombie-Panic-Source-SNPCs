@@ -4,7 +4,11 @@ SWEP.Author = "Darkborn"
 SWEP.Contact = "http://steamcommunity.com/groups/vrejgaming"
 SWEP.Purpose = "This weapon is made for Players and NPCs"
 SWEP.Instructions = "Controls are like a regular weapon."
-SWEP.Category  = "Zombie Panic! Source"
+SWEP.Category = "Zombie Panic! Source"
+-- Client Settings ---------------------------------------------------------------------------------------------------------------------------------------------
+if CLIENT then
+    VJ.AddKillIcon("weapon_vj_zps_rem870", SWEP.PrintName, "zps/icons/destroy_survivor")
+end
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.WorldModel = "models/darkborn/zps/weapons/w_870.mdl"
 SWEP.HoldType = "shotgun"

@@ -5,6 +5,10 @@ SWEP.Contact = "http://steamcommunity.com/groups/vrejgaming"
 SWEP.Purpose = "This weapon is made for Players and NPCs"
 SWEP.Instructions = "Controls are like a regular weapon."
 SWEP.Category = "Zombie Panic! Source"
+-- Client Settings ---------------------------------------------------------------------------------------------------------------------------------------------
+if CLIENT then
+    VJ.AddKillIcon("weapon_vj_zps_hammer_bar", SWEP.PrintName, "zps/icons/destroy_survivor")
+end
 -- Main Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.WorldModel = "models/darkborn/zps/weapons/w_barricade.mdl"
 SWEP.HoldType = "melee"

@@ -7,11 +7,6 @@ ENT.Purpose = "Spawn it and fight with it!"
 ENT.Instructions = "Click on the spawnicon to spawn it."
 ENT.Category = "Zombie Panic! Source"
 
-if (CLIENT) then
-    local Name = "Eugene (Zombie)"
-    local LangName = "npc_vj_zps_zeugene"
-    language.Add(LangName, Name)
-    killicon.Add(LangName,"zps/icons/destroy_zombie",Color(255,80,0,255))
-    language.Add("#"..LangName, Name)
-    killicon.Add("#"..LangName,"zps/icons/destroy_zombie",Color(255,80,0,255))
+if CLIENT then
+    VJ.AddKillIcon("npc_vj_zps_zeugene", ENT.PrintName, "zps/icons/destroy_zombie")
 end
