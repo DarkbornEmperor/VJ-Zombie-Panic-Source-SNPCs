@@ -889,7 +889,7 @@ end
  if victim:IsNPC() or victim:IsNextBot() then
     SafeRemoveEntity(victim)
 end
-    if IsValid(victim:GetActiveWeapon()) then
+    if victim:IsNPC() && IsValid(victim:GetActiveWeapon()) then
         SafeRemoveEntity(victim:GetActiveWeapon())
         end
     end
