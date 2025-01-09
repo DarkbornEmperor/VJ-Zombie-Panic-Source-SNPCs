@@ -66,7 +66,8 @@ TFAVOX_Models[model] = {
             "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-02.wav",
             "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-03.wav",
             "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-04.wav",
-            "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-05.wav"
+            "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-05.wav",
+            "darkborn/zps/survivors/vanessa/commandmenu/needammo/needammo-06.wav"
             })
         },
         ['fall'] = {
