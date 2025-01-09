@@ -19,7 +19,7 @@ ENT.VJ_ID_Grabbable = false
 ENT.VJ_ID_Danger = false
 
 if CLIENT then
-    VJ.AddKillIcon("obj_vj_zps_tennisball", ENT.PrintName, "zps/icons/destroy_survivor")
+    VJ.AddKillIcon("obj_vj_zps_tennisball", ENT.PrintName, "zps/killicons/destroy_survivor", Color(0,160,255))
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end

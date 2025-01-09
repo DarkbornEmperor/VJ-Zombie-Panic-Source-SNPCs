@@ -8,5 +8,5 @@ ENT.Instructions = "Click on the spawnicon to spawn it."
 ENT.Category = "Zombie Panic! Source"
 
 if CLIENT then
-    VJ.AddKillIcon("npc_vj_zps_zbase", ENT.PrintName, "zps/icons/destroy_zombie")
+    VJ.AddKillIcon("npc_vj_zps_zbase", ENT.PrintName, "zps/killicons/destroy_zombie", Color(255,0,0))
 end

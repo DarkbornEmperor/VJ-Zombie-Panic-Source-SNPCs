@@ -1,0 +1,10 @@
+"UnlitGeneric"
+{
+    "$basetexture" "zps/killicons/destroy_zombie"
+    "$translucent" 1
+    "$ignorez" 1
+    "$nomip" 1
+    "$nolod" 1
+    "$vertexalpha" 1
+    "$vertexcolor" "1"
+}

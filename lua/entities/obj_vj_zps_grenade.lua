@@ -15,7 +15,7 @@ ENT.Category = "VJ Base"
 ENT.Spawnable = false
 
 if CLIENT then
-    VJ.AddKillIcon("obj_vj_zps_grenade", ENT.PrintName, "zps/icons/destroy_survivor")
+    VJ.AddKillIcon("obj_vj_zps_grenade", ENT.PrintName, "zps/killicons/destroy_survivor", Color(0,160,255))
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if !SERVER then return end

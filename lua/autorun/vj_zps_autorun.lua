@@ -6,7 +6,7 @@ local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 if VJExists == true then
     include("autorun/vj_controls.lua")
 
-    VJ.AddCategoryInfo("Zombie Panic! Source", {Icon = "zps/icons/zps.png"})
+    VJ.AddCategoryInfo("Zombie Panic! Source", {Icon = "zps/killicons/zps.png"})
 
     local spawnCategory = "Zombie Panic! Source"
 

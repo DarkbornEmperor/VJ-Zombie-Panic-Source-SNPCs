@@ -7,7 +7,7 @@ SWEP.Instructions = "Controls are like a regular weapon."
 SWEP.Category = "Zombie Panic! Source"
 -- Client Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 if CLIENT then
-    VJ.AddKillIcon("weapon_vj_zps_tennisball", SWEP.PrintName, "zps/icons/destroy_survivor")
+    VJ.AddKillIcon("weapon_vj_zps_tennisball", SWEP.PrintName, "zps/killicons/destroy_survivor", Color(0,160,255))
 end
 -- NPC Settings ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.NPC_NextPrimaryFire = 2.5
