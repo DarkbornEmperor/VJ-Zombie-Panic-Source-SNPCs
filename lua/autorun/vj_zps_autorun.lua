@@ -617,7 +617,7 @@ end)
 end)
     net.Receive("VJ_ZPS_InfectionScreenEffect",function()
     local ply = net.ReadEntity()
-    local color = Color(15, 100, 0, 255)
+    local color = Color(15, 100, 0, 10)
     ply.VJ_ZPS_InfectionEffect_Time = CurTime() +0.1
     hook.Add("RenderScreenspaceEffects","VJ_ZPS_InfectionEffect" .. ply:EntIndex(),function()
         if !IsValid(ply) or IsValid(ply) && (CurTime() > ply.VJ_ZPS_InfectionEffect_Time) then hook.Remove("RenderScreenspaceEffects","VJ_ZPS_InfectionEffect"..ply:EntIndex()) return end
