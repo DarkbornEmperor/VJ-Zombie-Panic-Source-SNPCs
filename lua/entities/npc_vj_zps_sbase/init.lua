@@ -2231,8 +2231,8 @@ function ENT:TranslateActivity(act)
         end
     end
 end
-    if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
-        return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
+ if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
+    return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
 end
     /*if self.ZPS_Crouching then
     if act == ACT_IDLE then
