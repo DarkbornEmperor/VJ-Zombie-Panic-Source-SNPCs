@@ -40,6 +40,7 @@ end
 function ENT:InitPhys()
     local phys = self:GetPhysicsObject()
     if IsValid(phys) then
+        phys:SetMass(1)
         phys:AddAngleVelocity(Vector(math.Rand(500, 500), math.Rand(500, 500), math.Rand(500, 500)))
     end
 end
