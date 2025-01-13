@@ -995,7 +995,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnChangeActivity(newAct)
  if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
-    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Jump)
+    self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
 end
  if newAct == ACT_LAND then
     self:SetNavType(NAV_GROUND)
@@ -1067,7 +1067,7 @@ function ENT:OnThink()
             elseif self.VJ_TheController:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*-350)
             elseif self.VJ_TheController:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*-350)
             elseif self.VJ_TheController:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*350) end*/
-            self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Jump)
+            self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
             self.ZPS_NextJumpT = CurTime() + 0.8
         end
     end
@@ -1185,7 +1185,7 @@ end
 end
      if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then
         self.ZPS_Berserk = true
-        self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Berserk)
+        self:PlaySoundSystem("Speech",self.SoundTbl_Berserk)
         timer.Simple(8,function() if IsValid(self) then
         self.ZPS_Berserk = false
         self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20) end end)

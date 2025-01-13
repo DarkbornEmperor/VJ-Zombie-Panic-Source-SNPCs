@@ -2203,7 +2203,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnChangeActivity(newAct)
  if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
-    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Jump)
+    self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
 end
  if newAct == ACT_LAND then
     self:SetNavType(NAV_GROUND)
@@ -2258,7 +2258,7 @@ function ENT:OnThink()
             elseif self.VJ_TheController:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*-350)
             elseif self.VJ_TheController:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*-350)
             elseif self.VJ_TheController:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*350) end*/
-            self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Jump)
+            self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
             self.ZPS_NextJumpT = CurTime() + 0.8
         end
     end
@@ -2292,7 +2292,7 @@ end
 function ENT:OnThinkActive()
  //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.DoingWeaponAttack*/ then self.ZPS_Crouching = false end
  if self.ZPS_InfectedVictim && !self.ZPS_ImmuneInfection && CurTime() > self.ZPS_NextCoughT then
-    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_Cough)
+    self:PlaySoundSystem("Speech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
 end
  if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
@@ -2317,7 +2317,7 @@ end
     local CurHP = self:Health()
     self:InoculatorInject()
     self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
-    self:PlaySoundSystem("GeneralSpeech",self.SoundTbl_MedicReceiveHeal)
+    self:PlaySoundSystem("Speech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
     timer.Remove("timer_melee_bleed"..self:EntIndex())
     timer.Adjust("timer_melee_slowply"..self:EntIndex(), 0)
@@ -2775,7 +2775,7 @@ end
     if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
     if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
         dmginfo:ScaleDamage(0.80)
-        if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70)
+        if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ_EmitSound(self,"VJ.Impact.Armor")
         local spark = ents.Create("env_spark")
         spark:SetKeyValue("Magnitude","1")
         spark:SetKeyValue("Spark Trail Length","1")
