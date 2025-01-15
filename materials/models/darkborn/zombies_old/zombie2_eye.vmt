@@ -1,5 +1,8 @@
-"VertexLitGeneric"
+"UnlitGeneric"
 {
-    "$basetexture" "models/darkborn/zombies_old/zombie1/zombie2_eye"
-    "$selfillum"    "1"
+    "$baseTexture" "models/darkborn/zombies_old/zombie2_eye"
+    "$selfillum" "1"
+    "$nodecal" "1"
+    "$model" "1"
+    "$nocull" "1
 }
