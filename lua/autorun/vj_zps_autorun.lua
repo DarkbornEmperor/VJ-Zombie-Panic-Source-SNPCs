@@ -6,7 +6,7 @@ local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 if VJExists == true then
     include("autorun/vj_controls.lua")
 
-    VJ.AddCategoryInfo("Zombie Panic! Source", {Icon = "zps/killicons/zps.png"})
+    VJ.AddCategoryInfo("Zombie Panic! Source", {Icon = "zps/icons/zps.png"})
 
     local spawnCategory = "Zombie Panic! Source"
 
@@ -442,7 +442,7 @@ sound.Add({
          hook.Add("PopulateToolMenu", "VJ_ADDTOMENU_ZPS", function()
          spawnmenu.AddToolMenuOption("DrVrej", "SNPC Configures", "ZPS (Main)", "ZPS (Main)", "", "", function(Panel)
             local vj_zpsreset_cs = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
-            vj_zpsreset_cs.Options["#vjbase.menugeneral.default"] = {
+            vj_zpsreset_cs.Options["#vjbase.menu.general.reset.everything"] = {
                 VJ_ZPS_ZombieOverlay = "1",
                 VJ_ZPS_BloodDecals = "1",
 }
@@ -457,7 +457,7 @@ sound.Add({
 end
             Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
             local vj_zpsreset = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
-            vj_zpsreset.Options["#vjbase.menugeneral.default"] = {
+            vj_zpsreset.Options["#vjbase.menu.general.reset.everything"] = {
                 VJ_ZPS_Infection = "1",
                 VJ_ZPS_InfectionEffects = "1",
                 VJ_ZPS_PlayerZombie = "1",
@@ -519,7 +519,7 @@ end
 end)
          spawnmenu.AddToolMenuOption("DrVrej", "SNPC Configures", "ZPS (Map Spawner)", "ZPS (Map Spawner)", "", "", function(Panel)
             local vj_zpsreset_mapspawner_cs = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
-            vj_zpsreset_mapspawner_cs.Options["#vjbase.menugeneral.default"] = {
+            vj_zpsreset_mapspawner_cs.Options["#vjbase.menu.general.reset.everything"] = {
                 VJ_ZPS_MapSpawner_Music = "1",
                 VJ_ZPS_MapSpawner_Ambient = "1",
                 VJ_ZPS_MapSpawner_MusicVolume = "50",
@@ -538,7 +538,7 @@ end)
 end
             Panel:AddControl("Label", {Text = "#vjbase.menu.general.admin.only"})
             local vj_zpsreset_mapspawner = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
-            vj_zpsreset_mapspawner.Options["#vjbase.menugeneral.default"] = {
+            vj_zpsreset_mapspawner.Options["#vjbase.menu.general.reset.everything"] = {
                 VJ_ZPS_MapSpawner_Enabled = "1",
                 VJ_ZPS_MapSpawner_MaxZom = "80",
                 VJ_ZPS_MapSpawner_HordeCount = "35",
