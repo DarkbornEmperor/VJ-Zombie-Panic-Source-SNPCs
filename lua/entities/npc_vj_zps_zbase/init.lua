@@ -1098,8 +1098,8 @@ end
 end
         else
             if IsValid(self.ZPS_DoorToBreak) then
-            local dist = self:GetNearestDistance(self.ZPS_DoorToBreak)
-            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.CurrentAttackAnimationTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self)) or dist > 40 then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
+            local dist = VJ.GetNearestDistance(self,self.ZPS_DoorToBreak)
+            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.AttackAnimTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self)) or dist > 40 then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
             if curAct != ACT_OPEN_DOOR && IsValid(self.ZPS_DoorToBreak) && self.ZPS_NextMeleeAnimT < CurTime() then
                 self:SetTurnTarget(self.ZPS_DoorToBreak)
                 self:PlayAnim(ACT_OPEN_DOOR,false,false,false,0,{AlwaysUseGesture=true})
