@@ -2221,9 +2221,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
     if self.ZPS_Crouching && self.Weapon_CanFireWhileMoving && IsValid(self:GetEnemy()) then
-    if (self.EnemyData.IsVisible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving == true && self:CanFireWeapon(true, false) == true then
-        self.DoingWeaponAttack = true
-        self.DoingWeaponAttack_Standing = false
+    if (self.EnemyData.IsVisible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
+        self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
     if act == ACT_WALK then
         return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
     elseif act == ACT_RUN then
@@ -2282,7 +2281,7 @@ end
 end
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 && GetConVar("ai_disabled"):GetInt() == 0 && !self.ZPS_Panic then
         if IsValid(self:GetEnemy()) && !self.IsGuard then
-            if math.random(1,100) <= 3 && !IsValid(controller) && self:Visible(self:GetEnemy()) && self.DoingWeaponAttack then
+            if math.random(1,100) <= 3 && !IsValid(controller) && self:Visible(self:GetEnemy()) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE then
                 self:AvoidThreat()
             end
         end
@@ -2290,7 +2289,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThinkActive()
- //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.DoingWeaponAttack*/ then self.ZPS_Crouching = false end
+ //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.WeaponAttackState*/ then self.ZPS_Crouching = false end
  if self.ZPS_InfectedVictim && !self.ZPS_ImmuneInfection && CurTime() > self.ZPS_NextCoughT then
     self:PlaySoundSystem("Speech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
@@ -2481,7 +2480,7 @@ function ENT:OnWeaponAttack()
  if self.VJ_IsBeingControlled then return end
  local wep = self.CurrentWeaponEntity
  if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
- if self.Weapon_StrafeWhileFiring && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.DoingWeaponAttack && CurTime() > self.NextWeaponStrafeWhileFiringT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
+ if self.Weapon_StrafeWhileFiring && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeWhileFiringT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
  timer.Simple(0,function()
     local moveCheck = VJ.PICK(self:TraceDirections("Quick", math.random(150, 250), true, false, 8, true))
     if moveCheck then
