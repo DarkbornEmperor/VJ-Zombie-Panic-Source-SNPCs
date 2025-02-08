@@ -128,7 +128,7 @@ function ENT:OnInput(key,activator,caller,data)
     elseif key == "melee" or (key == "melee_weapon" && IsValid(self:GetActiveWeapon()) && self:GetActiveWeapon().IsMeleeWeapon) then
         self:MeleeAttackCode()
     /*elseif key == "grenade_attack" then
-        timer.Adjust("timer_grenade_start"..self:EntIndex(), 0)*/
+        timer.Adjust("attack_grenade_start"..self:EntIndex(), 0)*/
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
