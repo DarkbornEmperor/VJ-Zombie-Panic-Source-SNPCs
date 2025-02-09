@@ -2315,7 +2315,7 @@ end
     timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
     local CurHP = self:Health()
     self:InoculatorInject()
-    self:SetHealth(math.Clamp(CurHP + self.Medic_HealthAmount, CurHP, self:GetMaxHealth()))
+    self:SetHealth(math.Clamp(CurHP + self.Medic_HealAmount, CurHP, self:GetMaxHealth()))
     self:PlaySoundSystem("Speech",self.SoundTbl_MedicReceiveHeal)
     VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
     timer.Remove("timer_melee_bleed"..self:EntIndex())
@@ -2414,11 +2414,11 @@ function ENT:OnMedicBehavior(status,statusData)
         self:DeleteOnRemove(inoculator)
         SafeRemoveEntityDelayed(inoculator,1.2)
     if inoculator:GetSkin() == 0 then
-        self.Medic_HealthAmount = 20
+        self.Medic_HealAmount = 20
     elseif inoculator:GetSkin() == 1 then
-        self.Medic_HealthAmount = 0
+        self.Medic_HealAmount = 0
     elseif inoculator:GetSkin() == 2 then
-        self.Medic_HealthAmount = 100
+        self.Medic_HealAmount = 100
     end
 end
  if status == "OnHeal" then
@@ -2441,11 +2441,11 @@ end
 function ENT:InoculatorInject()
     if IsValid(self.Inoculator) then
     if self.Inoculator:GetSkin() == 0 then
-        self.Medic_HealthAmount = 20
+        self.Medic_HealAmount = 20
     elseif self.Inoculator:GetSkin() == 1 then
-        self.Medic_HealthAmount = 0
+        self.Medic_HealAmount = 0
     elseif self.Inoculator:GetSkin() == 2 then
-        self.Medic_HealthAmount = 100
+        self.Medic_HealAmount = 100
 end
  if self.Inoculator:GetSkin() == 1 then
     if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
