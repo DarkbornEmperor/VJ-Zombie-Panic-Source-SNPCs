@@ -35,14 +35,14 @@ ENT.Medic_SpawnPropOnHeal = false
 ENT.Medic_SpawnPropOnHealModel = "models/darkborn/zps/weapons/w_inoculator.mdl"
 ENT.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
 ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_empty"}
-ENT.CallForBackUpOnDamageAnimation = "vjges_gesture_interaction_grab_empty"
+ENT.AnimTbl_CallForBackUpOnDamage = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
 ENT.OnKilledEnemy_OnlyLast = false
 ENT.DisableFootStepSoundTimer = true
 ENT.GeneralSoundPitch1 = 100
     -- ====== Controller Data ====== --
-ENT.VJC_Data = {
+ENT.ControllerVars = {
     CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
     ThirdP_Offset = Vector(40, 25, -50), -- The offset for the controller when the camera is in third person
     FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
@@ -124,7 +124,7 @@ ENT.WeaponsList_Cont = {
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnInput(key,activator,caller,data)
     if key == "step" then
-        self:FootStepSoundCode()
+        self:PlayFootstepSound()
     elseif key == "melee" or (key == "melee_weapon" && IsValid(self:GetActiveWeapon()) && self:GetActiveWeapon().IsMeleeWeapon) then
         self:MeleeAttackCode()
     /*elseif key == "grenade_attack" then

@@ -14,7 +14,7 @@ ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
 ENT.BloodColor = VJ.BLOOD_COLOR_RED
 ENT.BloodParticle = {"vj_zps_blood_impact_red_01"}
 //ENT.BloodDecal = {"VJ_ZPS_Blood_Red"}
-ENT.PropAP_MaxSize = 5
+ENT.PropInteraction_MaxScale = 5
 ENT.HasMeleeAttack = true
 ENT.HasMeleeAttackKnockBack = true
 ENT.MeleeAttackDamage = 25
@@ -29,7 +29,7 @@ ENT.HideOnUnknownDamage = false
 ENT.DisableFootStepSoundTimer = true
 ENT.GeneralSoundPitch1 = 100
     -- ====== Controller Data ====== --
-ENT.VJC_Data = {
+ENT.ControllerVars = {
     CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
     ThirdP_Offset = Vector(40, 25, -50), -- The offset for the controller when the camera is in third person
     FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
@@ -76,7 +76,7 @@ ENT.SoundTbl_Impact = {
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnInput(key,activator,caller,data)
     if key == "step" then
-        self:FootStepSoundCode()
+        self:PlayFootstepSound()
     elseif key == "melee" then
         self:MeleeAttackCode()
 end
