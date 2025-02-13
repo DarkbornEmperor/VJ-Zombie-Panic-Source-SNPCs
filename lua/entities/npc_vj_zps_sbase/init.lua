@@ -11,7 +11,7 @@ ENT.HealthRegenerationDelay = VJ.SET(1,1)
 ENT.HealthRegenerationResetOnDmg = false
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_PLAYER_ALLY"}
-ENT.FriendsWithAllPlayerAllies = true
+ENT.AlliedWithPlayerAllies = true
 ENT.BloodColor = VJ.BLOOD_COLOR_RED
 ENT.BloodParticle = {"vj_zps_blood_impact_red_01"}
 //ENT.BloodDecal = {"VJ_ZPS_Blood_Red"}
@@ -26,7 +26,7 @@ ENT.Weapon_FindCoverOnReload = false
 //ENT.HasGrenadeAttack = true -- We use a seperate weapon for Grenade attack
 ENT.GrenadeAttackEntity = "obj_vj_zps_grenade"
 ENT.GrenadeAttackModel = "models/darkborn/zps/weapons/w_grenade_thrown.mdl"
-ENT.TimeUntilGrenadeIsReleased = 0.4
+ENT.GrenadeAttackThrowTime = 0.4
 ENT.AnimTbl_GrenadeAttack = "vjseq_vjges_gesture_throw_grenade"
 ENT.GrenadeAttackAttachment = "anim_attachment_RH"
 ENT.AnimTbl_Medic_GiveHealth = "vjges_gesture_inoculator_inject"
@@ -35,14 +35,14 @@ ENT.Medic_SpawnPropOnHeal = false
 ENT.Medic_SpawnPropOnHealModel = "models/darkborn/zps/weapons/w_inoculator.mdl"
 ENT.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
 ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_empty"}
-ENT.AnimTbl_CallForBackUpOnDamage = "vjges_gesture_interaction_grab_empty"
+ENT.AnimTbl_DamageAllyResponse = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
 ENT.OnKilledEnemy_OnlyLast = false
 ENT.DisableFootStepSoundTimer = true
 ENT.GeneralSoundPitch1 = 100
     -- ====== Controller Data ====== --
-ENT.ControllerParameters = {
+ENT.ControllerParams = {
     CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
     ThirdP_Offset = Vector(40, 25, -50), -- The offset for the controller when the camera is in third person
     FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
@@ -2311,7 +2311,7 @@ end
     self.Inoculator = inoculator
     self:DeleteOnRemove(inoculator)
     SafeRemoveEntityDelayed(inoculator,1.2)
- if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.FACE_ENEMY} end) end
+ if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end
     timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
     local CurHP = self:Health()
     self:InoculatorInject()
@@ -2487,7 +2487,7 @@ function ENT:OnWeaponAttack()
     self:StopMoving()
     self.NextWeaponStrafeWhileFiringT = CurTime() + math.Rand(self.Weapon_StrafeWhileFiringDelay.a, self.Weapon_StrafeWhileFiringDelay.b)
     self:SetLastPosition(moveCheck)
-    self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.FACE_ENEMY} end) end end) end
+    self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end) end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnWeaponStrafeWhileFiring()
@@ -2517,7 +2517,7 @@ end
     if moveCheck then
     self:StopMoving()
     self:SetLastPosition(moveCheck)
-    self:SCHEDULE_GOTO_POSITION(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.FaceData = {Type = VJ.FACE_ENEMY} end) end end)
+    self:SCHEDULE_GOTO_POSITION(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 /*function ENT:OnChangeWeapon(newWeapon,oldWeapon,invSwitch)
@@ -2539,7 +2539,7 @@ end*/
     self.FakeGrenade:Spawn()
     self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
     self:DeleteOnRemove(self.FakeGrenade)
-    SafeRemoveEntityDelayed(self.FakeGrenade,self.TimeUntilGrenadeIsReleased)
+    SafeRemoveEntityDelayed(self.FakeGrenade,self.GrenadeAttackThrowTime)
 end
  if status == "Throw" then
     //SafeRemoveEntity(self.FakeGrenade)

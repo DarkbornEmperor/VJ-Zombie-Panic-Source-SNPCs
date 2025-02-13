@@ -29,7 +29,7 @@ ENT.HideOnUnknownDamage = false
 ENT.DisableFootStepSoundTimer = true
 ENT.GeneralSoundPitch1 = 100
     -- ====== Controller Data ====== --
-ENT.ControllerParameters = {
+ENT.ControllerParams = {
     CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
     ThirdP_Offset = Vector(40, 25, -50), -- The offset for the controller when the camera is in third person
     FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
