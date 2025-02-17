@@ -21,8 +21,8 @@ ENT.MeleeAttackDamage = 25
 ENT.TimeUntilMeleeAttackDamage = false
 ENT.MeleeAttackDistance = 30
 ENT.MeleeAttackDamageDistance = 60
-ENT.SlowPlayerOnMeleeAttack = true
-ENT.SlowPlayerOnMeleeAttackTime = 0.5
+ENT.MeleeAttackPlayerSpeed = true
+ENT.MeleeAttackPlayerSpeedTime = 0.5
 ENT.HasMeleeAttackSlowPlayerSound = false
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
@@ -1646,13 +1646,13 @@ function ENT:OnFootstepSound()
         filter = {self}
     })
     if tr.Hit && self.Zombie_FootSteps[tr.MatType] && self:GetClass() != "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if tr.Hit && self.Carrier_FootSteps[tr.MatType] && self:GetClass() == "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootStepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
     end
 end
 /*-----------------------------------------------

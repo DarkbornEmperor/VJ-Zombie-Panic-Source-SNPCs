@@ -15,7 +15,7 @@ ENT.AlliedWithPlayerAllies = true
 ENT.BloodColor = VJ.BLOOD_COLOR_RED
 ENT.BloodParticle = {"vj_zps_blood_impact_red_01"}
 //ENT.BloodDecal = {"VJ_ZPS_Blood_Red"}
-ENT.Weapon_WaitOnOcclusionTime = VJ.SET(2,3)
+ENT.Weapon_OcclusionDelayTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
 ENT.AnimTbl_MeleeAttack = "vjseq_vjges_gesture_push"
@@ -149,7 +149,7 @@ function ENT:Init()
  self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
  if math.random(1,5) == 1 then self.IsMedic = true end
  if math.random(1,5) == 1 then self.ZPS_Armor = true end
- if !self.DisableWeapons then
+ if !self.Weapon_Disabled then
  if !self.WeaponInventory_MeleeList then
     self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
  else
@@ -2220,7 +2220,7 @@ function ENT:Controller_Initialize(ply)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
-    if self.ZPS_Crouching && self.Weapon_CanFireWhileMoving && IsValid(self:GetEnemy()) then
+    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self:GetEnemy()) then
     if (self.EnemyData.IsVisible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
         self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
     if act == ACT_WALK then
@@ -2262,7 +2262,7 @@ function ENT:OnThink()
         end
     end
 end
- /*if !IsValid(self:GetActiveWeapon()) or self.DisableWeapons then
+ /*if !IsValid(self:GetActiveWeapon()) or self.Weapon_Disabled then
     self.SoundTbl_Alert = self.SoundTbl_CallForHelp
     self.SoundTbl_CombatIdle = self.SoundTbl_CallForHelp
 end*/
@@ -2327,7 +2327,7 @@ end
 end)
     self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
 end
- if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.DisableWeapons or !IsValid(self:GetActiveWeapon()) then return end
+ if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.Weapon_Disabled or !IsValid(self:GetActiveWeapon()) then return end
     local ent = self:GetEnemy()
     local dist = self.NearestPointToEnemyDistance
     if IsValid(ent) && !self.VJ_IsBeingControlled && !self.ZPS_Panic then
@@ -2480,17 +2480,17 @@ function ENT:OnWeaponAttack()
  if self.VJ_IsBeingControlled then return end
  local wep = self.WeaponEntity
  if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
- if self.Weapon_StrafeWhileFiring && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeWhileFiringT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
+ if self.Weapon_Strafe && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeT && (CurTime() - self.EnemyData.TimeSinceAcquired) > 2 then
  timer.Simple(0,function()
     local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 250), true, false, 8, true))
     if moveCheck then
     self:StopMoving()
-    self.NextWeaponStrafeWhileFiringT = CurTime() + math.Rand(self.Weapon_StrafeWhileFiringDelay.a, self.Weapon_StrafeWhileFiringDelay.b)
+    self.NextWeaponStrafeT = CurTime() + math.Rand(self.Weapon_StrafeCooldown.a, self.Weapon_StrafeCooldown.b)
     self:SetLastPosition(moveCheck)
     self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end) end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnWeaponStrafeWhileFiring()
+function ENT:OnWeaponStrafe()
   if self.VJ_IsBeingControlled then return end
     if math.random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
@@ -3012,10 +3012,10 @@ function ENT:OnFootstepSound()
         filter = {self}
     })
     if tr.Hit && self.FootSteps[tr.MatType] then
-        VJ.EmitSound(self,VJ.PICK(self.FootSteps[tr.MatType]),self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,VJ.PICK(self.FootSteps[tr.MatType]),self.FootstepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+        VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootstepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
     end
 end
 /*-----------------------------------------------
