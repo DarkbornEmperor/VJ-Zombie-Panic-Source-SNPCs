@@ -62,12 +62,8 @@ ENT.ZPS_NextSelfHealT = 0
 ENT.ZPS_NextCoughT = 0
 ENT.IsZPSSurvivor = true
     -- ====== Sound File Paths ====== --
-ENT.SoundTbl_FootStep = {
-"common/null.wav"
-}
-ENT.SoundTbl_MeleeAttack = {
-"common/null.wav"
-}
+ENT.SoundTbl_FootStep = "common/null.wav"
+ENT.SoundTbl_MeleeAttack = "common/null.wav"
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-01.wav",
 "darkborn/zps/weapons/melee/push/push_hit-02.wav",

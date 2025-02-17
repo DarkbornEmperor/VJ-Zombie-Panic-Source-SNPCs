@@ -48,9 +48,7 @@ ENT.ZPS_NextJumpT = 0
 ENT.ZPS_NextMeleeAnimT = 0
 ENT.IsZPSZombie = true
     -- ====== Sound File Paths ====== --
-ENT.SoundTbl_FootStep = {
-"common/null.wav"
-}
+ENT.SoundTbl_FootStep = "common/null.wav"
 ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/zombies/z_attack/hit/z_hit-01.wav",
 "darkborn/zps/zombies/z_attack/hit/z_hit-02.wav",
