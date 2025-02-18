@@ -38,7 +38,7 @@ ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_em
 ENT.AnimTbl_DamageAllyResponse = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
-ENT.OnKilledEnemy_OnlyLast = false
+ENT.KilledEnemySoundLast = false
 ENT.DisableFootStepSoundTimer = true
 ENT.MainSoundPitch = VJ.SET(100, 100)
     -- ====== Controller Data ====== --
@@ -70,7 +70,7 @@ ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-03.wav",
 "darkborn/zps/weapons/melee/push/push_hit-04.wav"
 }
-ENT.SoundTbl_MedicAfterHeal = {
+ENT.SoundTbl_MedicOnHeal = {
 "darkborn/zps/weapons/health/inoculator/inject.wav"
 }
 ENT.SoundTbl_Impact = {
@@ -312,7 +312,7 @@ function ENT:SurvivorVoice_Eugene()
     "darkborn/zps/survivors/eugene/panic!/panic-05.wav",
     "darkborn/zps/survivors/eugene/panic!/panic-06.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/eugene/keepmoving/keep_moving-01.wav",
     "darkborn/zps/survivors/eugene/keepmoving/keep_moving-02.wav",
     "darkborn/zps/survivors/eugene/keepmoving/keep_moving-03.wav",
@@ -327,7 +327,7 @@ function ENT:SurvivorVoice_Eugene()
     "darkborn/zps/survivors/eugene/meleegrunts/melee_grunt-05.wav",
     "darkborn/zps/survivors/eugene/meleegrunts/melee_grunt-06.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/eugene/kill/kill-01.wav",
     "darkborn/zps/survivors/eugene/kill/kill-02.wav",
     "darkborn/zps/survivors/eugene/kill/kill-03.wav",
@@ -557,7 +557,7 @@ function ENT:SurvivorVoice_Jessica()
     "darkborn/zps/survivors/jessica/panic!/panic-04.wav",
     "darkborn/zps/survivors/jessica/panic!/panic-05.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/jessica/keepmoving/keepmoving-01.wav",
     "darkborn/zps/survivors/jessica/keepmoving/keepmoving-02.wav",
     "darkborn/zps/survivors/jessica/keepmoving/keepmoving-03.wav",
@@ -570,7 +570,7 @@ function ENT:SurvivorVoice_Jessica()
     "darkborn/zps/survivors/jessica/meleegrunts/melee-04.wav",
     "darkborn/zps/survivors/jessica/meleegrunts/melee-05.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/jessica/kill/kill-01.wav",
     "darkborn/zps/survivors/jessica/kill/kill-02.wav",
     "darkborn/zps/survivors/jessica/kill/kill-03.wav",
@@ -842,7 +842,7 @@ function ENT:SurvivorVoice_Larry()
     "darkborn/zps/survivors/larry/panic!/panic-09.wav",
     "darkborn/zps/survivors/larry/panic!/panic-10.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/larry/keepmoving/keepmoving-01.wav",
     "darkborn/zps/survivors/larry/keepmoving/keepmoving-02.wav",
     "darkborn/zps/survivors/larry/keepmoving/keepmoving-03.wav",
@@ -863,7 +863,7 @@ function ENT:SurvivorVoice_Larry()
     "darkborn/zps/survivors/larry/meleegrunts/melee-05.wav",
     "darkborn/zps/survivors/larry/meleegrunts/melee-06.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/larry/kill/kill-01.wav",
     "darkborn/zps/survivors/larry/kill/kill-02.wav",
     "darkborn/zps/survivors/larry/kill/kill-03.wav",
@@ -1119,7 +1119,7 @@ function ENT:SurvivorVoice_Lea()
     "darkborn/zps/survivors/lea/panic/panic-05.wav",
     "darkborn/zps/survivors/lea/panic/panic-06.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/lea/commandmenu/cover/cover-05.wav",
     "darkborn/zps/survivors/lea/commandmenu/escape/escape-01.wav",
     "darkborn/zps/survivors/lea/commandmenu/escape/escape-03.wav"
@@ -1131,7 +1131,7 @@ function ENT:SurvivorVoice_Lea()
     "darkborn/zps/survivors/lea/meleegrunts/melee-04.wav",
     "darkborn/zps/survivors/lea/meleegrunts/melee-05.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/lea/kill/kill-01.wav",
     "darkborn/zps/survivors/lea/kill/kill-02.wav",
     "darkborn/zps/survivors/lea/kill/kill-03.wav",
@@ -1350,7 +1350,7 @@ function ENT:SurvivorVoice_Marcus()
     "darkborn/zps/survivors/marcus/panic!/panic-05.wav",
     "darkborn/zps/survivors/marcus/panic!/panic-06.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/marcus/keepmoving/keep_moving-01.wav",
     "darkborn/zps/survivors/marcus/keepmoving/keep_moving-02.wav",
     "darkborn/zps/survivors/marcus/keepmoving/keep_moving-03.wav",
@@ -1365,7 +1365,7 @@ function ENT:SurvivorVoice_Marcus()
     "darkborn/zps/survivors/marcus/meleegrunts/meleegrunt-05.wav",
     "darkborn/zps/survivors/marcus/meleegrunts/meleegrunt-06.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/marcus/kill/kill-01.wav",
     "darkborn/zps/survivors/marcus/kill/kill-02.wav",
     "darkborn/zps/survivors/marcus/kill/kill-03.wav",
@@ -1594,7 +1594,7 @@ function ENT:SurvivorVoice_Paul()
     "darkborn/zps/survivors/paul/panic!/panic-04.wav",
     "darkborn/zps/survivors/paul/panic!/panic-05.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/paul/keepmoving/keepmoving-01.wav",
     "darkborn/zps/survivors/paul/keepmoving/keepmoving-02.wav"
 }
@@ -1605,7 +1605,7 @@ function ENT:SurvivorVoice_Paul()
     "darkborn/zps/survivors/paul/meleegrunts/melee-04.wav",
     "darkborn/zps/survivors/paul/meleegrunts/melee-05.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/paul/kill/kill-01.wav",
     "darkborn/zps/survivors/paul/kill/kill-02.wav",
     "darkborn/zps/survivors/paul/kill/kill-03.wav",
@@ -1822,7 +1822,7 @@ function ENT:SurvivorVoice_Pedro()
     "darkborn/zps/survivors/pedro/panic!/panic-05.wav",
     "darkborn/zps/survivors/pedro/panic!/panic-06.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/pedro/keepmoving/keep_moving-01.wav",
     "darkborn/zps/survivors/pedro/keepmoving/keep_moving-02.wav",
     "darkborn/zps/survivors/pedro/keepmoving/keep_moving-03.wav",
@@ -1837,7 +1837,7 @@ function ENT:SurvivorVoice_Pedro()
     "darkborn/zps/survivors/pedro/meleegrunts/meleegrunt-05.wav",
     "darkborn/zps/survivors/pedro/meleegrunts/meleegrunt-06.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/pedro/kill/kill-01.wav",
     "darkborn/zps/survivors/pedro/kill/kill-02.wav",
     "darkborn/zps/survivors/pedro/kill/kill-03.wav",
@@ -2070,7 +2070,7 @@ function ENT:SurvivorVoice_Vanessa()
     "darkborn/zps/survivors/vanessa/panic!/panic-05.wav",
     "darkborn/zps/survivors/vanessa/panic!/panic-06.wav"
 }
-    self.SoundTbl_OnReceiveOrder = {
+    self.SoundTbl_ReceiveOrder = {
     "darkborn/zps/survivors/vanessa/keepmoving/keepmoving-01.wav",
     "darkborn/zps/survivors/vanessa/keepmoving/keepmoving-02.wav",
     "darkborn/zps/survivors/vanessa/keepmoving/keepmoving-03.wav",
@@ -2086,7 +2086,7 @@ function ENT:SurvivorVoice_Vanessa()
     "darkborn/zps/survivors/vanessa/meleegrunts/meleegrunt-05.wav",
     "darkborn/zps/survivors/vanessa/meleegrunts/meleegrunt-06.wav"
 }
-    self.SoundTbl_OnKilledEnemy = {
+    self.SoundTbl_KilledEnemy = {
     "darkborn/zps/survivors/vanessa/kill/kill-01.wav",
     "darkborn/zps/survivors/vanessa/kill/kill-02.wav",
     "darkborn/zps/survivors/vanessa/kill/kill-03.wav",
@@ -2313,7 +2313,7 @@ end
     self:InoculatorInject()
     self:SetHealth(math.Clamp(CurHP + self.Medic_HealAmount, CurHP, self:GetMaxHealth()))
     self:PlaySoundSystem("Speech",self.SoundTbl_MedicReceiveHeal)
-    VJ.CreateSound(self,self.SoundTbl_MedicAfterHeal,75,100)
+    VJ.CreateSound(self,self.SoundTbl_MedicOnHeal,75,100)
     timer.Remove("timer_melee_bleed"..self:EntIndex())
     timer.Adjust("timer_melee_slowply"..self:EntIndex(), 0)
     self:RemoveAllDecals()
