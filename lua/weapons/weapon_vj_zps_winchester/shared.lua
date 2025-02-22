@@ -35,7 +35,7 @@ SWEP.PrimaryEffects_SpawnShells = false
 SWEP.DryFireSound = "darkborn/zps/weapons/firearms/doublebarrel_shotgun/dryfire.wav"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnPrimaryAttack(status,statusData)
-    if status == "Initial" && math.random(1,5) == 1 && self:Clip1() > 1 then
+    if status == "Init" && math.random(1,5) == 1 && self:Clip1() > 1 then
         self.Primary.Sound = "VJ.ZPS_Winchester.Double"
         self.Primary.NumberOfShots = 16
         self.Primary.TakeAmmo = 2

@@ -49,7 +49,7 @@ function SWEP:PrimaryAttackEffects(owner)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnPrimaryAttack(status,statusData)
-    if status == "Initial" then
+    if status == "Init" then
     if CLIENT then return end
     if IsValid(self.IED_LastShotEnt) then return true end -- Wait until the last IED has detonated
         //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then

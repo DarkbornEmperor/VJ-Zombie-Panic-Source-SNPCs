@@ -44,7 +44,7 @@ function SWEP:PrimaryAttackEffects(owner)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnPrimaryAttack(status,statusData)
-    if status == "Initial" then
+    if status == "Init" then
     if CLIENT then return end
         //timer.Simple(0.4, function() if IsValid(self:GetOwner()) then
         local snowball = ents.Create("obj_vj_zps_snowball")

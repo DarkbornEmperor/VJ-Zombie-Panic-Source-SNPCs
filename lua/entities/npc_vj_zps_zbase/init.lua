@@ -27,7 +27,7 @@ ENT.HasMeleeAttackPlayerSpeedSounds = false
 ENT.HasExtraMeleeAttackSounds = true
 ENT.HideOnUnknownDamage = false
 ENT.DisableFootStepSoundTimer = true
-ENT.MainSoundPitch = VJ.SET(100, 100)
+ENT.MainSoundPitch = 100
     -- ====== Controller Data ====== --
 ENT.ControllerParams = {
     CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person

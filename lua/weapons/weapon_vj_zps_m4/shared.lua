@@ -31,7 +31,7 @@ SWEP.PrimaryEffects_ShellType = "RifleShellEject"
 SWEP.DryFireSound = "darkborn/zps/weapons/firearms/m4/dryfire.wav"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:OnPrimaryAttack(status,statusData)
-    if status == "Initial" then
+    if status == "Init" then
     local Brt = math.random(1,8)
     local Num = 0.08
     if Brt == 1 then
