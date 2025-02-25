@@ -25,7 +25,7 @@ ENT.MeleeAttackPlayerSpeed = true
 ENT.MeleeAttackPlayerSpeedTime = 0.5
 ENT.HasMeleeAttackPlayerSpeedSounds = false
 ENT.HasExtraMeleeAttackSounds = true
-ENT.HideOnUnknownDamage = false
+ENT.DamageResponse = "OnlySearch"
 ENT.DisableFootStepSoundTimer = true
 ENT.MainSoundPitch = 100
     -- ====== Controller Data ====== --
