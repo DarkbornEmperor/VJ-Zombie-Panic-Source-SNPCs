@@ -6,9 +6,12 @@ include("shared.lua")
     without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.StartHealth = 100
-ENT.HealthRegenerationAmount = 1
-ENT.HealthRegenerationDelay = VJ.SET(1,1)
-ENT.HealthRegenerationResetOnDmg = false
+ENT.HealthRegenParams = {
+    Enabled = false,
+    Amount = 1,
+    Delay = VJ.SET(1,1),
+    ResetOnDmg = true,
+}
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_PLAYER_ALLY"}
 ENT.AlliedWithPlayerAllies = true
@@ -2217,7 +2220,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
     if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self:GetEnemy()) then
-    if (self.EnemyData.Visible or (self.EnemyData.LastVisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
+    if (self.EnemyData.Visible or (self.EnemyData.VisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
         self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
     if act == ACT_WALK then
         return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
@@ -2290,7 +2293,7 @@ function ENT:OnThinkActive()
     self:PlaySoundSystem("Speech",self.SoundTbl_Cough)
     self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
 end
- if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.Medic_Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+ if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.MedicData.Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
     self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
     if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
     local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
@@ -2445,7 +2448,7 @@ function ENT:InoculatorInject()
 end
  if self.Inoculator:GetSkin() == 1 then
     if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
-        self.HasHealthRegeneration = true
+        self.HealthRegenParams.Enabled = true
         self.ZPS_ImmuneInfection = true
         VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
         timer.Remove(self:EntIndex().."VJ_ZPS_Infection")

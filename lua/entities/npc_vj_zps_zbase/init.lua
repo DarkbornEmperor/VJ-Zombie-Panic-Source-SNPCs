@@ -6,9 +6,12 @@ include("shared.lua")
     without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.StartHealth = 200
-ENT.HasHealthRegeneration = true
-ENT.HealthRegenerationAmount = 4
-ENT.HealthRegenerationDelay = VJ.SET(2,2)
+ENT.HealthRegenParams = {
+    Enabled = true,
+    Amount = 4,
+    Delay = VJ.SET(2,2),
+    ResetOnDmg = true,
+}
 ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
 ENT.BloodColor = VJ.BLOOD_COLOR_RED
@@ -145,8 +148,8 @@ function ENT:Init()
    self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
    if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
-        self.HealthRegenerationAmount = 4
-        self.HealthRegenerationDelay = VJ.SET(1,1)
+        self.HealthRegenParams.Amount = 4
+        self.HealthRegenParams.Delay = VJ.SET(1,1)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
