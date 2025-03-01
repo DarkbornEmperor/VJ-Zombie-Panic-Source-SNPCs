@@ -9,8 +9,8 @@ ENT.Type = "anim"
 ENT.Base = "obj_vj_projectile_base"
 ENT.PrintName = "Snowball"
 ENT.Author = "Darkborn"
-ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"ENT.Category =  "VJ Base"
-ENT.Spawnable = false
+ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
+ENT.Category =  "VJ Base"
 
 ENT.VJ_ID_Danger = false
 
