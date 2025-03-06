@@ -1195,17 +1195,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_OnThinkActive() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
- if self.MeleeAttack_IsPropAttack or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
-    self.AnimTbl_MeleeAttack = {
-    "vjseq_vjges_s_push_z"
-}
- else
-    self.AnimTbl_MeleeAttack = {
-    "vjseq_vjges_s_attack1",
-    "vjseq_vjges_s_attack2",
-    "vjseq_vjges_s_attack3"
-}
+function ENT:OnMeleeAttack(status,enemy)
+    if status == "Init" then
+    if self.MeleeAttack_IsPropAttack or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
+        self.AnimTbl_MeleeAttack =
+        "vjseq_vjges_s_push_z"
+    else
+        self.AnimTbl_MeleeAttack = {
+        "vjseq_vjges_s_attack1",
+        "vjseq_vjges_s_attack2",
+        "vjseq_vjges_s_attack3"
+ }
+        end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

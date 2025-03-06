@@ -2458,20 +2458,22 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
- if IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
-    self.MeleeAttackDamage = 25
-    self.MeleeAttackDamageType = DMG_CLUB
-    self.SoundTbl_MeleeAttackExtra = {
-    "darkborn/zps/weapons/melee/push/push_hit-01.wav",
-    "darkborn/zps/weapons/melee/push/push_hit-02.wav",
-    "darkborn/zps/weapons/melee/push/push_hit-03.wav",
-    "darkborn/zps/weapons/melee/push/push_hit-04.wav"
+function ENT:OnMeleeAttack(status,enemy)
+    if status == "Init" then
+    if IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
+        self.MeleeAttackDamage = 25
+        self.MeleeAttackDamageType = DMG_CLUB
+        self.SoundTbl_MeleeAttackExtra = {
+        "darkborn/zps/weapons/melee/push/push_hit-01.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-02.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-03.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-04.wav"
 }
-    self.SoundTbl_MeleeAttackMiss = {
-    "npc/zombie/claw_miss1.wav",
-    "npc/zombie/claw_miss2.wav"
+        self.SoundTbl_MeleeAttackMiss = {
+        "npc/zombie/claw_miss1.wav",
+        "npc/zombie/claw_miss2.wav"
 }
+        end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2525,25 +2527,22 @@ end
     end
 end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:OnGrenadeAttack(status,grenade,customEnt,landDir,landingPos)
- if status == "Start" then
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
-    local att = self:GetAttachment(self:LookupAttachment("anim_attachment_LH"))
-    self.FakeGrenade = ents.Create("prop_vj_animatable")
-    self.FakeGrenade:SetModel(self.GrenadeAttackModel)
-    self.FakeGrenade:SetPos(att.Pos)
-    self.FakeGrenade:SetAngles(att.Ang)
-    self.FakeGrenade:SetParent(self)
-    self.FakeGrenade:Fire("SetParentAttachment","anim_attachment_LH")
-    self.FakeGrenade:Spawn()
-    self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-    self:DeleteOnRemove(self.FakeGrenade)
-    SafeRemoveEntityDelayed(self.FakeGrenade,self.GrenadeAttackThrowTime)
-end
- if status == "Throw" then
-    //SafeRemoveEntity(self.FakeGrenade)
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end
-    return (landingPos - grenade:GetPos()) + (self:GetUp()*200 + self:GetForward()*500 + self:GetRight()*math.Rand(-20, 20)) end
+/*function ENT:OnGrenadeAttack(status,overrideEnt,landDir)
+    if status == "Init" then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_LH"))
+        self.FakeGrenade = ents.Create("prop_vj_animatable")
+        self.FakeGrenade:SetModel(self.GrenadeAttackModel)
+        self.FakeGrenade:SetPos(att.Pos)
+        self.FakeGrenade:SetAngles(att.Ang)
+        self.FakeGrenade:SetParent(self)
+        self.FakeGrenade:Fire("SetParentAttachment","anim_attachment_LH")
+        self.FakeGrenade:Spawn()
+        self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self:DeleteOnRemove(self.FakeGrenade)
+        SafeRemoveEntityDelayed(self.FakeGrenade,self.GrenadeAttackThrowTime)
+        end
+    end
 end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetAnimationTranslations(h)
