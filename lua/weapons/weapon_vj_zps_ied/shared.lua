@@ -68,7 +68,7 @@ function SWEP:OnPrimaryAttack(status,statusData)
     end)*/
 end
     if status == "PostFire" && self:Clip1() <= 0 then
-        self.WorldModel_Invisible = true
+        self:SetDrawWorldModel(false)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ function SWEP:OnReload(status)
     if status == "Start" then
     timer.Simple(1.6, function()
         if IsValid(self) then
-            self.WorldModel_Invisible = false end
+            self:SetDrawWorldModel(true) end
         end)
     end
 end
