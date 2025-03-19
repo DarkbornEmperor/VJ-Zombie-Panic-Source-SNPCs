@@ -32,21 +32,21 @@ function ENT:Zombie_Init()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt,isProp)
- if self:IsOnFire() then hitEnt:Ignite(4) end
-    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 && hitEnt.ZPS_InfectedVictim then
-        VJ_ZPS_SetPlayerZombie(hitEnt,self,self)
+function ENT:OnMeleeAttackExecute(status,ent,isProp)
+    if status == "PreDamage" then
+    if self:IsOnFire() then ent:Ignite(4) end
+    if ent:IsPlayer() && ent:Health() < self.MeleeAttackDamage + 1 && ent.ZPS_InfectedVictim then
+        VJ_ZPS_SetPlayerZombie(ent,self,self)
 end
-    if math.random(1,GetConVar("VJ_ZPS_CarrierInfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.ZPS_InfectedVictim then
-    if (hitEnt:IsPlayer() /*&& hitEnt:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then
-    if hitEnt.ZPS_InfectedVictim then return end
-        hitEnt.ZPS_InfectedVictim = true
-        if hitEnt.IsZPSSurvivor then hitEnt.ZPS_NextCoughT = CurTime() + math.random(1,30) end
-        //if hitEnt:IsPlayer() then hitEnt:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
-        VJ_ZPS_InfectionApply(hitEnt,self)
+    if math.random(1,GetConVar("VJ_ZPS_CarrierInfectionChance"):GetInt()) == 1 && (ent:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !ent.ZPS_InfectedVictim then
+    if (ent:IsPlayer() /*&& ent:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or ent:IsNPC() then
+    if ent.ZPS_InfectedVictim then return end
+        ent.ZPS_InfectedVictim = true
+        if ent.IsZPSSurvivor then ent.ZPS_NextCoughT = CurTime() + math.random(1,30) end
+        //if ent:IsPlayer() then ent:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
+        VJ_ZPS_InfectionApply(ent,self) end
+        end
     end
-end
-    return false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 local berserkSpeed = 1.4
