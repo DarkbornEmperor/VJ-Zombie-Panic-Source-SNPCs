@@ -71,7 +71,6 @@ end
        effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(0, 255, 63, 255), {material="sprites/physcannon_bluelight2", framerate=20})
        effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(0, 255, 63, 255), {material="sprites/physcannon_bluelight2", framerate=20})
        VJ.EmitSound(self,"darkborn/zps/zombies/carrier/berserk/carrier_berserk-0"..math.random(1,7)..".wav",80)
-       v.AnimTbl_Run = {ACT_RUN_STIMULATED}
 end
        self.ZPS_BerserkNextT = CurTime() + (math.Rand(10,15))
             end

@@ -143,7 +143,7 @@ function ENT:Zombie_PreInit() end
 function ENT:Init()
    self:Zombie_Init()
    self:ZombieVoices()
-   //self:CapabilitiesRemove(CAP_ANIMATEDFACE)
+   self:CapabilitiesRemove(CAP_ANIMATEDFACE)
    self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
    self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
