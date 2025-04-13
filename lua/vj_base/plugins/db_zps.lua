@@ -503,7 +503,7 @@ end
             panel:CheckBox("Enable Player-Controlled Zombies Upon Turning?","VJ_ZPS_PlayerZombie")
             panel:CheckBox("Enable Zombies Crouching?","VJ_ZPS_Crouch")
             panel:CheckBox("Enable Zombies Breaking Doors?","VJ_ZPS_BreakDoors")
-            panel:CheckBox("Enable Zombies Breaking Entities Classified As 'func_door_rotating?'","VJ_ZPS_BreakDoors_Func"})
+            panel:CheckBox("Enable Zombies Breaking Entities Classified As 'func_door_rotating?'","VJ_ZPS_BreakDoors_Func")
             panel:CheckBox("Enable Zombies Alerting Each Other?","VJ_ZPS_Alert")
             panel:CheckBox("Enable Hardcore Mode?","VJ_ZPS_Hardcore")
             panel:CheckBox("Enable Santa Hat For Carrier?","VJ_ZPS_SantaHat")
