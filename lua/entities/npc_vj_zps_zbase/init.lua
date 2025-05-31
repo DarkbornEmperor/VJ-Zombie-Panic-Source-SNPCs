@@ -110,7 +110,7 @@ end
             doorGib:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
             doorGib:SetSolid(SOLID_NONE)
             doorGib:Spawn()
-            doorGib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*5000)
+            doorGib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*10000)
             SafeRemoveEntityDelayed(doorGib,30)
         elseif door:GetClass() == "func_door_rotating" && door.doorHP <= 0 then
             VJ.EmitSound(door,"physics/wood/wood_furniture_break"..math.random(1,2)..".wav",75,100)
@@ -1085,7 +1085,7 @@ end
     if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 0 or self.Dead then self.ZPS_DoorToBreak = NULL return end
         if !IsValid(self.ZPS_DoorToBreak) && !self.ZPS_AttackingDoor then
           if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
-            for _,v in pairs(ents.FindInSphere(self:GetPos(),40)) do
+            for _,v in pairs(ents.FindInSphere(self:GetPos(),30)) do
               if GetConVar("VJ_ZPS_BreakDoors_Func"):GetInt() == 1 && v:GetClass() == "func_door_rotating" && v:Visible(self) then self.ZPS_DoorToBreak = v end
                  if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
                     local anim = string.lower(v:GetSequenceName(v:GetSequence()))
