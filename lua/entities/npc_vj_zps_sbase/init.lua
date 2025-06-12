@@ -46,10 +46,10 @@ ENT.DisableFootStepSoundTimer = true
 ENT.MainSoundPitch = 100
     -- ====== Controller Data ====== --
 ENT.ControllerParams = {
-    CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
-    ThirdP_Offset = Vector(40, 25, -50), -- The offset for the controller when the camera is in third person
-    FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
-    FirstP_Offset = Vector(0, 0, 5), -- The offset for the controller when the camera is in first person
+    CameraMode = 2,
+    ThirdP_Offset = Vector(40, 25, -50),
+    FirstP_Bone = "ValveBiped.Bip01_Head1",
+    FirstP_Offset = Vector(0, 0, 5),
 }
 -- Custom
 ENT.ZPS_Armor = false
@@ -73,9 +73,10 @@ ENT.SoundTbl_MeleeAttackExtra = {
 "darkborn/zps/weapons/melee/push/push_hit-03.wav",
 "darkborn/zps/weapons/melee/push/push_hit-04.wav"
 }
-ENT.SoundTbl_MedicOnHeal = {
+
+ENT.SoundTbl_MedicOnHeal =
 "darkborn/zps/weapons/health/inoculator/inject.wav"
-}
+
 ENT.SoundTbl_Impact = {
 "darkborn/zps/shared/impacts/flesh_impact-01.wav",
 "darkborn/zps/shared/impacts/flesh_impact-02.wav",
@@ -141,18 +142,18 @@ end
 function ENT:Survivor_PreInit() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
- self:SurvivorVoices()
- self:CapabilitiesRemove(CAP_ANIMATEDFACE)
- self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
- self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
- self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
- if math.random(1,5) == 1 then self.IsMedic = true end
- if math.random(1,5) == 1 then self.ZPS_Armor = true end
- if !self.Weapon_Disabled then
- if !self.WeaponInventory_MeleeList then
-    self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
- else
-    self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
+    self:SurvivorVoices()
+    self:CapabilitiesRemove(CAP_ANIMATEDFACE)
+    self:SetSurroundingBounds(Vector(-60, -60, 0), Vector(60, 60, 90))
+    self.ZPS_NextWepSwitchT = CurTime() + math.Rand(2,4)
+    self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
+    if math.random(1,5) == 1 then self.IsMedic = true end
+    if math.random(1,5) == 1 then self.ZPS_Armor = true end
+    if !self.Weapon_Disabled then
+    if !self.WeaponInventory_MeleeList then
+        self:Give(VJ.PICK(VJ_ZPS_MELEEWEAPONS))
+    else
+        self:Give(VJ.PICK(VJ_ZPS_WEAPONS))
     end
 end
  if GetConVar("VJ_ZPS_Melee"):GetInt() == 1 then
@@ -161,38 +162,714 @@ end
  if GetConVar("VJ_ZPS_ReloadCover"):GetInt() == 1 then
     self.Weapon_FindCoverOnReload = true
 end
- if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList then return end
+    if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList then return end
     for _,category in pairs(self.WeaponsList) do
-        for _,wep in pairs(category) do
-            self:Give(wep)
+    for _,wep in pairs(category) do
+        self:Give(wep)
     end
 end
-     local wepList = math.random(1,2)
-     if wepList == 1 then
+    local wepList = math.random(1,2)
+    if wepList == 1 then
         self:DoChangeWeapon(VJ.PICK(self.WeaponsList["Normal"]),true)
-     elseif wepList == 2 then
+    elseif wepList == 2 then
         self:DoChangeWeapon(VJ.PICK(self.WeaponsList["Close"]),true)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SurvivorVoices()
- local cType = self:GetClass()
- if cType == "npc_vj_zps_eugene" then
+    local cType = self:GetClass()
+    if cType == "npc_vj_zps_eugene" then
         self:SurvivorVoice_Eugene()
- elseif cType == "npc_vj_zps_jessica" then
+    elseif cType == "npc_vj_zps_jessica" then
         self:SurvivorVoice_Jessica()
- elseif cType == "npc_vj_zps_larry" then
+    elseif cType == "npc_vj_zps_larry" then
         self:SurvivorVoice_Larry()
- elseif cType == "npc_vj_zps_lea" then
+    elseif cType == "npc_vj_zps_lea" then
         self:SurvivorVoice_Lea()
- elseif cType == "npc_vj_zps_marcus" then
+    elseif cType == "npc_vj_zps_marcus" then
         self:SurvivorVoice_Marcus()
- elseif cType == "npc_vj_zps_paul" then
+    elseif cType == "npc_vj_zps_paul" then
         self:SurvivorVoice_Paul()
- elseif cType == "npc_vj_zps_pedro" then
+    elseif cType == "npc_vj_zps_pedro" then
         self:SurvivorVoice_Pedro()
- elseif cType == "npc_vj_zps_vanessa" then
+    elseif cType == "npc_vj_zps_vanessa" then
         self:SurvivorVoice_Vanessa()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnChangeActivity(newAct)
+ if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
+    self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
+end
+ if newAct == ACT_LAND then
+    self:SetNavType(NAV_GROUND)
+end
+    return self.BaseClass.OnChangeActivity(newAct)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Controller_Initialize(ply,controlEnt)
+ ply:ChatPrint("DUCK: Crouch")
+ ply:ChatPrint("JUMP: Jump")
+ ply:ChatPrint("WALK: Switch Weapon")
+ function controlEnt:OnThink()
+    self.VJCE_NPC:SetArrivalSpeed(9999)
+    self.VJC_NPC_CanTurn = self.VJC_Camera_Mode == 2
+    self.VJC_BullseyeTracking = self.VJCE_NPC:IsMoving() or self.VJC_Camera_Mode == 2
+end
+ if !self.IsMedic then return end
+    ply:ChatPrint("USE: Heal")
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:TranslateActivity(act)
+    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self:GetEnemy()) then
+    if (self.EnemyData.Visible or (self.EnemyData.VisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
+        self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
+    if act == ACT_WALK then
+        return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
+    elseif act == ACT_RUN then
+        return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
+        end
+    end
+end
+ if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
+    return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
+end
+    /*if self.ZPS_Crouching then
+    if act == ACT_IDLE then
+        return self:TranslateActivity(act == ACT_IDLE and ACT_COVER_LOW)
+    elseif act == ACT_WALK then
+        return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
+    elseif act == ACT_RUN then
+        return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
+    end
+end*/
+    return self.BaseClass.TranslateActivity(self,act)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnThink()
+    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
+    if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
+    if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
+    local maxDist = 220
+    local maxDepth = 20
+    local targetPos = self:GetPos() +Vector(math.Rand(-maxDist,maxDist),math.Rand(-maxDist,maxDist),maxDepth)
+        self:Jump(targetPos)
+        /*if self.VJ_TheController:KeyDown(IN_FORWARD) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*350)
+        elseif self.VJ_TheController:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*-350)
+        elseif self.VJ_TheController:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*-350)
+        elseif self.VJ_TheController:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*350) end*/
+        self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
+        self.ZPS_NextJumpT = CurTime() + 0.8
+        end
+    end
+end
+ /*if !IsValid(self:GetActiveWeapon()) or self.Weapon_Disabled then
+    self.SoundTbl_Alert = self.SoundTbl_CallForHelp
+    self.SoundTbl_CombatIdle = self.SoundTbl_CallForHelp
+end*/
+ local controller = self.VJ_TheController
+ if IsValid(controller) then
+ if controller:KeyDown(IN_WALK) && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 1 && self.WeaponInventory_MeleeList then
+    //self:PlayAnim("vjges_throw_arms",true,false,false)
+    self:DoChangeWeapon(VJ.PICK(self.WeaponsList_Cont["ContWeapons"]),true)
+    self.ZPS_NextWepSwitchT = CurTime() + 1
+end
+    /*if controller:KeyDown(IN_DUCK) && !self.ZPS_Crouching then
+        self.ZPS_Crouching = true
+    elseif !controller:KeyDown(IN_DUCK) && self.ZPS_Crouching then
+        self.ZPS_Crouching = false
+    end*/
+end
+    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 && GetConVar("ai_disabled"):GetInt() == 0 && !self.ZPS_Panic then
+    if IsValid(self:GetEnemy()) && !self.IsGuard then
+    if math.random(1,100) <= 3 && !IsValid(controller) && self:Visible(self:GetEnemy()) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE then
+        self:AvoidThreat() end
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnThinkActive()
+ //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.WeaponAttackState*/ then self.ZPS_Crouching = false end
+ if self.ZPS_InfectedVictim && !self.ZPS_ImmuneInfection && CurTime() > self.ZPS_NextCoughT then
+    self:PlaySoundSystem("Speech",self.SoundTbl_Cough)
+    self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
+end
+ if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.MedicData.Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+    self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
+    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+    local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
+    local inoculator = ents.Create("prop_vj_animatable")
+    inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
+    inoculator:SetSkin(math.random(0,2))
+    inoculator:SetPos(att.Pos)
+    inoculator:SetAngles(att.Ang)
+    inoculator:SetParent(self)
+    inoculator:Fire("SetParentAttachment","anim_attachment_RH")
+    inoculator:Spawn()
+    inoculator:AddEffects(EF_BONEMERGE)
+    inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+    self.Inoculator = inoculator
+    self:DeleteOnRemove(inoculator)
+    SafeRemoveEntityDelayed(inoculator,1.2)
+ if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end
+    timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
+    local CurHP = self:Health()
+    self:InoculatorInject()
+    self:SetHealth(math.Clamp(CurHP + self.Medic_HealAmount, CurHP, self:GetMaxHealth()))
+    self:PlaySoundSystem("Speech",self.SoundTbl_MedicReceiveHeal)
+    VJ.CreateSound(self,self.SoundTbl_MedicOnHeal,75,100)
+    timer.Remove("timer_melee_bleed"..self:EntIndex())
+    timer.Adjust("timer_melee_slowply"..self:EntIndex(), 0)
+    self:RemoveAllDecals()
+    timer.Simple(0.5,function() if IsValid(self) then
+    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end end)
+    end
+end)
+    self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
+end
+ if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.Weapon_Disabled or !IsValid(self:GetActiveWeapon()) then return end
+ local ent = self:GetEnemy()
+ local dist = self.EnemyData.DistanceNearest
+ if IsValid(ent) && !self.VJ_IsBeingControlled && !self.ZPS_Panic then
+ local wep = self:GetActiveWeapon()
+ if self.WeaponInventoryStatus == VJ.WEP_INVENTORY_MELEE then return end
+ local selectType = false
+ if dist > 2200 then
+    selectType = "Normal"
+ elseif dist <= 2200 && dist > 650 then
+    selectType = "Normal"
+ else
+    selectType = "Close"
+end
+    if selectType && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && (!IsValid(wep) or (IsValid(wep) && math.random(1, wep:Clip1() > 0 && (wep:Clip1() <= wep:GetMaxClip1() *0.35) && 1 or (selectType == "Close" && 20 or 150)))) == 1 then
+        self:DoChangeWeapon(VJ.PICK(self.WeaponsList[selectType]),true)
+        //self:PlayAnim("vjges_throw_arms",true,false,false)
+        wep = self:GetActiveWeapon()
+        self.ZPS_NextWepSwitchT = CurTime() + math.Rand(6,math.Round(math.Clamp(wep:Clip1() *0.5,1,wep:Clip1())))
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnAllyKilled(ent)
+    if self.VJ_IsBeingControlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > CurTime() then return end
+    if math.random(1,5) == 1 && !self.ZPS_Panic then
+        self.ZPS_Panic = true
+        self:PlaySoundSystem("CallForHelp")
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:SelectSchedule()
+    self.BaseClass.SelectSchedule(self)
+    -- Hide after an ally is killed
+    if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
+        self.ZPS_Panic = false
+        self:SCHEDULE_COVER_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
+        self.NextDoAnyAttackT = CurTime() + 5
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+ENT.JumpHeight = 200
+function ENT:AvoidThreat()
+  local maxDist = 220
+  local maxDepth = 20
+  local targetPos = self:GetPos() +Vector(math.Rand(-maxDist,maxDist),math.Rand(-maxDist,maxDist),maxDepth)
+
+  if self:GetNavType() != NAV_JUMP && (IsValid(wep) && wep:Clip1() > 0 or !IsValid(wep)) then
+     self:Jump(targetPos)
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Jump(pos)
+ self:StopMoving()
+ self:ResetMoveCalc()
+ self:SetNavType(NAV_GROUND)
+ self:SetMoveType(MOVETYPE_STEP)
+ if self.CurrentSchedule then
+    self.CurrentSchedule = nil
+    self.CurrentScheduleName = nil
+    self.CurrentTask = nil
+    self.CurrentTaskID = nil
+end
+    //self.NextIdleStandTime = CurTime()
+    self.NextIdleTime = CurTime()
+    self.NextChaseTime = CurTime()
+    self:ForceMoveJump(VJ.CalculateTrajectory(self, NULL, "CurveOld", self:GetPos(), self:GetPos() +((((pos or self:GetPos() +self:GetUp() *100) -self:GetPos()):GetNormalized() *50) +(self:GetUp() *25)), 250))
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnMedicBehavior(status,statusData)
+    if status == "BeforeHeal" then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
+        local inoculator = ents.Create("prop_vj_animatable")
+        inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
+        inoculator:SetSkin(math.random(0,2))
+        inoculator:SetPos(att.Pos)
+        inoculator:SetAngles(att.Ang)
+        inoculator:SetParent(self)
+        inoculator:Fire("SetParentAttachment","anim_attachment_RH")
+        inoculator:Spawn()
+        inoculator:AddEffects(EF_BONEMERGE)
+        inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self.Inoculator = inoculator
+        self:DeleteOnRemove(inoculator)
+        SafeRemoveEntityDelayed(inoculator,1.2)
+    if inoculator:GetSkin() == 0 then
+        self.Medic_HealAmount = 20
+    elseif inoculator:GetSkin() == 1 then
+        self.Medic_HealAmount = 0
+    elseif inoculator:GetSkin() == 2 then
+        self.Medic_HealAmount = 100
+    end
+end
+ if status == "OnHeal" then
+ if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
+    if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
+    if statusData:IsPlayer() then timer.Create(statusData:EntIndex().."VJ_ZPS_Regen_Player",1,25,function() if IsValid(statusData) then local CurHP = statusData:Health() statusData:SetHealth(math.Clamp(CurHP + 1, CurHP, statusData:GetMaxHealth())) end end) end
+    statusData.HasHealthRegeneration = true
+    statusData.ZPS_ImmuneInfection = true
+    VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+    timer.Remove(statusData:EntIndex().."VJ_ZPS_Infection")
+    hook.Remove("Think","VJ_ZPS_VictimCough")
+    timer.Create(statusData:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
+end
+    timer.Simple(0.5,function() if IsValid(self) then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end
+        end)
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:InoculatorInject()
+ if IsValid(self.Inoculator) then
+ if self.Inoculator:GetSkin() == 0 then
+    self.Medic_HealAmount = 20
+ elseif self.Inoculator:GetSkin() == 1 then
+    self.Medic_HealAmount = 0
+ elseif self.Inoculator:GetSkin() == 2 then
+    self.Medic_HealAmount = 100
+end
+    if self.Inoculator:GetSkin() == 1 then
+    if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
+        self.HealthRegenParams.Enabled = true
+        self.ZPS_ImmuneInfection = true
+        VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
+        timer.Remove(self:EntIndex().."VJ_ZPS_Infection")
+        hook.Remove("Think","VJ_ZPS_VictimCough")
+        timer.Create(self:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnMeleeAttack(status,enemy)
+    if status == "Init" then
+    if IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
+        self.MeleeAttackDamage = 25
+        self.MeleeAttackDamageType = DMG_CLUB
+        self.SoundTbl_MeleeAttackExtra = {
+        "darkborn/zps/weapons/melee/push/push_hit-01.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-02.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-03.wav",
+        "darkborn/zps/weapons/melee/push/push_hit-04.wav"
+}
+        self.SoundTbl_MeleeAttackMiss = {
+        "npc/zombie/claw_miss1.wav",
+        "npc/zombie/claw_miss2.wav"
+}
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnWeaponAttack()
+ if self.VJ_IsBeingControlled then return end
+ local wep = self.WeaponEntity
+ if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
+ if self.Weapon_Strafe && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeT && (CurTime() - self.EnemyData.TimeAcquired) > 2 then
+ timer.Simple(0,function()
+    local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 250), true, false, 8, true))
+    if moveCheck then
+    self:StopMoving()
+    self.NextWeaponStrafeT = CurTime() + math.Rand(self.Weapon_StrafeCooldown.a, self.Weapon_StrafeCooldown.b)
+    self:SetLastPosition(moveCheck)
+    self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end) end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnWeaponStrafe()
+    if self.VJ_IsBeingControlled then return end
+    if math.random(1,2) == 1 && !self.ZPS_Crouching then
+        self.ZPS_Crouching = true
+    //elseif math.random(1,2) == 1 && self.ZPS_Crouching then
+    else
+        self.ZPS_Crouching = false
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnWeaponReload()
+    if IsValid(self:GetActiveWeapon()) then
+    local wep = self:GetActiveWeapon()
+    local wepHoldType = wep:GetHoldType()
+    if wepHoldType == "grenade" then
+        self.DisableWeaponReloadAnimation = true
+    else
+        self.DisableWeaponReloadAnimation = false
+    end
+end
+ //if self.Weapon_FindCoverOnReload then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
+ if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:DoCoverTrace(self:GetPos() + self:OBBCenter(), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) then return end
+ timer.Simple(0,function()
+    local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 400), true, false, 8, true))
+    if moveCheck then
+    self:StopMoving()
+    self:SetLastPosition(moveCheck)
+    self:SCHEDULE_GOTO_POSITION(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*function ENT:OnChangeWeapon(newWeapon,oldWeapon,invSwitch)
+    if invSwitch then
+        self:PlayAnim("vjges_throw_arms",true,false,false)
+    end
+end*/
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*function ENT:OnGrenadeAttack(status,overrideEnt,landDir)
+    if status == "Init" then
+        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
+        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_LH"))
+        self.FakeGrenade = ents.Create("prop_vj_animatable")
+        self.FakeGrenade:SetModel(self.GrenadeAttackModel)
+        self.FakeGrenade:SetPos(att.Pos)
+        self.FakeGrenade:SetAngles(att.Ang)
+        self.FakeGrenade:SetParent(self)
+        self.FakeGrenade:Fire("SetParentAttachment","anim_attachment_LH")
+        self.FakeGrenade:Spawn()
+        self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self:DeleteOnRemove(self.FakeGrenade)
+        SafeRemoveEntityDelayed(self.FakeGrenade,self.GrenadeAttackThrowTime)
+        end
+    end
+end*/
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:SetAnimationTranslations(h)
+ local defIdleAim = ACT_IDLE -- ACT_IDLE_ANGRY
+ local defWalkAim = ACT_WALK
+ local defRunAim = ACT_RUN
+ local defFire = ACT_RANGE_ATTACK1
+ local defCrouch = ACT_RANGE_ATTACK1_LOW
+ local defCrawl = ACT_RUN_CROUCH
+ local defReload = ACT_RELOAD
+ local defJump = ACT_JUMP
+ local defGlide = ACT_GLIDE
+ local defLand = ACT_LAND
+
+ if self:GetActiveWeapon().ZPS_HType then -- Allow for more than default hold types
+    h = self:GetActiveWeapon().ZPS_HType
+end
+
+ if h == "smg" then
+    defIdleAim = VJ.SequenceToActivity(self,"mp5_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"mp5_walk")
+    defRunAim = VJ.SequenceToActivity(self,"mp5_run")
+    defCrouch = VJ.SequenceToActivity(self,"mp5_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"mp5_walk_crouch")
+    defFire = "vjges_gesture_shoot_mp5"
+    defReload = "vjges_gesture_reload_mp5"
+    defJump = VJ.SequenceToActivity(self,"mp5_jump")
+    defGlide = VJ.SequenceToActivity(self,"mp5_jump")
+    defLand = VJ.SequenceToActivity(self,"mp5_idle")
+ elseif h == "ar2" or h == "rpg" then
+    defIdleAim = VJ.SequenceToActivity(self,"rifle_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"rifle_walk")
+    defRunAim = VJ.SequenceToActivity(self,"rifle_run")
+    defCrouch = VJ.SequenceToActivity(self,"rifle_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"rifle_walk_crouch")
+    defFire = "vjges_gesture_shoot_rifle"
+    defReload = "vjges_gesture_reload_rifle"
+    defJump = VJ.SequenceToActivity(self,"rifle_jump")
+    defGlide = VJ.SequenceToActivity(self,"rifle_jump")
+    defLand = VJ.SequenceToActivity(self,"rifle_idle")
+ elseif h == "m4" then
+    defIdleAim = VJ.SequenceToActivity(self,"m4_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"m4_walk")
+    defRunAim = VJ.SequenceToActivity(self,"m4_run")
+    defCrouch = VJ.SequenceToActivity(self,"m4_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"m4_walk_crouch")
+    defFire = "vjges_gesture_shoot_m4"
+    defReload = "vjges_gesture_reload_m4"
+    defJump = VJ.SequenceToActivity(self,"m4_jump")
+    defGlide = VJ.SequenceToActivity(self,"m4_jump")
+    defLand = VJ.SequenceToActivity(self,"m4_idle")
+ elseif h == "shotgun" then
+    defIdleAim = VJ.SequenceToActivity(self,"shotgun_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"shotgun_walk")
+    defRunAim = VJ.SequenceToActivity(self,"shotgun_run")
+    defCrouch = VJ.SequenceToActivity(self,"shotgun_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"shotgun_walk_crouch")
+    defFire = "vjges_gesture_shoot_shotgun"
+    defReload = "vjges_gesture_reload_shotgun"
+    defJump = VJ.SequenceToActivity(self,"shotgun_jump")
+    defGlide = VJ.SequenceToActivity(self,"shotgun_jump")
+    defLand = VJ.SequenceToActivity(self,"shotgun_idle")
+ elseif h == "shorty" then
+    defIdleAim = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"shotgun_shorty_walk")
+    defRunAim = VJ.SequenceToActivity(self,"shotgun_shorty_run")
+    defCrouch = VJ.SequenceToActivity(self,"shotgun_shorty_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"shotgun_shorty_walk_crouch")
+    defFire = "vjges_gesture_shoot_shotgun_shorty"
+    defReload = "vjges_gesture_reload_shorty"
+    defJump = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
+    defGlide = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
+    defLand = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
+ elseif h == "winchester" or h == "crossbow" then
+    defIdleAim = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"shotgun_winchester_walk")
+    defRunAim = VJ.SequenceToActivity(self,"shotgun_winchester_run")
+    defCrouch = VJ.SequenceToActivity(self,"shotgun_winchester_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"shotgun_winchester_walk_crouch")
+    defFire = "vjges_gesture_shoot_shotgun_winchester"
+    defReload = "vjges_gesture_reload_winchester"
+    defJump = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
+    defGlide = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
+    defLand = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
+ elseif h == "pistol" then
+    defIdleAim = VJ.SequenceToActivity(self,"pistol_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"pistol_walk")
+    defRunAim = VJ.SequenceToActivity(self,"pistol_run")
+    defCrouch = VJ.SequenceToActivity(self,"pistol_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"pistol_walk_crouch")
+    defFire = "vjges_gesture_shoot_pistol"
+    defReload = "vjges_gesture_reload_pistol"
+    defJump = VJ.SequenceToActivity(self,"pistol_jump")
+    defGlide = VJ.SequenceToActivity(self,"pistol_jump")
+    defLand = VJ.SequenceToActivity(self,"pistol_idle")
+ elseif h == "revolver" then
+    defIdleAim = VJ.SequenceToActivity(self,"revolver_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"revolver_walk")
+    defRunAim = VJ.SequenceToActivity(self,"revolver_run")
+    defCrouch = VJ.SequenceToActivity(self,"revolver_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"revolver_walk_crouch")
+    defFire = "vjges_gesture_shoot_revolver"
+    defReload = "vjges_gesture_reload_revolver"
+    defJump = VJ.SequenceToActivity(self,"revolver_jump")
+    defGlide = VJ.SequenceToActivity(self,"revolver_jump")
+    defLand = VJ.SequenceToActivity(self,"revolver_idle")
+ elseif h == "grenade" then
+    defIdleAim = VJ.SequenceToActivity(self,"frag_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"frag_walk")
+    defRunAim = VJ.SequenceToActivity(self,"frag_run")
+    defCrouch = VJ.SequenceToActivity(self,"frag_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"frag_walk_crouch")
+    defFire = "vjges_gesture_throw_grenade"
+    //defReload = "vjges_gesture_reload_pistol"
+    defJump = VJ.SequenceToActivity(self,"frag_jump")
+    defGlide = VJ.SequenceToActivity(self,"frag_jump")
+    defLand = VJ.SequenceToActivity(self,"frag_idle")
+ elseif h == "ied" then
+    defIdleAim = VJ.SequenceToActivity(self,"ied_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"ied_walk")
+    defRunAim = VJ.SequenceToActivity(self,"ied_run")
+    defCrouch = VJ.SequenceToActivity(self,"ied_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"ied_walk_crouch")
+    defFire = "vjges_gesture_throw_grenade"
+    //defReload = "vjges_gesture_reload_pistol"
+    defJump = VJ.SequenceToActivity(self,"ied_jump")
+    defGlide = VJ.SequenceToActivity(self,"ied_jump")
+    defLand = VJ.SequenceToActivity(self,"ied_idle")
+ elseif h == "melee" then
+    defIdleAim = VJ.SequenceToActivity(self,"melee_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"melee_walk")
+    defRunAim = VJ.SequenceToActivity(self,"melee_run")
+    defCrouch = VJ.SequenceToActivity(self,"melee_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"melee_walk_crouch")
+    defFire = "vjges_g_attack_1handed"
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"melee_jump")
+    defGlide = VJ.SequenceToActivity(self,"melee_jump")
+    defLand = VJ.SequenceToActivity(self,"melee_idle")
+ elseif h == "hammer" then
+    defIdleAim = VJ.SequenceToActivity(self,"hammer_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"hammer_walk")
+    defRunAim = VJ.SequenceToActivity(self,"hammer_run")
+    defCrouch = VJ.SequenceToActivity(self,"hammer_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"hammer_walk_crouch")
+    defFire = "vjges_g_attack_1handed"
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"hammer_jump")
+    defGlide = VJ.SequenceToActivity(self,"hammer_jump")
+    defLand = VJ.SequenceToActivity(self,"hammer_idle")
+ elseif h == "melee2" then
+    defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"melee_2handed_walk")
+    defRunAim = VJ.SequenceToActivity(self,"melee_2handed_run")
+    defCrouch = VJ.SequenceToActivity(self,"melee_2handed_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"melee_2handed_walk_crouch")
+    defFire = "vjges_g_attack_2handed_light"
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"melee_2handed_jump")
+    defGlide = VJ.SequenceToActivity(self,"melee_2handed_jump")
+    defLand = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
+ elseif h == "2handheavy" then
+    defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"melee_2handed_heavy_walk")
+    defRunAim = VJ.SequenceToActivity(self,"melee_2handed_heavy_run")
+    defCrouch = VJ.SequenceToActivity(self,"melee_2handed_heavy_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"melee_2handed_heavy_walk_crouch")
+    defFire = "vjges_g_attack_2handed_heavy"
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
+    defGlide = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
+    defLand = VJ.SequenceToActivity(self,"melee_2handed_heavy_idle")
+ elseif h == "chair" then
+    defIdleAim = VJ.SequenceToActivity(self,"melee_chair_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"melee_chair_walk")
+    defRunAim = VJ.SequenceToActivity(self,"melee_chair_run")
+    defCrouch = VJ.SequenceToActivity(self,"melee_chair_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"melee_chair_walk_crouch")
+    defFire = "vjges_g_attack_2handed_chair"
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"melee_chair_jump")
+    defGlide = VJ.SequenceToActivity(self,"melee_chair_jump")
+    defLand = VJ.SequenceToActivity(self,"melee_chair_idle")
+ elseif h == "fists" then
+    defIdleAim = VJ.SequenceToActivity(self,"empty_idle")
+    defWalkAim = VJ.SequenceToActivity(self,"empty_walk")
+    defRunAim = VJ.SequenceToActivity(self,"empty_run")
+    defCrouch = VJ.SequenceToActivity(self,"empty_idle_crouch")
+    defCrawl = VJ.SequenceToActivity(self,"empty_walk_crouch")
+    defFire = VJ.PICK({"vjges_gesture_punch_l","vjges_gesture_punch_r"})
+    defReload = false
+    defJump = VJ.SequenceToActivity(self,"empty_jump")
+    defGlide = VJ.SequenceToActivity(self,"empty_jump")
+    defLand = VJ.SequenceToActivity(self,"empty_idle")
+end
+    self.AnimationTranslations[ACT_IDLE] = defIdleAim
+    self.AnimationTranslations[ACT_IDLE_ANGRY] = defIdleAim
+    self.AnimationTranslations[ACT_WALK] = defWalkAim
+    self.AnimationTranslations[ACT_WALK_AGITATED] = defWalkAim
+    self.AnimationTranslations[ACT_WALK_AIM] = defWalkAim
+    self.AnimationTranslations[ACT_RUN] = defRunAim
+    self.AnimationTranslations[ACT_RUN_AGITATED] = defRunAim
+    self.AnimationTranslations[ACT_RUN_AIM] = defRunAim
+    self.AnimationTranslations[ACT_RANGE_ATTACK1] = defIdleAim
+    self.AnimationTranslations[ACT_RANGE_ATTACK1_LOW] = defCrouch
+    self.AnimationTranslations[ACT_COVER_LOW] = defCrouch
+    self.AnimationTranslations[ACT_WALK_CROUCH] = defCrawl
+    self.AnimationTranslations[ACT_WALK_CROUCH_AIM] = defCrawl
+    self.AnimationTranslations[ACT_RUN_CROUCH] = defCrawl
+    self.AnimationTranslations[ACT_RUN_CROUCH_AIM] = defCrawl
+    self.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK1] = defFire
+    self.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK2] = defFire
+    self.AnimationTranslations[ACT_RELOAD] = defReload
+    self.AnimationTranslations[ACT_RELOAD_LOW] = defReload
+    self.AnimationTranslations[ACT_JUMP] = defJump
+    self.AnimationTranslations[ACT_GLIDE] = defGlide
+    self.AnimationTranslations[ACT_LAND] = defLand
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnDamaged(dmginfo,hitgroup,status)
+ -- Unique headshot sounds
+ if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
+    self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
+end
+    -- For Armor
+    if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
+    if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
+        dmginfo:ScaleDamage(0.80)
+        if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ.EmitSound(self,"VJ.Impact.Armor")
+    local spark = ents.Create("env_spark")
+        spark:SetKeyValue("Magnitude","1")
+        spark:SetKeyValue("Spark Trail Length","1")
+        spark:SetPos(dmginfo:GetDamagePosition())
+        spark:SetAngles(self:GetAngles())
+        spark:SetParent(self)
+        spark:Spawn()
+        spark:Activate()
+        spark:Fire("StartSpark","",0)
+        spark:Fire("StopSpark","",0.001)
+        self:DeleteOnRemove(spark) end end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*function ENT:OnDeathWeaponDrop(dmginfo,hitgroup,wepEnt)
+    if wepEnt:GetClass() == "weapon_vj_zps_fists" then
+        wepEnt:Remove()
+    end
+end*/
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:HandleGibOnDeath(dmginfo,hitgroup)
+ if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
+    self.HasDeathSounds = false
+    VJ.EmitSound(self,"darkborn/zps/shared/impacts/flesh_bodyexplode1.wav",75,100)
+ if self.HasGibOnDeathEffects then
+    ParticleEffect("vj_zps_blood_explode_01",self:GetPos(),self:GetAngles())
+end
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_head.mdl",{Pos=self:LocalToWorld(Vector(0,0,68)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_ribs.mdl",{Pos=self:LocalToWorld(Vector(0,0,0)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_pelvis.mdl",{Pos=self:LocalToWorld(Vector(0,0,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_leg_l.mdl",{Pos=self:LocalToWorld(Vector(0,6,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_leg_r.mdl",{Pos=self:LocalToWorld(Vector(0,-6,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_arm_r.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_arm_l.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump01.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump01.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump03.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump03.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    return true,{AllowCorpse=false,AllowSound=false}
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
+ if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
+ if dmginfo:GetDamageForce():Length() < 800 then return end
+ if hitgroup == HITGROUP_HEAD then
+    VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
+    corpseEnt:RemoveAllDecals()
+    corpseEnt:SetBodygroup(0,math.random(1,3))
+    corpseEnt:SetBodygroup(1,math.random(1,3))
+    corpseEnt:SetBodygroup(2,math.random(1,3))
+    corpseEnt:SetBodygroup(3,math.random(1,3))
+
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
+end
+    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
+        VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
+    if corpseEnt:GetBodygroup(0) == 1 or corpseEnt:GetBodygroup(1) == 1 or corpseEnt:GetBodygroup(2) == 1 or corpseEnt:GetBodygroup(3) == 1 then
+        local bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Pos)
+        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Ang)
+        bleedOut:SetParent(corpseEnt)
+        bleedOut:Fire("SetParentAttachment","headshot1")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+    elseif corpseEnt:GetBodygroup(0) == 2 or corpseEnt:GetBodygroup(1) == 2 or corpseEnt:GetBodygroup(2) == 2 or corpseEnt:GetBodygroup(3) == 2 then
+        bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Pos)
+        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Ang)
+        bleedOut:SetParent(corpseEnt)
+        bleedOut:Fire("SetParentAttachment","headshot2")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+    elseif corpseEnt:GetBodygroup(0) == 3 or corpseEnt:GetBodygroup(1) == 3 or corpseEnt:GetBodygroup(2) == 3 or corpseEnt:GetBodygroup(3) == 3 then
+        bleedOut = ents.Create("info_particle_system")
+        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
+        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Pos)
+        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Ang)
+        bleedOut:SetParent(corpseEnt)
+        bleedOut:Fire("SetParentAttachment","headshot3")
+        bleedOut:Spawn()
+        bleedOut:Activate()
+        bleedOut:Fire("Start","",0)
+        end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2198,679 +2875,6 @@ function ENT:SurvivorVoice_Vanessa()
     "darkborn/zps/survivors/vanessa/cough/coughing01.wav",
     "darkborn/zps/survivors/vanessa/cough/coughing02.wav"
 }
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnChangeActivity(newAct)
- if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
-    self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
-end
- if newAct == ACT_LAND then
-    self:SetNavType(NAV_GROUND)
-end
-    return self.BaseClass.OnChangeActivity(newAct)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Controller_Initialize(ply)
-    ply:ChatPrint("DUCK: Crouch")
-    ply:ChatPrint("JUMP: Jump")
-    ply:ChatPrint("WALK: Switch Weapon")
- if !self.IsMedic then return end
-    ply:ChatPrint("USE: Heal")
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:TranslateActivity(act)
-    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self:GetEnemy()) then
-    if (self.EnemyData.Visible or (self.EnemyData.VisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
-        self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
-    if act == ACT_WALK then
-        return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
-    elseif act == ACT_RUN then
-        return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
-        end
-    end
-end
- if act == ACT_IDLE && !self:OnGround() && !self:IsMoving() then
-    return self:TranslateActivity(act == ACT_IDLE and ACT_GLIDE)
-end
-    /*if self.ZPS_Crouching then
-    if act == ACT_IDLE then
-        return self:TranslateActivity(act == ACT_IDLE and ACT_COVER_LOW)
-    elseif act == ACT_WALK then
-        return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
-    elseif act == ACT_RUN then
-        return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
-    end
-end*/
-    return self.BaseClass.TranslateActivity(self,act)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnThink()
-   if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
-      if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
-         if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
-         local maxDist = 220
-         local maxDepth = 20
-         local targetPos = self:GetPos() +Vector(math.Rand(-maxDist,maxDist),math.Rand(-maxDist,maxDist),maxDepth)
-            self:Jump(targetPos)
-            /*if self.VJ_TheController:KeyDown(IN_FORWARD) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*350)
-            elseif self.VJ_TheController:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp()*200 + self:GetForward()*-350)
-            elseif self.VJ_TheController:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*-350)
-            elseif self.VJ_TheController:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp()*200 + self:GetRight()*350) end*/
-            self:PlaySoundSystem("Speech",self.SoundTbl_Jump)
-            self.ZPS_NextJumpT = CurTime() + 0.8
-        end
-    end
-end
- /*if !IsValid(self:GetActiveWeapon()) or self.Weapon_Disabled then
-    self.SoundTbl_Alert = self.SoundTbl_CallForHelp
-    self.SoundTbl_CombatIdle = self.SoundTbl_CallForHelp
-end*/
-    local controller = self.VJ_TheController
-    if IsValid(controller) then
-    if controller:KeyDown(IN_WALK) && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 1 && self.WeaponInventory_MeleeList then
-       //self:PlayAnim("vjges_throw_arms",true,false,false)
-       self:DoChangeWeapon(VJ.PICK(self.WeaponsList_Cont["ContWeapons"]),true)
-       self.ZPS_NextWepSwitchT = CurTime() + 1
-end
-    /*if controller:KeyDown(IN_DUCK) && !self.ZPS_Crouching then
-        self.ZPS_Crouching = true
-    elseif !controller:KeyDown(IN_DUCK) && self.ZPS_Crouching then
-        self.ZPS_Crouching = false
-    end*/
-end
-    if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 && GetConVar("ai_disabled"):GetInt() == 0 && !self.ZPS_Panic then
-        if IsValid(self:GetEnemy()) && !self.IsGuard then
-            if math.random(1,100) <= 3 && !IsValid(controller) && self:Visible(self:GetEnemy()) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE then
-                self:AvoidThreat()
-            end
-        end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnThinkActive()
- //if self.ZPS_Crouching && (self:GetNPCState() != NPC_STATE_ALERT && self:GetNPCState() != NPC_STATE_COMBAT) /*or !self.WeaponAttackState*/ then self.ZPS_Crouching = false end
- if self.ZPS_InfectedVictim && !self.ZPS_ImmuneInfection && CurTime() > self.ZPS_NextCoughT then
-    self:PlaySoundSystem("Speech",self.SoundTbl_Cough)
-    self.ZPS_NextCoughT = CurTime() + math.Rand(5,30)
-end
- if self.IsMedic && !self:IsBusy() && IsValid(self) && !self.MedicData.Status && CurTime() > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
-    self:PlayAnim("vjges_gesture_inoculator_inject_self",true,false,false)
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
-    local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
-    local inoculator = ents.Create("prop_vj_animatable")
-    inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
-    inoculator:SetSkin(math.random(0,2))
-    inoculator:SetPos(att.Pos)
-    inoculator:SetAngles(att.Ang)
-    inoculator:SetParent(self)
-    inoculator:Fire("SetParentAttachment","anim_attachment_RH")
-    inoculator:Spawn()
-    inoculator:AddEffects(EF_BONEMERGE)
-    inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-    self.Inoculator = inoculator
-    self:DeleteOnRemove(inoculator)
-    SafeRemoveEntityDelayed(inoculator,1.2)
- if IsValid(self:GetEnemy()) then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end
-    timer.Simple(0.7, function() if IsValid(self) && !self.Dead then
-    local CurHP = self:Health()
-    self:InoculatorInject()
-    self:SetHealth(math.Clamp(CurHP + self.Medic_HealAmount, CurHP, self:GetMaxHealth()))
-    self:PlaySoundSystem("Speech",self.SoundTbl_MedicReceiveHeal)
-    VJ.CreateSound(self,self.SoundTbl_MedicOnHeal,75,100)
-    timer.Remove("timer_melee_bleed"..self:EntIndex())
-    timer.Adjust("timer_melee_slowply"..self:EntIndex(), 0)
-    self:RemoveAllDecals()
-    timer.Simple(0.5,function() if IsValid(self) then
-    if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end end)
-    end
-end)
-    self.ZPS_NextSelfHealT = CurTime() + math.Rand(10,20)
-end
- if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.Weapon_Disabled or !IsValid(self:GetActiveWeapon()) then return end
-    local ent = self:GetEnemy()
-    local dist = self.EnemyData.DistanceNearest
-    if IsValid(ent) && !self.VJ_IsBeingControlled && !self.ZPS_Panic then
-        local wep = self:GetActiveWeapon()
-        if self.WeaponInventoryStatus == VJ.WEP_INVENTORY_MELEE then return end
-        local selectType = false
-        if dist > 2200 then
-            selectType = "Normal"
-        elseif dist <= 2200 && dist > 650 then
-            selectType = "Normal"
-        else
-            selectType = "Close"
-end
-        if selectType && !self:IsBusy() && CurTime() > self.ZPS_NextWepSwitchT && (!IsValid(wep) or (IsValid(wep) && math.random(1, wep:Clip1() > 0 && (wep:Clip1() <= wep:GetMaxClip1() *0.35) && 1 or (selectType == "Close" && 20 or 150)))) == 1 then
-            self:DoChangeWeapon(VJ.PICK(self.WeaponsList[selectType]),true)
-            //self:PlayAnim("vjges_throw_arms",true,false,false)
-            wep = self:GetActiveWeapon()
-            self.ZPS_NextWepSwitchT = CurTime() + math.Rand(6,math.Round(math.Clamp(wep:Clip1() *0.5,1,wep:Clip1())))
-        end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnAllyKilled(ent)
- if self.VJ_IsBeingControlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > CurTime() then return end
-    if math.random(1,5) == 1 && !self.ZPS_Panic then
-        self.ZPS_Panic = true
-        self:PlaySoundSystem("CallForHelp")
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:SelectSchedule()
-    self.BaseClass.SelectSchedule(self)
-    -- Hide after an ally is killed
-    if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
-        self.ZPS_Panic = false
-        self:SCHEDULE_COVER_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
-        self.NextDoAnyAttackT = CurTime() + 5
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-ENT.JumpHeight = 200
-function ENT:AvoidThreat()
-  local maxDist = 220
-  local maxDepth = 20
-  local targetPos = self:GetPos() +Vector(math.Rand(-maxDist,maxDist),math.Rand(-maxDist,maxDist),maxDepth)
-
-  if self:GetNavType() != NAV_JUMP && (IsValid(wep) && wep:Clip1() > 0 or !IsValid(wep)) then
-     self:Jump(targetPos)
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Jump(pos)
-    self:StopMoving()
-    self:ResetMoveCalc()
-    self:SetNavType(NAV_GROUND)
-    self:SetMoveType(MOVETYPE_STEP)
-    if self.CurrentSchedule then
-        self.CurrentSchedule = nil
-        self.CurrentScheduleName = nil
-        self.CurrentTask = nil
-        self.CurrentTaskID = nil
-end
-    //self.NextIdleStandTime = CurTime()
-    self.NextIdleTime = CurTime()
-    self.NextChaseTime = CurTime()
-    self:ForceMoveJump(self:CalculateProjectile("Curve", self:GetPos(), self:GetPos() +((((pos or self:GetPos() +self:GetUp() *100) -self:GetPos()):GetNormalized() *50) +(self:GetUp() *25)), 250))
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnMedicBehavior(status,statusData)
-    if status == "BeforeHeal" then
-        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
-        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_RH"))
-        local inoculator = ents.Create("prop_vj_animatable")
-        inoculator:SetModel("models/darkborn/zps/weapons/w_inoculator.mdl")
-        inoculator:SetSkin(math.random(0,2))
-        inoculator:SetPos(att.Pos)
-        inoculator:SetAngles(att.Ang)
-        inoculator:SetParent(self)
-        inoculator:Fire("SetParentAttachment","anim_attachment_RH")
-        inoculator:Spawn()
-        inoculator:AddEffects(EF_BONEMERGE)
-        inoculator:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-        self.Inoculator = inoculator
-        self:DeleteOnRemove(inoculator)
-        SafeRemoveEntityDelayed(inoculator,1.2)
-    if inoculator:GetSkin() == 0 then
-        self.Medic_HealAmount = 20
-    elseif inoculator:GetSkin() == 1 then
-        self.Medic_HealAmount = 0
-    elseif inoculator:GetSkin() == 2 then
-        self.Medic_HealAmount = 100
-    end
-end
- if status == "OnHeal" then
-    if IsValid(statusData) && IsValid(self.Inoculator) && self.Inoculator:GetSkin() == 1 then
-        if statusData.ZPS_InfectedVictim then statusData.ZPS_InfectedVictim = false end
-        if statusData:IsPlayer() then timer.Create(statusData:EntIndex().."VJ_ZPS_Regen_Player",1,25,function() if IsValid(statusData) then local CurHP = statusData:Health() statusData:SetHealth(math.Clamp(CurHP + 1, CurHP, statusData:GetMaxHealth())) end end) end
-        statusData.HasHealthRegeneration = true
-        statusData.ZPS_ImmuneInfection = true
-        VJ.CreateSound(statusData,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-        timer.Remove(statusData:EntIndex().."VJ_ZPS_Infection")
-        hook.Remove("Think","VJ_ZPS_VictimCough")
-        timer.Create(statusData:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
-end
-        timer.Simple(0.5,function() if IsValid(self) then
-        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(false) end end
-        end)
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:InoculatorInject()
-    if IsValid(self.Inoculator) then
-    if self.Inoculator:GetSkin() == 0 then
-        self.Medic_HealAmount = 20
-    elseif self.Inoculator:GetSkin() == 1 then
-        self.Medic_HealAmount = 0
-    elseif self.Inoculator:GetSkin() == 2 then
-        self.Medic_HealAmount = 100
-end
- if self.Inoculator:GetSkin() == 1 then
-    if self.ZPS_InfectedVictim then self.ZPS_InfectedVictim = false end
-        self.HealthRegenParams.Enabled = true
-        self.ZPS_ImmuneInfection = true
-        VJ.CreateSound(self,"darkborn/zps/weapons/health/inoculator/heartbeat_158.wav",60,100)
-        timer.Remove(self:EntIndex().."VJ_ZPS_Infection")
-        hook.Remove("Think","VJ_ZPS_VictimCough")
-        timer.Create(self:EntIndex().."VJ_ZPS_Immunity",25,1,function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
-        end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnMeleeAttack(status,enemy)
-    if status == "Init" then
-    if IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
-        self.MeleeAttackDamage = 25
-        self.MeleeAttackDamageType = DMG_CLUB
-        self.SoundTbl_MeleeAttackExtra = {
-        "darkborn/zps/weapons/melee/push/push_hit-01.wav",
-        "darkborn/zps/weapons/melee/push/push_hit-02.wav",
-        "darkborn/zps/weapons/melee/push/push_hit-03.wav",
-        "darkborn/zps/weapons/melee/push/push_hit-04.wav"
-}
-        self.SoundTbl_MeleeAttackMiss = {
-        "npc/zombie/claw_miss1.wav",
-        "npc/zombie/claw_miss2.wav"
-}
-        end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnWeaponAttack()
- if self.VJ_IsBeingControlled then return end
- local wep = self.WeaponEntity
- if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
- if self.Weapon_Strafe && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeT && (CurTime() - self.EnemyData.TimeAcquired) > 2 then
- timer.Simple(0,function()
-    local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 250), true, false, 8, true))
-    if moveCheck then
-    self:StopMoving()
-    self.NextWeaponStrafeT = CurTime() + math.Rand(self.Weapon_StrafeCooldown.a, self.Weapon_StrafeCooldown.b)
-    self:SetLastPosition(moveCheck)
-    self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH", function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end) end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnWeaponStrafe()
-  if self.VJ_IsBeingControlled then return end
-    if math.random(1,2) == 1 && !self.ZPS_Crouching then
-        self.ZPS_Crouching = true
-    //elseif math.random(1,2) == 1 && self.ZPS_Crouching then
-    else
-        self.ZPS_Crouching = false
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnWeaponReload()
- if IsValid(self:GetActiveWeapon()) then
- local wep = self:GetActiveWeapon()
- local wepHoldType = wep:GetHoldType()
- if wepHoldType == "grenade" then
-    self.DisableWeaponReloadAnimation = true
- else
-    self.DisableWeaponReloadAnimation = false
-    end
-end
- //if self.Weapon_FindCoverOnReload then self:SCHEDULE_COVER_ORIGIN("TASK_RUN_PATH", function(x) x.CanShootWhenMoving = true x.ConstantlyFaceEnemy_IfVisible = (IsValid(self:GetActiveWeapon()) and true) or false x.DisableChasingEnemy = false end) return end
- if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(self:GetEnemy()) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:DoCoverTrace(self:GetPos() + self:OBBCenter(), self:GetEnemy():EyePos(), false, {SetLastHiddenTime=true}) then return end
- timer.Simple(0,function()
-    local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 400), true, false, 8, true))
-    if moveCheck then
-    self:StopMoving()
-    self:SetLastPosition(moveCheck)
-    self:SCHEDULE_GOTO_POSITION(VJ.PICK({"TASK_RUN_PATH", "TASK_WALK_PATH"}), function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.CanShootWhenMoving = true x.TurnData = {Type = VJ.FACE_ENEMY} end) end end)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:OnChangeWeapon(newWeapon,oldWeapon,invSwitch)
-    if invSwitch then
-        self:PlayAnim("vjges_throw_arms",true,false,false)
-    end
-end*/
----------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:OnGrenadeAttack(status,overrideEnt,landDir)
-    if status == "Init" then
-        if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
-        local att = self:GetAttachment(self:LookupAttachment("anim_attachment_LH"))
-        self.FakeGrenade = ents.Create("prop_vj_animatable")
-        self.FakeGrenade:SetModel(self.GrenadeAttackModel)
-        self.FakeGrenade:SetPos(att.Pos)
-        self.FakeGrenade:SetAngles(att.Ang)
-        self.FakeGrenade:SetParent(self)
-        self.FakeGrenade:Fire("SetParentAttachment","anim_attachment_LH")
-        self.FakeGrenade:Spawn()
-        self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-        self:DeleteOnRemove(self.FakeGrenade)
-        SafeRemoveEntityDelayed(self.FakeGrenade,self.GrenadeAttackThrowTime)
-        end
-    end
-end*/
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:SetAnimationTranslations(h)
-    local defIdleAim = ACT_IDLE -- ACT_IDLE_ANGRY
-    local defWalkAim = ACT_WALK
-    local defRunAim = ACT_RUN
-    local defFire = ACT_RANGE_ATTACK1
-    local defCrouch = ACT_RANGE_ATTACK1_LOW
-    local defCrawl = ACT_RUN_CROUCH
-    local defReload = ACT_RELOAD
-    local defJump = ACT_JUMP
-    local defGlide = ACT_GLIDE
-    local defLand = ACT_LAND
-
-    if self:GetActiveWeapon().ZPS_HType then -- Allow for more than default hold types
-        h = self:GetActiveWeapon().ZPS_HType
-end
-
-    if h == "smg" then
-        defIdleAim = VJ.SequenceToActivity(self,"mp5_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"mp5_walk")
-        defRunAim = VJ.SequenceToActivity(self,"mp5_run")
-        defCrouch = VJ.SequenceToActivity(self,"mp5_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"mp5_walk_crouch")
-        defFire = "vjges_gesture_shoot_mp5"
-        defReload = "vjges_gesture_reload_mp5"
-        defJump = VJ.SequenceToActivity(self,"mp5_jump")
-        defGlide = VJ.SequenceToActivity(self,"mp5_jump")
-        defLand = VJ.SequenceToActivity(self,"mp5_idle")
-    elseif h == "ar2" or h == "rpg" then
-        defIdleAim = VJ.SequenceToActivity(self,"rifle_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"rifle_walk")
-        defRunAim = VJ.SequenceToActivity(self,"rifle_run")
-        defCrouch = VJ.SequenceToActivity(self,"rifle_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"rifle_walk_crouch")
-        defFire = "vjges_gesture_shoot_rifle"
-        defReload = "vjges_gesture_reload_rifle"
-        defJump = VJ.SequenceToActivity(self,"rifle_jump")
-        defGlide = VJ.SequenceToActivity(self,"rifle_jump")
-        defLand = VJ.SequenceToActivity(self,"rifle_idle")
-    elseif h == "m4" then
-        defIdleAim = VJ.SequenceToActivity(self,"m4_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"m4_walk")
-        defRunAim = VJ.SequenceToActivity(self,"m4_run")
-        defCrouch = VJ.SequenceToActivity(self,"m4_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"m4_walk_crouch")
-        defFire = "vjges_gesture_shoot_m4"
-        defReload = "vjges_gesture_reload_m4"
-        defJump = VJ.SequenceToActivity(self,"m4_jump")
-        defGlide = VJ.SequenceToActivity(self,"m4_jump")
-        defLand = VJ.SequenceToActivity(self,"m4_idle")
-    elseif h == "shotgun" then
-        defIdleAim = VJ.SequenceToActivity(self,"shotgun_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"shotgun_walk")
-        defRunAim = VJ.SequenceToActivity(self,"shotgun_run")
-        defCrouch = VJ.SequenceToActivity(self,"shotgun_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"shotgun_walk_crouch")
-        defFire = "vjges_gesture_shoot_shotgun"
-        defReload = "vjges_gesture_reload_shotgun"
-        defJump = VJ.SequenceToActivity(self,"shotgun_jump")
-        defGlide = VJ.SequenceToActivity(self,"shotgun_jump")
-        defLand = VJ.SequenceToActivity(self,"shotgun_idle")
-    elseif h == "shorty" then
-        defIdleAim = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"shotgun_shorty_walk")
-        defRunAim = VJ.SequenceToActivity(self,"shotgun_shorty_run")
-        defCrouch = VJ.SequenceToActivity(self,"shotgun_shorty_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"shotgun_shorty_walk_crouch")
-        defFire = "vjges_gesture_shoot_shotgun_shorty"
-        defReload = "vjges_gesture_reload_shorty"
-        defJump = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
-        defGlide = VJ.SequenceToActivity(self,"shotgun_shorty_jump")
-        defLand = VJ.SequenceToActivity(self,"shotgun_shorty_idle")
-    elseif h == "winchester" or h == "crossbow" then
-        defIdleAim = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"shotgun_winchester_walk")
-        defRunAim = VJ.SequenceToActivity(self,"shotgun_winchester_run")
-        defCrouch = VJ.SequenceToActivity(self,"shotgun_winchester_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"shotgun_winchester_walk_crouch")
-        defFire = "vjges_gesture_shoot_shotgun_winchester"
-        defReload = "vjges_gesture_reload_winchester"
-        defJump = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
-        defGlide = VJ.SequenceToActivity(self,"shotgun_winchester_jump")
-        defLand = VJ.SequenceToActivity(self,"shotgun_winchester_idle")
-    elseif h == "pistol" then
-        defIdleAim = VJ.SequenceToActivity(self,"pistol_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"pistol_walk")
-        defRunAim = VJ.SequenceToActivity(self,"pistol_run")
-        defCrouch = VJ.SequenceToActivity(self,"pistol_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"pistol_walk_crouch")
-        defFire = "vjges_gesture_shoot_pistol"
-        defReload = "vjges_gesture_reload_pistol"
-        defJump = VJ.SequenceToActivity(self,"pistol_jump")
-        defGlide = VJ.SequenceToActivity(self,"pistol_jump")
-        defLand = VJ.SequenceToActivity(self,"pistol_idle")
-    elseif h == "revolver" then
-        defIdleAim = VJ.SequenceToActivity(self,"revolver_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"revolver_walk")
-        defRunAim = VJ.SequenceToActivity(self,"revolver_run")
-        defCrouch = VJ.SequenceToActivity(self,"revolver_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"revolver_walk_crouch")
-        defFire = "vjges_gesture_shoot_revolver"
-        defReload = "vjges_gesture_reload_revolver"
-        defJump = VJ.SequenceToActivity(self,"revolver_jump")
-        defGlide = VJ.SequenceToActivity(self,"revolver_jump")
-        defLand = VJ.SequenceToActivity(self,"revolver_idle")
-    elseif h == "grenade" then
-        defIdleAim = VJ.SequenceToActivity(self,"frag_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"frag_walk")
-        defRunAim = VJ.SequenceToActivity(self,"frag_run")
-        defCrouch = VJ.SequenceToActivity(self,"frag_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"frag_walk_crouch")
-        defFire = "vjges_gesture_throw_grenade"
-        //defReload = "vjges_gesture_reload_pistol"
-        defJump = VJ.SequenceToActivity(self,"frag_jump")
-        defGlide = VJ.SequenceToActivity(self,"frag_jump")
-        defLand = VJ.SequenceToActivity(self,"frag_idle")
-    elseif h == "ied" then
-        defIdleAim = VJ.SequenceToActivity(self,"ied_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"ied_walk")
-        defRunAim = VJ.SequenceToActivity(self,"ied_run")
-        defCrouch = VJ.SequenceToActivity(self,"ied_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"ied_walk_crouch")
-        defFire = "vjges_gesture_throw_grenade"
-        //defReload = "vjges_gesture_reload_pistol"
-        defJump = VJ.SequenceToActivity(self,"ied_jump")
-        defGlide = VJ.SequenceToActivity(self,"ied_jump")
-        defLand = VJ.SequenceToActivity(self,"ied_idle")
-    elseif h == "melee" then
-        defIdleAim = VJ.SequenceToActivity(self,"melee_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"melee_walk")
-        defRunAim = VJ.SequenceToActivity(self,"melee_run")
-        defCrouch = VJ.SequenceToActivity(self,"melee_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"melee_walk_crouch")
-        defFire = "vjges_g_attack_1handed"
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"melee_jump")
-        defGlide = VJ.SequenceToActivity(self,"melee_jump")
-        defLand = VJ.SequenceToActivity(self,"melee_idle")
-    elseif h == "hammer" then
-        defIdleAim = VJ.SequenceToActivity(self,"hammer_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"hammer_walk")
-        defRunAim = VJ.SequenceToActivity(self,"hammer_run")
-        defCrouch = VJ.SequenceToActivity(self,"hammer_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"hammer_walk_crouch")
-        defFire = "vjges_g_attack_1handed"
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"hammer_jump")
-        defGlide = VJ.SequenceToActivity(self,"hammer_jump")
-        defLand = VJ.SequenceToActivity(self,"hammer_idle")
-    elseif h == "melee2" then
-        defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"melee_2handed_walk")
-        defRunAim = VJ.SequenceToActivity(self,"melee_2handed_run")
-        defCrouch = VJ.SequenceToActivity(self,"melee_2handed_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"melee_2handed_walk_crouch")
-        defFire = "vjges_g_attack_2handed_light"
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"melee_2handed_jump")
-        defGlide = VJ.SequenceToActivity(self,"melee_2handed_jump")
-        defLand = VJ.SequenceToActivity(self,"melee_2handed_light_idle")
-    elseif h == "2handheavy" then
-        defIdleAim = VJ.SequenceToActivity(self,"melee_2handed_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"melee_2handed_heavy_walk")
-        defRunAim = VJ.SequenceToActivity(self,"melee_2handed_heavy_run")
-        defCrouch = VJ.SequenceToActivity(self,"melee_2handed_heavy_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"melee_2handed_heavy_walk_crouch")
-        defFire = "vjges_g_attack_2handed_heavy"
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
-        defGlide = VJ.SequenceToActivity(self,"melee_2handed_heavy_jump")
-        defLand = VJ.SequenceToActivity(self,"melee_2handed_heavy_idle")
-    elseif h == "chair" then
-        defIdleAim = VJ.SequenceToActivity(self,"melee_chair_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"melee_chair_walk")
-        defRunAim = VJ.SequenceToActivity(self,"melee_chair_run")
-        defCrouch = VJ.SequenceToActivity(self,"melee_chair_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"melee_chair_walk_crouch")
-        defFire = "vjges_g_attack_2handed_chair"
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"melee_chair_jump")
-        defGlide = VJ.SequenceToActivity(self,"melee_chair_jump")
-        defLand = VJ.SequenceToActivity(self,"melee_chair_idle")
-    elseif h == "fists" then
-        defIdleAim = VJ.SequenceToActivity(self,"empty_idle")
-        defWalkAim = VJ.SequenceToActivity(self,"empty_walk")
-        defRunAim = VJ.SequenceToActivity(self,"empty_run")
-        defCrouch = VJ.SequenceToActivity(self,"empty_idle_crouch")
-        defCrawl = VJ.SequenceToActivity(self,"empty_walk_crouch")
-        defFire = VJ.PICK({"vjges_gesture_punch_l","vjges_gesture_punch_r"})
-        defReload = false
-        defJump = VJ.SequenceToActivity(self,"empty_jump")
-        defGlide = VJ.SequenceToActivity(self,"empty_jump")
-        defLand = VJ.SequenceToActivity(self,"empty_idle")
-end
-
-    self.AnimationTranslations[ACT_IDLE] = defIdleAim
-    self.AnimationTranslations[ACT_IDLE_ANGRY] = defIdleAim
-    self.AnimationTranslations[ACT_WALK] = defWalkAim
-    self.AnimationTranslations[ACT_WALK_AGITATED] = defWalkAim
-    self.AnimationTranslations[ACT_WALK_AIM] = defWalkAim
-    self.AnimationTranslations[ACT_RUN] = defRunAim
-    self.AnimationTranslations[ACT_RUN_AGITATED] = defRunAim
-    self.AnimationTranslations[ACT_RUN_AIM] = defRunAim
-    self.AnimationTranslations[ACT_RANGE_ATTACK1] = defIdleAim
-    self.AnimationTranslations[ACT_RANGE_ATTACK1_LOW] = defCrouch
-    self.AnimationTranslations[ACT_COVER_LOW] = defCrouch
-    self.AnimationTranslations[ACT_WALK_CROUCH] = defCrawl
-    self.AnimationTranslations[ACT_WALK_CROUCH_AIM] = defCrawl
-    self.AnimationTranslations[ACT_RUN_CROUCH] = defCrawl
-    self.AnimationTranslations[ACT_RUN_CROUCH_AIM] = defCrawl
-    self.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK1] = defFire
-    self.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK2] = defFire
-    self.AnimationTranslations[ACT_RELOAD] = defReload
-    self.AnimationTranslations[ACT_RELOAD_LOW] = defReload
-    self.AnimationTranslations[ACT_JUMP] = defJump
-    self.AnimationTranslations[ACT_GLIDE] = defGlide
-    self.AnimationTranslations[ACT_LAND] = defLand
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnDamaged(dmginfo,hitgroup,status)
- -- Unique headshot sounds
- if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
-    self:PlaySoundSystem("Impact",{"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav","darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
-end
-    -- For Armor
-    if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP -dmginfo:GetDamage()
-    if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) then
-        dmginfo:ScaleDamage(0.80)
-        if self.HasSounds && self.HasImpactSounds && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then VJ.EmitSound(self,"VJ.Impact.Armor")
-    local spark = ents.Create("env_spark")
-        spark:SetKeyValue("Magnitude","1")
-        spark:SetKeyValue("Spark Trail Length","1")
-        spark:SetPos(dmginfo:GetDamagePosition())
-        spark:SetAngles(self:GetAngles())
-        spark:SetParent(self)
-        spark:Spawn()
-        spark:Activate()
-        spark:Fire("StartSpark","",0)
-        spark:Fire("StopSpark","",0.001)
-        self:DeleteOnRemove(spark) end end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:OnDeathWeaponDrop(dmginfo,hitgroup,wepEnt)
-    if wepEnt:GetClass() == "weapon_vj_zps_fists" then
-        wepEnt:Remove()
-    end
-end*/
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:HandleGibOnDeath(dmginfo,hitgroup)
- if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
-    self.HasDeathSounds = false
-    VJ.EmitSound(self,"darkborn/zps/shared/impacts/flesh_bodyexplode1.wav",75,100)
- if self.HasGibOnDeathEffects then
-    ParticleEffect("vj_zps_blood_explode_01",self:GetPos(),self:GetAngles())
-end
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_head.mdl",{Pos=self:LocalToWorld(Vector(0,0,68)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_ribs.mdl",{Pos=self:LocalToWorld(Vector(0,0,0)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_pelvis.mdl",{Pos=self:LocalToWorld(Vector(0,0,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_leg_l.mdl",{Pos=self:LocalToWorld(Vector(0,6,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_leg_r.mdl",{Pos=self:LocalToWorld(Vector(0,-6,2)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_arm_r.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_arm_l.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump01.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump01.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump03.mdl",{Pos=self:LocalToWorld(Vector(0,0,60)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump03.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,-20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl",{Pos=self:LocalToWorld(Vector(0,20,55)),Ang=self:GetAngles(),CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    return true,{AllowCorpse=false,AllowSound=false}
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,corpseEnt)
- if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 then return end
- if dmginfo:GetDamageForce():Length() < 800 then return end
- if hitgroup == HITGROUP_HEAD then
-    VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav",75,100)
-    corpseEnt:RemoveAllDecals()
-    corpseEnt:SetBodygroup(0,math.random(1,3))
-    corpseEnt:SetBodygroup(1,math.random(1,3))
-    corpseEnt:SetBodygroup(2,math.random(1,3))
-    corpseEnt:SetBodygroup(3,math.random(1,3))
-
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib","models/darkborn/zps/gibs/gib_meatclump02.mdl",{Pos=self:GetAttachment(self:LookupAttachment("forward")).Pos,CollideSound={"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav","darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}},function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail",PATTACH_POINT_FOLLOW,gib,gib:LookupAttachment("origin")) end)
-end
-    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
-        VJ.EmitSound(corpseEnt,"darkborn/zps/shared/impacts/flesh_bloodspray-0"..math.random(1,3)..".wav",60,100)
-    if corpseEnt:GetBodygroup(0) == 1 or corpseEnt:GetBodygroup(1) == 1 or corpseEnt:GetBodygroup(2) == 1 or corpseEnt:GetBodygroup(3) == 1 then
-        local bleedOut = ents.Create("info_particle_system")
-        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
-        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Pos)
-        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Ang)
-        bleedOut:SetParent(corpseEnt)
-        bleedOut:Fire("SetParentAttachment","headshot1")
-        bleedOut:Spawn()
-        bleedOut:Activate()
-        bleedOut:Fire("Start","",0)
-    elseif corpseEnt:GetBodygroup(0) == 2 or corpseEnt:GetBodygroup(1) == 2 or corpseEnt:GetBodygroup(2) == 2 or corpseEnt:GetBodygroup(3) == 2 then
-        bleedOut = ents.Create("info_particle_system")
-        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
-        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Pos)
-        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Ang)
-        bleedOut:SetParent(corpseEnt)
-        bleedOut:Fire("SetParentAttachment","headshot2")
-        bleedOut:Spawn()
-        bleedOut:Activate()
-        bleedOut:Fire("Start","",0)
-    elseif corpseEnt:GetBodygroup(0) == 3 or corpseEnt:GetBodygroup(1) == 3 or corpseEnt:GetBodygroup(2) == 3 or corpseEnt:GetBodygroup(3) == 3 then
-        bleedOut = ents.Create("info_particle_system")
-        bleedOut:SetKeyValue("effect_name","vj_zps_blood_headshot")
-        bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Pos)
-        bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Ang)
-        bleedOut:SetParent(corpseEnt)
-        bleedOut:Fire("SetParentAttachment","headshot3")
-        bleedOut:Spawn()
-        bleedOut:Activate()
-        bleedOut:Fire("Start","",0)
-        end
-    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.FootSteps = {
