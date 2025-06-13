@@ -219,7 +219,7 @@ function ENT:OnAlert(ent)
     self.ZPS_NextBerserkT = CurTime() + math.Rand(10,20)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Controller_Initialize(ply)
+function ENT:Controller_Initialize(ply,controlEnt)
  ply:ChatPrint("ATTACK2: Prop Attack (While holding ATTACK2, press ATTACK1)")
  ply:ChatPrint("RELOAD: Break Door (If valid)")
  ply:ChatPrint("JUMP: Jump")
@@ -300,7 +300,7 @@ end
 end
     if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 0 or self.Dead then self.ZPS_DoorToBreak = NULL return end
     if !IsValid(self.ZPS_DoorToBreak) && !self.ZPS_AttackingDoor then
-    if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
+    if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_RELOAD))) then
     for _,v in pairs(ents.FindInSphere(self:GetPos(),30)) do
     if GetConVar("VJ_ZPS_BreakDoors_Func"):GetInt() == 1 && v:GetClass() == "func_door_rotating" && v:Visible(self) then self.ZPS_DoorToBreak = v end
     if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
