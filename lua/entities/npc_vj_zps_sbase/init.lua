@@ -41,6 +41,7 @@ ENT.AnimTbl_CallForHelp = {"vjges_g_barricade","vjges_gesture_interaction_use_em
 ENT.AnimTbl_DamageAllyResponse = "vjges_gesture_interaction_grab_empty"
 ENT.HasExtraMeleeAttackSounds = true
 ENT.DamageResponse = "OnlySearch"
+ENT.DropDeathLoot = false
 ENT.KilledEnemySoundLast = false
 ENT.DisableFootStepSoundTimer = true
 ENT.MainSoundPitch = 100
