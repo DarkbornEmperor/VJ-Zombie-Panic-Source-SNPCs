@@ -275,7 +275,7 @@ end
 function ENT:OnThink()
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
     if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
-    if self:IsOnGround() && CurTime() > self.ZPS_NextJumpT then
+    if self:OnGround() && CurTime() > self.ZPS_NextJumpT then
     local maxDist = 220
     local maxDepth = 20
     local targetPos = self:GetPos() +Vector(math.Rand(-maxDist,maxDist),math.Rand(-maxDist,maxDist),maxDepth)
@@ -1644,17 +1644,17 @@ ENT.Carrier_FootSteps = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnFootstepSound()
-    if !self:IsOnGround() then return end
-    local tr = util.TraceLine({
-        start = self:GetPos(),
-        endpos = self:GetPos() +Vector(0,0,-150),
-        filter = {self}
-    })
-    if tr.Hit && self.Zombie_FootSteps[tr.MatType] && self:GetClass() != "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+ if !self:OnGround() then return end
+ local tr = util.TraceLine({
+    start = self:GetPos(),
+    endpos = self:GetPos() +Vector(0,0,-150),
+    filter = {self}
+})
+ if tr.Hit && self.Zombie_FootSteps[tr.MatType] && self:GetClass() != "npc_vj_zps_zcarrier" then
+    VJ.EmitSound(self,VJ.PICK(self.Zombie_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
-    if tr.Hit && self.Carrier_FootSteps[tr.MatType] && self:GetClass() == "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
+ if tr.Hit && self.Carrier_FootSteps[tr.MatType] && self:GetClass() == "npc_vj_zps_zcarrier" then
+    VJ.EmitSound(self,VJ.PICK(self.Carrier_FootSteps[tr.MatType]),self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
 end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
         VJ.EmitSound(self,"player/footsteps/wade" .. math.random(1,8) .. ".wav",self.FootstepSoundLevel,self:GetSoundPitch(self.FootStepPitch1,self.FootStepPitch2))
