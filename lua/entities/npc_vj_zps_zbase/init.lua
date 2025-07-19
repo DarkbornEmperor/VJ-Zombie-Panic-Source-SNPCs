@@ -388,14 +388,14 @@ end
         end
     end
 end
-    if self:GetClass() != "npc_vj_zps_zcarrier" && self:IsMoving() && self:IsOnGround() then
+    if self:GetClass() != "npc_vj_zps_zcarrier" && self:IsMoving() && self:OnGround() then
     if self.ZPS_Berserk then
         self:SetPlaybackRate(self.ZPS_BerserkSpeed)
-        local berserkSpeed = 1.2
-        self:SetLocalVelocity(self:GetMoveVelocity() *berserkSpeed)
+        local berserkSpeed = 0.5
+        self:SetVelocity(self:GetMoveVelocity() *berserkSpeed)
     elseif !self.ZPS_Berserk then
         self:SetPlaybackRate(1)
-        self:SetLocalVelocity(self:GetMoveVelocity() *0)
+        self:SetVelocity(self:GetMoveVelocity() *0)
     end
 end
      if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then

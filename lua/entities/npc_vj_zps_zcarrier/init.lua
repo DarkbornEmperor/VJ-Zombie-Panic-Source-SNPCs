@@ -49,16 +49,16 @@ end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-local berserkSpeed = 1.4
+local berserkSpeed = 0.5
 --
 function ENT:Zombie_OnThinkActive()
- if self:IsMoving() && self:IsOnGround() then
+ if self:IsMoving() && self:OnGround() then
     if self.ZPS_Berserk then
         self:SetPlaybackRate(self.ZPS_BerserkSpeed)
-        self:SetLocalVelocity(self:GetMoveVelocity() *berserkSpeed)
+        self:SetVelocity(self:GetMoveVelocity() *berserkSpeed)
     else
         self:SetPlaybackRate(1)
-        self:SetLocalVelocity(self:GetMoveVelocity() *0)
+        self:SetVelocity(self:GetMoveVelocity() *0)
         end
     end
 end
