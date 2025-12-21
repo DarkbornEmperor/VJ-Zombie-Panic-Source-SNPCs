@@ -58,6 +58,7 @@ ENT.ZPS_ArmorHP = 100
 ENT.ZPS_Crouching = false
 ENT.ZPS_Panic = false
 ENT.ZPS_ImmuneInfection = false
+ENT.ZPS_NextMeleeAnimT = 0
 ENT.ZPS_NextMeleeSoundT = 0
 ENT.ZPS_NextWepSwitchT = 0
 ENT.ZPS_NextJumpT = 0
@@ -222,8 +223,8 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
-    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self:GetEnemy()) then
-    if (self.EnemyData.Visible or (self.EnemyData.VisibleTime + 5) > CurTime()) && self.CurrentSchedule != nil && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
+    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(self.EnemyData.Target) && IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
+    if (self.EnemyData.Visible or (self.EnemyData.VisibleTime + 5) > CurTime()) && self.CurrentSchedule && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
         self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
     if act == ACT_WALK then
         return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
@@ -480,13 +481,25 @@ function ENT:OnMeleeAttack(status,enemy)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnWeaponAttack()
- if self.VJ_IsBeingControlled then return end
  local wep = self.WeaponEntity
+ local finalAnim = self:TranslateActivity(VJ.PICK(self.AnimTbl_WeaponAttackGesture))
+ if wep.IsMeleeWeapon && CurTime() > self.ZPS_NextMeleeAnimT && VJ.AnimExists(self, finalAnim) then
+    local animDur = VJ.AnimDuration(self, finalAnim)
+    self:PlaySoundSystem("BeforeMeleeAttack", self.SoundTbl_BeforeMeleeAttack)
+    wep.NPC_NextPrimaryFire = animDur
+    wep:NPCShoot_Primary()
+    VJ.EmitSound(self, wep.NPC_BeforeFireSound, wep.NPC_BeforeFireSoundLevel, math.Rand(wep.NPC_BeforeFireSoundPitch.a, wep.NPC_BeforeFireSoundPitch.b))
+    self.ZPS_NextMeleeAnimT = CurTime() + animDur
+    self.WeaponAttackAnim = finalAnim
+    self:PlayAnim(finalAnim, "LetAttacks", false, true)
+    self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
+end
+ if self.VJ_IsBeingControlled then return end
  if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
  if self.Weapon_Strafe && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && CurTime() > self.NextWeaponStrafeT && (CurTime() - self.EnemyData.TimeAcquired) > 2 then
  timer.Simple(0,function()
-    local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 250), true, false, 8, true))
-    if moveCheck then
+ local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math.random(150, 250), true, false, 8, true))
+ if moveCheck then
     self:StopMoving()
     self.NextWeaponStrafeT = CurTime() + math.Rand(self.Weapon_StrafeCooldown.a, self.Weapon_StrafeCooldown.b)
     self:SetLastPosition(moveCheck)

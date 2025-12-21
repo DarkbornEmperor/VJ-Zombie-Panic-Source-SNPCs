@@ -5,6 +5,8 @@ ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
 ENT.Category = "Zombie Panic! Source"
 
+ENT.VJ_ID_Undead = true
+
 if CLIENT then
     VJ.AddKillIcon("npc_vj_zps_zlarry", ENT.PrintName, "zps/killicons/destroy_zombie", Color(255,0,0))
 end

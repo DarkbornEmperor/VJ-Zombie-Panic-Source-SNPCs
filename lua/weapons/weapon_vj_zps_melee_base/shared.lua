@@ -22,18 +22,6 @@ SWEP.IsMeleeWeapon = true
 SWEP.MeleeWeaponDistance = 70
 SWEP.MeleeWeaponSound_Hit = false
 SWEP.MeleeWeaponSound_Miss = false
-SWEP.NextMeleeAnimT = 0
----------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:OnPrimaryAttack(status,statusData)
-   if status == "Init" then
-   local owner = self:GetOwner()
-   if !owner.IsZPSSurvivor then return end
-     if CurTime() > owner.ZPS_NextMeleeSoundT then
-        owner:PlaySoundSystem("BeforeMeleeAttack",owner.SoundTbl_BeforeMeleeAttack)
-        owner.ZPS_NextMeleeSoundT = CurTime() + VJ.AnimDuration(owner,owner.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK1])
-        end
-    end
-end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function SWEP:PrimaryAttack() -- Heavily modified PrimaryAttack function to have melee weapons work better and more fluid
  self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
@@ -44,23 +32,5 @@ function SWEP:PrimaryAttack() -- Heavily modified PrimaryAttack function to have
  if (!self:CanPrimaryAttack()) then return end
  if self:OnPrimaryAttack("Init") == true then return end
 
- -- Melee Gesture
- if owner.IsVJBaseSNPC_Human && owner.AnimTbl_WeaponAttackGesture && CurTime() > self.NextMeleeAnimT then
-    owner:PlayAnim(owner.AnimTbl_WeaponAttackGesture, false, false, false, 0, {AlwaysUseGesture=true})
-    self.NextMeleeAnimT = CurTime() + VJ.AnimDuration(owner,owner.AnimationTranslations[ACT_GESTURE_RANGE_ATTACK1])
-end
     self:OnPrimaryAttack("PostFire")
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:OnGetBulletPos()
-    local owner = self:GetOwner()
-    return owner:EyePos()
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function SWEP:NPC_Reload()
-    local owner = self:GetOwner()
-    owner.NextThrowGrenadeT = owner.NextThrowGrenadeT + 2
-    owner.NextChaseTime = 0
-    self:OnReload("Start")
-    if self.NPC_HasReloadSound == true then VJ.EmitSound(owner, self.NPC_ReloadSound, self.NPC_ReloadSoundLevel) end
 end
