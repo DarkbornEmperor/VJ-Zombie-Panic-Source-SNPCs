@@ -4,9 +4,11 @@ ENT.Base = "prop_vj_animatable"
 ENT.Type = "anim"
 
 ENT.AdminOnly = false
+
+local math_random = math.random
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SetupDataTables()
-    self:NetworkVar("Vector",0,"PlayerColor")
+    self:NetworkVar("Vector", 0, "PlayerColor")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Initialize()
@@ -16,7 +18,7 @@ function ENT:Initialize()
     self:SetOwner(self.VJ_Owner)
     if CLIENT && GetConVar("VJ_ZPS_BloodDecals"):GetInt() == 1 then
         //for i = 1,5 do
-            util.DecalEx(Material(util.DecalMaterial("Blood")),self,self:GetPos() + Vector(0,0,math.random(20,80)),VectorRand(),Color(255,255,255),1,1)
+              util.DecalEx(Material(util.DecalMaterial("Blood")), self, self:GetPos() + Vector(0, 0, math_random(20,80)), VectorRand(), Color(255, 255, 255), 1, 1)
         //end
     end
 end
