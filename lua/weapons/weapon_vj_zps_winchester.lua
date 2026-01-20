@@ -30,7 +30,7 @@ SWEP.Primary.ClipSize = 2
 SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "Buckshot"
 SWEP.Primary.Sound = "VJ.ZPS_Winchester.Single"
-SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
+SWEP.PrimaryEffects_MuzzleParticles = "vj_zps_muzzle"
 SWEP.PrimaryEffects_SpawnShells = false
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound =

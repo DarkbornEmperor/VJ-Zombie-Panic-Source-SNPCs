@@ -53,30 +53,18 @@ function ENT:OnMeleeAttackExecute(status, ent, isProp)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-local berserkSpeed = 0.5
---
-function ENT:Zombie_OnThinkActive()
-    if self:IsMoving() && self:OnGround() then
-        if self.ZPS_Berserk then
-            self:SetPlaybackRate(self.ZPS_BerserkSpeed)
-            self:SetVelocity(self:GetMoveVelocity() * berserkSpeed)
-        else
-            self:SetPlaybackRate(1)
-            self:SetVelocity(self:GetMoveVelocity() * 0)
-        end
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-/*for _, v in ipairs(ents.FindInSphere(self:GetPos(), 3000)) do
-    if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then
-        if CurTime() > self.ZPS_BerserkNextT then
-            if self.ZPS_Stimulated then
-                self.ZPS_Berserk = true
-                effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(0, 255, 63, 255), {material = "sprites/physcannon_bluelight2", framerate = 20})
-                effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(0, 255, 63, 255), {material = "sprites/physcannon_bluelight2", framerate = 20})
-                VJ.EmitSound(self,"darkborn/zps/zombies/carrier/berserk/carrier_berserk-0" .. math_random(1,7) .. ".wav", 80)
+/*function ENT:Zombie_OnThinkActive()
+    for _, v in ipairs(ents.FindInSphere(self:GetPos(), 3000)) do
+        if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then
+            if CurTime() > self.ZPS_BerserkNextT then
+                if self.ZPS_Stimulated then
+                    self.ZPS_Berserk = true
+                    effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(0, 255, 63, 255), {material = "sprites/physcannon_bluelight2", framerate = 20})
+                    effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(0, 255, 63, 255), {material = "sprites/physcannon_bluelight2", framerate = 20})
+                    VJ.EmitSound(self,"darkborn/zps/zombies/carrier/berserk/carrier_berserk-0" .. math_random(1,7) .. ".wav", 80)
+                end
+                self.ZPS_BerserkNextT = CurTime() + (math_rand(10,15))
             end
-            self.ZPS_BerserkNextT = CurTime() + (math_rand(10,15))
         end
     end
 end*/

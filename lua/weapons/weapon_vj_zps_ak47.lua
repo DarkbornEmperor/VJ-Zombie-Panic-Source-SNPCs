@@ -25,7 +25,7 @@ SWEP.Primary.Damage = 22
 SWEP.Primary.ClipSize = 30
 SWEP.Primary.Ammo = "SMG1"
 SWEP.Primary.Sound = "VJ.ZPS_AK47.Single"
-SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
+SWEP.PrimaryEffects_MuzzleParticles = "vj_zps_muzzle"
 SWEP.PrimaryEffects_ShellType = "RifleShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound =

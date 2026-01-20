@@ -26,7 +26,7 @@ SWEP.Primary.Force = 1.6
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.Ammo = "357"
 SWEP.Primary.Sound = "VJ.ZPS_Revolver.Single"
-SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
+SWEP.PrimaryEffects_MuzzleParticles = "vj_zps_muzzle"
 SWEP.PrimaryEffects_SpawnShells = false
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound =

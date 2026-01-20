@@ -16,8 +16,8 @@ ENT.HullType = HULL_HUMAN
 ENT.VJ_NPC_Class = {"CLASS_PLAYER_ALLY"}
 ENT.AlliedWithPlayerAllies = true
 ENT.BloodColor = VJ.BLOOD_COLOR_RED
-ENT.BloodParticle = {"vj_zps_blood_impact_red_01"}
-//ENT.BloodDecal = {"VJ_ZPS_Blood_Red"}
+ENT.BloodParticle = "vj_zps_blood_impact_red_01"
+//ENT.BloodDecal = "VJ_ZPS_Blood_Red"
 ENT.Weapon_OcclusionDelayTime = VJ.SET(2,3)
 ENT.HasMeleeAttack = false
 ENT.MeleeAttackDamage = 25
@@ -877,48 +877,48 @@ function ENT:HandleGibOnDeath(dmginfo, hitgroup)
     return true, {AllowCorpse = false, AllowSound = false}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
+function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
     if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 or !self.CanGib then return end
     if dmginfo:GetDamageForce():Length() < 800 then return end
     if hitgroup == HITGROUP_HEAD then
-        VJ.EmitSound(corpseEnt, "darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav", 75, 100)
-        corpseEnt:RemoveAllDecals()
-        corpseEnt:SetBodygroup(0, math_random(1,3))
-        corpseEnt:SetBodygroup(1, math_random(1,3))
-        corpseEnt:SetBodygroup(2, math_random(1,3))
-        corpseEnt:SetBodygroup(3, math_random(1,3))
+        VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav", 75, 100)
+        corpse:RemoveAllDecals()
+        corpse:SetBodygroup(0, math_random(1,3))
+        corpse:SetBodygroup(1, math_random(1,3))
+        corpse:SetBodygroup(2, math_random(1,3))
+        corpse:SetBodygroup(3, math_random(1,3))
         self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
         self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
         self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
     end
-    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpseEnt:GetBodygroup(0) != 0 or corpseEnt:GetBodygroup(1) != 0 or corpseEnt:GetBodygroup(2) != 0 or corpseEnt:GetBodygroup(3) != 0) then
-        VJ.EmitSound(corpseEnt, "darkborn/zps/shared/impacts/flesh_bloodspray-0" .. math_random(1,3) .. ".wav", 60, 100)
-        if corpseEnt:GetBodygroup(0) == 1 or corpseEnt:GetBodygroup(1) == 1 or corpseEnt:GetBodygroup(2) == 1 or corpseEnt:GetBodygroup(3) == 1 then
+    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpse:GetBodygroup(0) != 0 or corpse:GetBodygroup(1) != 0 or corpse:GetBodygroup(2) != 0 or corpse:GetBodygroup(3) != 0) then
+        VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_bloodspray-0" .. math_random(1,3) .. ".wav", 60, 100)
+        if corpse:GetBodygroup(0) == 1 or corpse:GetBodygroup(1) == 1 or corpse:GetBodygroup(2) == 1 or corpse:GetBodygroup(3) == 1 then
             local bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Pos)
-            bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot1")).Ang)
-            bleedOut:SetParent(corpseEnt)
+            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot1")).Pos)
+            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot1")).Ang)
+            bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot1")
             bleedOut:Spawn()
             bleedOut:Activate()
             bleedOut:Fire("Start", "", 0)
-        elseif corpseEnt:GetBodygroup(0) == 2 or corpseEnt:GetBodygroup(1) == 2 or corpseEnt:GetBodygroup(2) == 2 or corpseEnt:GetBodygroup(3) == 2 then
+        elseif corpse:GetBodygroup(0) == 2 or corpse:GetBodygroup(1) == 2 or corpse:GetBodygroup(2) == 2 or corpse:GetBodygroup(3) == 2 then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Pos)
-            bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot2")).Ang)
-            bleedOut:SetParent(corpseEnt)
+            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot2")).Pos)
+            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot2")).Ang)
+            bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot2")
             bleedOut:Spawn()
             bleedOut:Activate()
             bleedOut:Fire("Start", "", 0)
-        elseif corpseEnt:GetBodygroup(0) == 3 or corpseEnt:GetBodygroup(1) == 3 or corpseEnt:GetBodygroup(2) == 3 or corpseEnt:GetBodygroup(3) == 3 then
+        elseif corpse:GetBodygroup(0) == 3 or corpse:GetBodygroup(1) == 3 or corpse:GetBodygroup(2) == 3 or corpse:GetBodygroup(3) == 3 then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Pos)
-            bleedOut:SetAngles(corpseEnt:GetAttachment(corpseEnt:LookupAttachment("headshot3")).Ang)
-            bleedOut:SetParent(corpseEnt)
+            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot3")).Pos)
+            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot3")).Ang)
+            bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot3")
             bleedOut:Spawn()
             bleedOut:Activate()

@@ -26,7 +26,7 @@ SWEP.Primary.ClipSize = 17
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Pistol"
 SWEP.Primary.Sound = "VJ.ZPS_Glock18c.Single"
-SWEP.PrimaryEffects_MuzzleParticles = {"vj_zps_muzzle"}
+SWEP.PrimaryEffects_MuzzleParticles = "vj_zps_muzzle"
 SWEP.PrimaryEffects_ShellType = "ShellEject"
 -- Dry Fire Variables ---------------------------------------------------------------------------------------------------------------------------------------------
 SWEP.DryFireSound =
