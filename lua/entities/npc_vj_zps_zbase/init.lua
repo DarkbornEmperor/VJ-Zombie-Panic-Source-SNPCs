@@ -237,7 +237,7 @@ function ENT:Controller_Initialize(ply, controlEnt)
         if self:GetClass() == "npc_vj_zps_zinf_ply" then
         if IsValid(ply) then
             self.ZombieCont = ply
-            self:SetName(self.ZombieCont:GetName() .. " (Zombie)")
+            self:SetName(self.ZombieCont:GetName() .. "(Zombie)")
             ply:SetHealth(ply:GetMaxHealth())
         end
     end

@@ -4,7 +4,7 @@ local model = "models/darkborn/zps/survivors/pms/marcus.mdl"
 
 local tmptbl = string.Split(model,"/")
 local mdlprefix = tmptbl[#tmptbl] or model
-mdlprefix = string.Replace(mdlprefix,".mdl","")
+mdlprefix = string.Replace(mdlprefix,".mdl", "")
 if model == "models/player/player.mdl" then return end
 
 TFAVOX_Models[model] = {

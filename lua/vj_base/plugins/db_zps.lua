@@ -16,36 +16,36 @@
     local spawnCategory = "Zombie Panic! Source"
 
     -- Survivors --
-    VJ.AddNPC("Eugene","npc_vj_zps_eugene", spawnCategory)
-    VJ.AddNPC("Marcus","npc_vj_zps_marcus", spawnCategory)
-    VJ.AddNPC("Jessica","npc_vj_zps_jessica", spawnCategory)
-    VJ.AddNPC("Paul","npc_vj_zps_paul", spawnCategory)
-    VJ.AddNPC("Lea","npc_vj_zps_lea", spawnCategory)
-    VJ.AddNPC("Vanessa","npc_vj_zps_vanessa", spawnCategory)
-    VJ.AddNPC("Pedro","npc_vj_zps_pedro", spawnCategory)
-    VJ.AddNPC("Larry","npc_vj_zps_larry", spawnCategory) -- Unreleased character currently
+    VJ.AddNPC("Eugene", "npc_vj_zps_eugene", spawnCategory)
+    VJ.AddNPC("Marcus", "npc_vj_zps_marcus", spawnCategory)
+    VJ.AddNPC("Jessica", "npc_vj_zps_jessica", spawnCategory)
+    VJ.AddNPC("Paul", "npc_vj_zps_paul", spawnCategory)
+    VJ.AddNPC("Lea", "npc_vj_zps_lea", spawnCategory)
+    VJ.AddNPC("Vanessa", "npc_vj_zps_vanessa", spawnCategory)
+    VJ.AddNPC("Pedro", "npc_vj_zps_pedro", spawnCategory)
+    VJ.AddNPC("Larry", "npc_vj_zps_larry", spawnCategory) -- Unreleased character currently
 
     -- Spawners & Random --
-    VJ.AddNPC("Survivor (Random)","sent_vj_zps_sur", spawnCategory)
-    VJ.AddNPC("Survivor Spawner (Random)","sent_vj_zps_sur_sp", spawnCategory)
-    VJ.AddNPC("Survivor Spawner (Single)","sent_vj_zps_sur_sinsp", spawnCategory)
+    VJ.AddNPC("Survivor (Random)", "sent_vj_zps_sur", spawnCategory)
+    VJ.AddNPC("Survivor Spawner (Random)", "sent_vj_zps_sur_sp", spawnCategory)
+    VJ.AddNPC("Survivor Spawner (Single)", "sent_vj_zps_sur_sinsp", spawnCategory)
 
     -- Zombies --
-    VJ.AddNPC("Carrier Zombie","npc_vj_zps_zcarrier", spawnCategory)
-    VJ.AddNPC("Eugene (Zombie)","npc_vj_zps_zeugene", spawnCategory)
-    VJ.AddNPC("Marcus (Zombie)","npc_vj_zps_zmarcus", spawnCategory)
-    VJ.AddNPC("Jessica (Zombie)","npc_vj_zps_zjessica", spawnCategory)
-    VJ.AddNPC("Paul (Zombie)","npc_vj_zps_zpaul", spawnCategory)
-    VJ.AddNPC("Lea (Zombie)","npc_vj_zps_zlea", spawnCategory)
-    VJ.AddNPC("Vanessa (Zombie)","npc_vj_zps_zvanessa", spawnCategory)
-    VJ.AddNPC("Pedro (Zombie)","npc_vj_zps_zpedro", spawnCategory)
-    VJ.AddNPC("Larry (Zombie)","npc_vj_zps_zlarry", spawnCategory) -- Unreleased character currently
+    VJ.AddNPC("Carrier Zombie", "npc_vj_zps_zcarrier", spawnCategory)
+    VJ.AddNPC("Eugene (Zombie)", "npc_vj_zps_zeugene", spawnCategory)
+    VJ.AddNPC("Marcus (Zombie)", "npc_vj_zps_zmarcus", spawnCategory)
+    VJ.AddNPC("Jessica (Zombie)", "npc_vj_zps_zjessica", spawnCategory)
+    VJ.AddNPC("Paul (Zombie)", "npc_vj_zps_zpaul", spawnCategory)
+    VJ.AddNPC("Lea (Zombie)", "npc_vj_zps_zlea", spawnCategory)
+    VJ.AddNPC("Vanessa (Zombie)", "npc_vj_zps_zvanessa", spawnCategory)
+    VJ.AddNPC("Pedro (Zombie)", "npc_vj_zps_zpedro", spawnCategory)
+    VJ.AddNPC("Larry (Zombie)", "npc_vj_zps_zlarry", spawnCategory) -- Unreleased character currently
 
     -- Spawners and Random
-    VJ.AddNPC("Zombie (Random)","sent_vj_zps_zom", spawnCategory)
-    VJ.AddNPC("Zombie Spawner (Random) ","sent_vj_zps_zom_sp", spawnCategory)
-    VJ.AddNPC("Zombie Spawner (Single)","sent_vj_zps_zom_sinsp", spawnCategory)
-    VJ.AddNPC("Zombie Map Spawner","sent_vj_zps_mapspawner", spawnCategory)
+    VJ.AddNPC("Zombie (Random)", "sent_vj_zps_zom", spawnCategory)
+    VJ.AddNPC("Zombie Spawner (Random) ", "sent_vj_zps_zom_sp", spawnCategory)
+    VJ.AddNPC("Zombie Spawner (Single)", "sent_vj_zps_zom_sinsp", spawnCategory)
+    VJ.AddNPC("Zombie Map Spawner", "sent_vj_zps_mapspawner", spawnCategory)
 
     -- Weapons --
     VJ.AddNPCWeapon("VJ_ZPS_AK-47", "weapon_vj_zps_ak47", spawnCategory)
@@ -579,7 +579,7 @@ if SERVER then
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_InfectionApply(victim)
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim then return end
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or (victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE")) or victim:Health() <= 0 or victim.GodMode or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE") or victim:Health() <= 0 or victim.GodMode or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
         local victimModel = victim:GetModel()
         victim.ZPS_InfectedVictim = true
         victim.ZPS_NextCoughT = CurTime() + math_rand(5,30)
