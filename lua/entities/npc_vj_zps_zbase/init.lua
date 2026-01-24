@@ -141,17 +141,15 @@ function ENT:OnInput(key, activator, caller, data)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PreInit()
-     self:Zombie_PreInit()
+     if self.Zombie_PreInit then self:Zombie_PreInit() end
      if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 1 then
         self.ZPS_CanBreakDoors = true
         self.CanOpenDoors = false
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_PreInit() end
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
-   self:Zombie_Init()
+   if self.Zombie_Init then self:Zombie_Init() end
    self:ZombieVoices()
    self:CapabilitiesRemove(CAP_ANIMATEDFACE)
    self:SetSurroundingBounds(Vector(60, 60, 90), Vector(-60, -60, 0))
@@ -162,8 +160,6 @@ function ENT:Init()
         self.HealthRegenParams.Delay = VJ.SET(1,1)
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_Init() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieVoices()
     local cType = self:GetClass()

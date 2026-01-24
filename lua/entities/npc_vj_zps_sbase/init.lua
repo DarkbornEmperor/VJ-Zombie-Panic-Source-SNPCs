@@ -171,7 +171,7 @@ end
 function ENT:PreInit()
     self:Survivor_PreInit()
     if math_random(1,2) == 1 then
-        self.WeaponInventory_MeleeList = VJ.PICK({VJ_ZPS_MELEEWEAPONS})
+        self.WeaponInventory_MeleeList = VJ.PICK(VJ_ZPS_MELEEWEAPONS)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -246,7 +246,6 @@ function ENT:Controller_Initialize(ply, controlEnt)
         self.VJCE_NPC.EnemyDetection = true
         self.VJCE_NPC.JumpParams.Enabled = false
     end
-
     if !self.ZPS_CanHeal then return end
     ply:ChatPrint("USE: Heal")
 end
@@ -400,7 +399,7 @@ function ENT:SelectSchedule()
     if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
         self.ZPS_Panic = false
         self:SCHEDULE_COVER_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
-        self.NextDoAnyAttackT = CurTime() + 5
+        self.NextDoAnyAttackT = CurTime() + math_rand(5,10)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -487,8 +486,8 @@ function ENT:HealSelf()
             self.ZPS_ImmuneInfection = true
             VJ.CreateSound(self, "darkborn/zps/weapons/health/inoculator/heartbeat_158.wav", 60, 100)
             timer.Remove(self:EntIndex() .. "VJ_ZPS_Infection")
-            hook.Remove("Think", "VJ_ZPS_VictimCough")
-            timer.Create(self:EntIndex() .. "VJ_ZPS_Immunity", 25, 1, function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
+            hook.Remove("Think", "VJ_ZPS_VictimCough" .. self:EntIndex())
+            timer.Create(self:EntIndex() .. "VJ_ZPS_Immunity", 25, 1, function() if IsValid(self) then self.HasHealthRegeneration = false self.ZPS_ImmuneInfection = false end end)
         end
     end
 end
@@ -583,20 +582,20 @@ end
     end
 end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:OnGrenadeAttack(status, overrideEnt, landDir)
+/*function ENT:OnGrenadeAttack(status, overrideEnt, landDir) -- No need as we use a separate grenade weapon.
     if status == "Init" then
         if IsValid(self:GetActiveWeapon()) then self:GetActiveWeapon():SetNoDraw(true) end
         local att = self:GetAttachment(self:LookupAttachment("anim_attachment_LH"))
-        self.FakeGrenade = ents.Create("prop_vj_animatable")
-        self.FakeGrenade:SetModel(self.GrenadeAttackModel)
-        self.FakeGrenade:SetPos(att.Pos)
-        self.FakeGrenade:SetAngles(att.Ang)
-        self.FakeGrenade:SetParent(self)
-        self.FakeGrenade:Fire("SetParentAttachment", "anim_attachment_LH")
-        self.FakeGrenade:Spawn()
-        self.FakeGrenade:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-        self:DeleteOnRemove(self.FakeGrenade)
-        SafeRemoveEntityDelayed(self.FakeGrenade, self.GrenadeAttackThrowTime)
+        local dumGre = ents.Create("prop_vj_animatable")
+        dumGre:SetModel(self.GrenadeAttackModel)
+        dumGre:SetPos(att.Pos)
+        dumGre:SetAngles(att.Ang)
+        dumGre:SetParent(self)
+        dumGre:Fire("SetParentAttachment", "anim_attachment_LH")
+        dumGre:Spawn()
+        dumGre:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+        self:DeleteOnRemove(dumGre)
+        SafeRemoveEntityDelayed(dumGre, self.GrenadeAttackThrowTime)
     end
 end*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -822,7 +821,7 @@ function ENT:OnDamaged(dmginfo, hitgroup, status)
     if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
         self:PlaySoundSystem("Impact", {"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav", "darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
     end
-    -- For Armor
+    -- For armor
     if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP - dmginfo:GetDamage()
         if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then
             dmginfo:ScaleDamage(0.80)
