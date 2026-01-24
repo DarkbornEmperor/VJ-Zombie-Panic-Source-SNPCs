@@ -466,7 +466,7 @@ function ENT:OnMedicBehavior(status, statusData)
             statusData.ZPS_ImmuneInfection = true
             VJ.CreateSound(statusData, "darkborn/zps/weapons/health/inoculator/heartbeat_158.wav", 60, 100)
             timer.Remove(statusData:EntIndex() .. "VJ_ZPS_Infection")
-            hook.Remove("Think", "VJ_ZPS_VictimCough")
+            hook.Remove("Think", "VJ_ZPS_VictimCough" .. statusData:EntIndex())
             timer.Create(statusData:EntIndex() .. "VJ_ZPS_Immunity", 25, 1, function() if IsValid(statusData) then statusData.HasHealthRegeneration = false statusData.ZPS_ImmuneInfection = false end end)
         end
     end

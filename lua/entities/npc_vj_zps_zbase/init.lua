@@ -451,7 +451,6 @@ function ENT:OnMeleeAttackExecute(status, ent, isProp)
         end
         if math_random(1, GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && ent:LookupBone("ValveBiped.Bip01_Pelvis") != nil && !ent.ZPS_InfectedVictim then
             if (ent:IsPlayer() /*&& ent:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or ent:IsNPC() or ent:IsNextBot() then
-                //if ent.ZPS_InfectedVictim then return end
                 if ent.VJ_ZPS_Survivor then ent.ZPS_NextCoughT = CurTime() + math_rand(5,30) end
                 //if ent:IsPlayer() then ent:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
                 VJ_ZPS_InfectionApply(ent)

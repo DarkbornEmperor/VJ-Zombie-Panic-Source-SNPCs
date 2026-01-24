@@ -555,7 +555,7 @@ if SERVER then
 
     hook.Add("EntityTakeDamage", "VJ_ZPS_PrematureDeath", function(victim, dmginfo)
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or !victim.ZPS_InfectedVictim or dmginfo:IsDamageType(dmgCheck) or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or !victim.ZPS_InfectedVictim or dmginfo:IsDamageType(dmgCheck) or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
         if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
             hook.Add("PlayerDeath", "VJ_ZPS_Infection_Player", function(victim, inflictor, attacker)
                 local zomEnt = inflictor, attacker
@@ -591,7 +591,7 @@ if SERVER then
                     if string_find(victimModel, "female") or string_find(victimModel, "alyx") or string_find(victimModel, "mossman") or string_find(victimModel, "chell") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
                     else
-                        VJ.CreateSound(victim,"ambient/voices/cough"..math_random(1,4)..".wav", 75, 100)
+                        VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 100)
                     end
                     victim.ZPS_NextCoughT = CurTime() + math_rand(5,30)
                 end
@@ -631,10 +631,8 @@ if SERVER then
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_Infect(victim, inflictor, attacker)
-    if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
-        if victim != inflictor then
-            VJ_ZPS_CreateZombie(victim)
-        end
+        if !victim.ZPS_InfectedVictim or GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.ZPS_ImmuneInfection or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        VJ_ZPS_CreateZombie(victim)
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_SetPlayerZombie(victim)
