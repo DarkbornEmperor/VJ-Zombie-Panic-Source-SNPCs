@@ -610,8 +610,8 @@ if SERVER then
         if victim:IsPlayer() then
             deaths = victim:Deaths()
         end
-        timer.Create(victim:EntIndex() .. "VJ_ZPS_InfectionTime", math_random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(), GetConVar("VJ_ZPS_InfectionTime2"):GetInt()), 1, function()
-            if !IsValid(victim) or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove(victim:EntIndex() .. "VJ_ZPS_InfectionTime") return end
+        timer.Create("VJ_ZPS_InfectionTime" .. victim:EntIndex(), math_random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(), GetConVar("VJ_ZPS_InfectionTime2"):GetInt()), 1, function()
+            if !IsValid(victim) or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) return end
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
                     victim:Kill()
@@ -654,7 +654,6 @@ if SERVER then
         zombie.GodMode = true
         timer.Simple(0, function() zombie:PlaySoundSystem("Alert") end)
         zombie:Spawn()
-        if timer.Exists("timer_melee_bleed" .. victim:EntIndex()) then timer.Remove("timer_melee_bleed" .. victim:EntIndex()) end
         if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
             if oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/pms/eugene_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/eugene_zombie.mdl" then
                 zombie:ZombieVoice_Eugene()
@@ -698,13 +697,33 @@ if SERVER then
     function VJ_ZPS_CreateZombie(victim)
         local findPos = victim:GetPos()
         local findMDL = victim:GetModel()
-        timer.Simple(0.01, function()
-        for _, v in pairs(ents.FindInSphere(findPos, 75)) do
-            if GetConVar("ai_serverragdolls"):GetInt() == 1 && v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL && !v.IsVJBaseCorpse then
+        timer.Simple(0, function()
+            for _, v in pairs(ents.FindInSphere(findPos, 75)) do
+                if GetConVar("ai_serverragdolls"):GetInt() == 1 && v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL && !v.IsVJBaseCorpse then
                     v:Remove()
                 end
             end
         end)
+        if victim.IsVJBaseSNPC then
+            victim.HasDeathCorpse = false
+            victim.HasDeathAnimation = false
+            victim.CanGib = false
+        end
+        if victim.IsDrGNextbot then
+            victim.RagdollOnDeath = false
+        end
+        if victim:IsPlayer() then
+            if IsValid(victim:GetRagdollEntity()) then
+                victim:GetRagdollEntity():Remove()
+            end
+        end
+        if (victim:IsNPC() or victim:IsNextBot()) then
+            if victim:IsNPC() && IsValid(victim:GetActiveWeapon()) then
+                victim:GetActiveWeapon():Remove()
+            end
+            victim.HasRagdoll = false
+            victim:Remove()
+        end
         local zombie = NULL
         //local sndTbl = nil
         local survName = victim:GetClass()
@@ -759,7 +778,6 @@ if SERVER then
             timer.Simple(0, function() zombie:PlaySoundSystem("Alert") end)
             zombie:Spawn()
             undo.ReplaceEntity(victim, zombie)
-            if timer.Exists("timer_melee_bleed" .. victim:EntIndex()) then timer.Remove("timer_melee_bleed" .. victim:EntIndex()) end
             if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 then
                 if oldModel == "models/darkborn/zps/survivors/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/eugene.mdl" or oldModel == "models/darkborn/zps/survivors/pms/eugene.mdl" or oldModel == "models/darkborn/zps/survivors_old/pms/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/eugene.mdl" or oldModel == "models/darkborn/zps/zombies_old/eugene.mdl" or oldModel == "models/darkborn/zps/zombies/pms/eugene_zombie.mdl" or oldModel == "models/darkborn/zps/zombies_old/pms/eugene_zombie.mdl" then
                     zombie:ZombieVoice_Eugene()
@@ -798,22 +816,6 @@ if SERVER then
             else
                 zombie:ZombieVoice_InfectedMale()
             end
-        end
-        if victim.IsVJBaseSNPC then
-            victim.HasDeathCorpse = false
-            victim.HasDeathAnimation = false
-            victim.CanGib = false
-        end
-        if victim:IsPlayer() then
-            if IsValid(victim:GetRagdollEntity()) then
-                SafeRemoveEntity(victim:GetRagdollEntity())
-            end
-        end
-        if victim:IsNPC() or victim:IsNextBot() then
-            SafeRemoveEntity(victim)
-        end
-        if victim:IsNPC() && IsValid(victim:GetActiveWeapon()) then
-            SafeRemoveEntity(victim:GetActiveWeapon())
         end
     end
 end
