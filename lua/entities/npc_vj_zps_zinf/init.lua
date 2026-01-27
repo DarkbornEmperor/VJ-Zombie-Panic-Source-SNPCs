@@ -14,6 +14,10 @@ function ENT:Zombie_PreInit()
             "models/darkborn/zps/breen.mdl"
     end
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_Init()
+    self:SetNoDraw(true)
+end
 /*-----------------------------------------------
     *** Copyright (c) 2012-2026 by DrVrej, All rights reserved. ***
     No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
