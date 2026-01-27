@@ -564,7 +564,8 @@ if SERVER then
                 end
             end)
         end
-        /*if victim:IsPlayer() && victim:Health() < dmginfo:GetDamage() + 1 && victim:LastHitGroup() != HITGROUP_HEAD && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
+        /*local attEnt = dmginfo:GetInflictor(), dmginfo:GetAttacker()
+        if IsValid(attEnt) && !attEnt.VJ_ZPS_Zombie && victim:IsPlayer() && victim:Health() < dmginfo:GetDamage() + 1 && victim:LastHitGroup() != HITGROUP_HEAD && GetConVar("VJ_LNR_PlayerZombie"):GetInt() == 1 then
             VJ_ZPS_SetPlayerZombie(victim)
         end*/
         if victim:IsNPC() or victim:IsNextBot() then
