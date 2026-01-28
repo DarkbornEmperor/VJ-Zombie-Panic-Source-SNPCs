@@ -564,10 +564,6 @@ if SERVER then
                 end
             end)
         end
-        /*local attEnt = dmginfo:GetInflictor(), dmginfo:GetAttacker()
-        if IsValid(attEnt) && !attEnt.VJ_ZPS_Zombie && victim:IsPlayer() && victim:Health() < dmginfo:GetDamage() + 1 && victim:LastHitGroup() != HITGROUP_HEAD && GetConVar("VJ_LNR_PlayerZombie"):GetInt() == 1 then
-            VJ_ZPS_SetPlayerZombie(victim)
-        end*/
         if victim:IsNPC() or victim:IsNextBot() then
             hook.Add("OnNPCKilled", "VJ_ZPS_Infection_NPC", function(victim, inflictor, attacker)
                 local zomEnt = inflictor, attacker
@@ -575,6 +571,18 @@ if SERVER then
                     VJ_ZPS_Infect(victim, inflictor, attacker)
                 end
             end)
+        end
+        local inflictor = dmginfo:GetInflictor()
+        local attacker = dmginfo:GetAttacker()
+        local zomEnt = inflictor, attacker
+        if GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 && victim:IsPlayer() then
+            if victim:LastHitGroup() != HITGROUP_HEAD && zomEnt.VJ_ZPS_Zombie then
+                if victim:Alive() && victim:Health() < dmginfo:GetDamage() + 1 then
+                    VJ_ZPS_SetPlayerZombie(victim)
+                elseif !victim:Alive() then
+                    gamemode.Call("PlayerDeath", victim, inflictor, attacker)
+                end
+            end
         end
     end)
     ---------------------------------------------------------------------------------------------------------------------------------------------

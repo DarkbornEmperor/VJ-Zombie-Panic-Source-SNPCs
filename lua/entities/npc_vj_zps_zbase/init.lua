@@ -442,9 +442,6 @@ end
 function ENT:OnMeleeAttackExecute(status, ent, isProp)
     if status == "PreDamage" then
         if self:IsOnFire() then ent:Ignite(4) end
-        if ent:IsPlayer() && ent:Health() < self.MeleeAttackDamage + 1 && ent.ZPS_InfectedVictim then
-            VJ_ZPS_SetPlayerZombie(ent)
-        end
         if math_random(1, GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && ent:LookupBone("ValveBiped.Bip01_Pelvis") != nil && !ent.ZPS_InfectedVictim then
             if (ent:IsPlayer() /*&& ent:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or ent:IsNPC() or ent:IsNextBot() then
                 if ent.VJ_ZPS_Survivor then ent.ZPS_NextCoughT = CurTime() + math_rand(5,30) end
