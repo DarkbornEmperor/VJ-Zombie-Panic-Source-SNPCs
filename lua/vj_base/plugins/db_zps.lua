@@ -596,7 +596,7 @@ if SERVER then
         if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
             hook.Add("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex(), function()
                 if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
-                if !victim.VJ_ZPS_Survivor && CurTime() > victim.ZPS_NextCoughT then
+                if IsValid(victim) && !victim.VJ_ZPS_Survivor && CurTime() > victim.ZPS_NextCoughT then
                     if string_find(victimModel, "female") or string_find(victimModel, "alyx") or string_find(victimModel, "mossman") or string_find(victimModel, "chell") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
                     else
