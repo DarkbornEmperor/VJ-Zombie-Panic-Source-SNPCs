@@ -654,7 +654,7 @@ if SERVER then
         local oldPlayerColor = victim:GetPlayerColor()
         if victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
             zombie = ents.Create("npc_vj_zps_zinf_ply")
-            zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim)
+            zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim, victim)
         elseif victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
             zombie = ents.Create("npc_vj_zps_zcarrier")
         end
@@ -756,10 +756,10 @@ if SERVER then
         if victim.VJ_ID_Living && victim.ZPS_InfectedVictim then
             if !victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
                 zombie = ents.Create("npc_vj_zps_zinf")
-                zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim)
+                zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim, victim)
             elseif victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
                 zombie = ents.Create("npc_vj_zps_zinf")
-                zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim)
+                zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim, victim)
             elseif victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 1 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
                 if survName == "npc_vj_zps_eugene" then
                     zombie = ents.Create("npc_vj_zps_zeugene")
@@ -829,7 +829,7 @@ if SERVER then
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, bgEnt)
+function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, bgEnt, subMat)
     local creator = NULL
     if zombieEnt:IsNPC() then
         creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
@@ -853,6 +853,13 @@ function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt, oldModel, oldSkin, oldColor, oldM
     if IsValid(bgEnt) then
         for i = 0, body:GetNumBodyGroups() -1 do
             body:SetBodygroup(i, bgEnt:GetBodygroup(i))
+        end
+    end
+    if IsValid(subMat) then
+        for i = 0,31 do
+            if subMat:GetSubMaterial(i) != "" then
+                body:SetSubMaterial(i, subMat:GetSubMaterial(i))
+            end
         end
     end
     zombieEnt.Bonemerge = body

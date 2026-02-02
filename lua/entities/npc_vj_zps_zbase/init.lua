@@ -508,7 +508,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
         end
     end
     if IsValid(self.Bonemerge) then
-        corpse:VJ_ZPS_CreateBoneMerge(corpse, self.Bonemerge:GetModel(), self.Bonemerge:GetSkin(), self.Bonemerge:GetColor(), self.Bonemerge:GetMaterial(), self.Bonemerge:GetPlayerColor(), self.Bonemerge)
+        corpse:VJ_ZPS_CreateBoneMerge(corpse, self.Bonemerge:GetModel(), self.Bonemerge:GetSkin(), self.Bonemerge:GetColor(), self.Bonemerge:GetMaterial(), self.Bonemerge:GetPlayerColor(), self.Bonemerge, self.Bonemerge)
     end
     if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 or !self.CanGib then return end
     if dmginfo:GetDamageForce():Length() < 800 then return end
