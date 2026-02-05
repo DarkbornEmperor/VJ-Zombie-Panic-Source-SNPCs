@@ -698,8 +698,12 @@ if SERVER then
                 if timer.Exists("timer_melee_bleed" .. zombie:EntIndex()) then timer.Remove("timer_melee_bleed" .. zombie:EntIndex()) end
             end
         end)
-        if string_find(oldModel, "female") or string_find(oldModel, "alyx") or string_find(oldModel, "mossman") or string_find(oldModel, "chell") or string_find(oldModel, "amy") or string_find(oldModel, "candace") or string_find(oldModel, "isa") or string_find(oldModel, "lyndsay") or string_find(oldModel, "margaret") or string_find(oldModel, "rachel") then
-            zombie:ZombieVoice_InfectedFemale()
+        if !string_find(oldModel, "models/darkborn/zps/survivors/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/") && !string_find(oldModel, "models/darkborn/zps/survivors/pms/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/") && !string_find(oldModel, "models/darkborn/zps/zombies/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/pms/") then
+            if string_find(oldModel, "female") or string_find(oldModel, "alyx") or string_find(oldModel, "mossman") or string_find(oldModel, "chell") or string_find(oldModel, "zoey") or string_find(oldModel, "producer") or string_find(oldModel, "rochelle") or string_find(oldModel, "amy") or string_find(oldModel, "candace") or string_find(oldModel, "isa") or string_find(oldModel, "lyndsay") or string_find(oldModel, "margaret") or string_find(oldModel, "rachel") then
+                zombie:ZombieVoice_InfectedFemale()
+            else
+                zombie:ZombieVoice_InfectedMale()
+            end
         end
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -820,7 +824,7 @@ if SERVER then
             zombie.CurrentPossibleEnemies = {}
         end
         if !victim.VJ_ZPS_Survivor && !string_find(oldModel, "models/darkborn/zps/survivors/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/") && !string_find(oldModel, "models/darkborn/zps/survivors/pms/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/") && !string_find(oldModel, "models/darkborn/zps/zombies/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/pms/") then
-            if string_find(oldModel,"female") or string_find(oldModel,"alyx") or string_find(oldModel,"mossman") or string_find(oldModel,"chell") then
+            if string_find(oldModel, "female") or string_find(oldModel, "alyx") or string_find(oldModel, "mossman") or string_find(oldModel, "chell") or string_find(oldModel, "zoey") or string_find(oldModel, "producer") or string_find(oldModel, "rochelle") or string_find(oldModel, "amy") or string_find(oldModel, "candace") or string_find(oldModel, "isa") or string_find(oldModel, "lyndsay") or string_find(oldModel, "margaret") or string_find(oldModel, "rachel") then
                 zombie:ZombieVoice_InfectedFemale()
             else
                 zombie:ZombieVoice_InfectedMale()
@@ -829,19 +833,19 @@ if SERVER then
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, bgEnt, subMat)
+function ENT:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, bgEnt, subMat)
     local creator = NULL
-    if zombieEnt:IsNPC() then
-        creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
-        zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())
+    if zombie:IsNPC() then
+        creator = IsValid(zombie:GetCreator()) && zombie:GetCreator()
+        zombie:SetCollisionBounds(zombie:GetCollisionBounds())
     end
     local body = ents.Create("vj_zps_infection")
     body:SetModel(oldModel)
-    body:SetPos(zombieEnt:GetPos())
-    body:SetAngles(zombieEnt:GetAngles())
-    body.VJ_Owner = zombieEnt
+    body:SetPos(zombie:GetPos())
+    body:SetAngles(zombie:GetAngles())
+    body.VJ_Owner = zombie
     body:Spawn()
-    body:SetParent(zombieEnt)
+    body:SetParent(zombie)
     if string_find(body:GetModel(), "models/darkborn/zps/survivors/") or string_find(body:GetModel(), "models/darkborn/zps/survivors_old/") or string_find(body:GetModel(), "models/darkborn/zps/survivors/pms/") or string_find(body:GetModel(), "models/darkborn/zps/survivors_old/pms/") then
         body:SetSkin(1)
     else
@@ -862,5 +866,5 @@ function ENT:VJ_ZPS_CreateBoneMerge(zombieEnt, oldModel, oldSkin, oldColor, oldM
             end
         end
     end
-    zombieEnt.Bonemerge = body
+    zombie.Bonemerge = body
 end
