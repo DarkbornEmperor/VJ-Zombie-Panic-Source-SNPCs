@@ -84,6 +84,7 @@ ENT.AnimTbl_DoorAttack = {
 local math_random = math.random
 local math_rand = math.Rand
 local string_find = string.find
+local string_lower = string.lower
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnInput(key, activator, caller, data)
     if key == "step" then
@@ -314,7 +315,7 @@ function ENT:OnThink()
             for _, v in pairs(ents.FindInSphere(self:GetPos(), 30)) do
                 if GetConVar("VJ_ZPS_BreakDoors_Func"):GetInt() == 1 && v:GetClass() == "func_door_rotating" && v:Visible(self) then self.ZPS_DoorToBreak = v end
                 if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
-                    local anim = string.lower(v:GetSequenceName(v:GetSequence()))
+                    local anim = string_lower(v:GetSequenceName(v:GetSequence()))
                     if string_find(anim, "idle") or string_find(anim, "open") /*or string_find(anim, "locked")*/ then
                         self.ZPS_AttackingDoor = true
                         self.ZPS_DoorToBreak = v
@@ -326,7 +327,7 @@ function ENT:OnThink()
     else
         if IsValid(self.ZPS_DoorToBreak) then
             local dist = VJ.GetNearestDistance(self, self.ZPS_DoorToBreak)
-            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.AttackAnimTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self)) or dist > 40 then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
+            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.AttackAnimTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self) or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
             if curAct != ACT_OPEN_DOOR && IsValid(self.ZPS_DoorToBreak) && self.ZPS_NextMeleeAnimT < CurTime() then
                 self:SetTurnTarget(self.ZPS_DoorToBreak)
                 self:PlayAnim(self.AnimTbl_DoorAttack, false, false, false)
