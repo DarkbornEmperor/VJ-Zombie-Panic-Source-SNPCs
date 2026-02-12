@@ -405,7 +405,7 @@ if CLIENT then
             panel:AddControl("Button", {Text = "#vjbase.menu.general.reset.everything", Command = "VJ_ZPS_ZombieOverlay 1\nVJ_ZPS_BloodDecals 1"})
             panel:Help("Client-Side Options:")
             panel:CheckBox("Enable Screen Overlay When Controlling Zombies?", "VJ_ZPS_ZombieOverlay")
-            panel:CheckBox("Enable Blood Decals For Infected Players/NPCs?", "VJ_ZPS_BloodDecals")
+            panel:CheckBox("Enable Blood Decals For Turned Zombies?", "VJ_ZPS_BloodDecals")
             if !game.SinglePlayer() && !LocalPlayer():IsAdmin() then
                 panel:Help("#vjbase.menu.general.admin.not")
                 panel:Help("#vjbase.menu.general.admin.only")
