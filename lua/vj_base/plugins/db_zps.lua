@@ -554,8 +554,9 @@ if SERVER then
     end)
 
     hook.Add("EntityTakeDamage", "VJ_ZPS_PrematureDeath", function(victim, dmginfo)
-        if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
+        if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim.OSZ_InfectedVictim then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
         if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or !victim.ZPS_InfectedVictim or dmginfo:IsDamageType(dmgCheck) or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
+        dmginfo:SetDamageType(DMG_REMOVENORAGDOLL)
         if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
             hook.Add("PlayerDeath", "VJ_ZPS_Infection_Player", function(victim, inflictor, attacker)
                 local zomEnt = inflictor, attacker
@@ -633,7 +634,7 @@ if SERVER then
                     VJ_ZPS_CreateZombie(victim)
                 end
                 if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 then
-                    VJ.CreateSound(victim, {"darkborn/zps/zombies/z_vision/activate.wav", "darkborn/zps/zombies/z_vision/deactivate.wav"}, 75, 100)
+                    VJ.EmitSound(victim, {"darkborn/zps/zombies/z_vision/activate.wav", "darkborn/zps/zombies/z_vision/deactivate.wav"}, 75, 100)
                 end
             end
         end)
@@ -708,15 +709,6 @@ if SERVER then
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_CreateZombie(victim)
-        local findPos = victim:GetPos()
-        local findMDL = victim:GetModel()
-        timer.Simple(0, function()
-            for _, v in pairs(ents.FindInSphere(findPos, 75)) do
-                if GetConVar("ai_serverragdolls"):GetInt() == 1 && v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL && !v.IsVJBaseCorpse then
-                    v:Remove()
-                end
-            end
-        end)
         if victim.IsVJBaseSNPC then
             victim.HasDeathCorpse = false
             victim.HasDeathAnimation = false
@@ -749,12 +741,12 @@ if SERVER then
         else
             oldPlayerColor = false
         end
-        /*local DefaultFootSteps = {"npc/metropolice/gear1.wav", "npc/metropolice/gear2.wav", "npc/metropolice/gear3.wav", "npc/metropolice/gear4.wav", "npc/metropolice/gear5.wav", "npc/metropolice/gear6.wav"}
+        /*local defFootSteps = {"npc/metropolice/gear1.wav", "npc/metropolice/gear2.wav", "npc/metropolice/gear3.wav", "npc/metropolice/gear4.wav", "npc/metropolice/gear5.wav", "npc/metropolice/gear6.wav"}
         if victim.SoundTbl_FootStep && #victim.SoundTbl_FootStep > 0 && !victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
             sndTbl = victim.SoundTbl_FootStep
         else
             if victim.IsVJBaseSNPC_Human && !VJ.PICK(victim.SoundTbl_FootStep) && !victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-                sndTbl = DefaultFootSteps
+                sndTbl = defFootSteps
             end
         end*/
         if victim.VJ_ID_Living && victim.ZPS_InfectedVictim then

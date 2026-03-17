@@ -11,3 +11,5 @@ ENT.VJ_ZPS_Zombie = true
 if CLIENT then
     VJ.AddKillIcon("npc_vj_zps_zinf", ENT.PrintName, "zps/killicons/destroy_zombie", Color(255, 0, 0))
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Draw() return end
