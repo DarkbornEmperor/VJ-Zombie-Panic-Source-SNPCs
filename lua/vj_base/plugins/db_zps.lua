@@ -625,8 +625,9 @@ if SERVER then
             if !IsValid(victim) or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) return end
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
+                    hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player")
                     victim:Kill()
-                    //VJ_ZPS_CreateZombie(victim)
+                    VJ_ZPS_CreateZombie(victim)
                 end
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
                     VJ_ZPS_SetPlayerZombie(victim)
