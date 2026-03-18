@@ -585,6 +585,7 @@ if SERVER then
                 end
             end
         end
+        if (victim:IsNPC() or victim:IsNextBot()) && (victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie) then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) else dmginfo:SetDamageType(DMG_GENERIC) end
     end)
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_InfectionApply(victim)
