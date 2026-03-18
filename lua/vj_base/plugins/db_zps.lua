@@ -626,7 +626,7 @@ if SERVER then
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
                     victim:Kill()
-                    VJ_ZPS_CreateZombie(victim)
+                    //VJ_ZPS_CreateZombie(victim)
                 end
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
                     VJ_ZPS_SetPlayerZombie(victim)
