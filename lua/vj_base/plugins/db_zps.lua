@@ -554,6 +554,9 @@ if SERVER then
     end)
 
     hook.Add("EntityTakeDamage", "VJ_ZPS_PrematureDeath", function(victim, dmginfo)
+        local inflictor = dmginfo:GetInflictor()
+        local attacker = dmginfo:GetAttacker()
+        local zomEnt = inflictor, attacker
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim.OSZ_InfectedVictim then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
         if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or !victim.ZPS_InfectedVictim or dmginfo:IsDamageType(dmgCheck) or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
         dmginfo:SetDamageType(DMG_REMOVENORAGDOLL)
@@ -566,6 +569,7 @@ if SERVER then
             end)
         end
         if victim:IsNPC() or victim:IsNextBot() then
+            if victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
             hook.Add("OnNPCKilled", "VJ_ZPS_Infection_NPC", function(victim, inflictor, attacker)
                 local zomEnt = inflictor, attacker
                 if zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then
@@ -573,9 +577,6 @@ if SERVER then
                 end
             end)
         end
-        local inflictor = dmginfo:GetInflictor()
-        local attacker = dmginfo:GetAttacker()
-        local zomEnt = inflictor, attacker
         if GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 && victim:IsPlayer() then
             if victim:LastHitGroup() != HITGROUP_HEAD && zomEnt.VJ_ZPS_Zombie then
                 if victim:Alive() && victim:Health() < dmginfo:GetDamage() + 1 then
@@ -585,7 +586,6 @@ if SERVER then
                 end
             end
         end
-        if (victim:IsNPC() or victim:IsNextBot()) && (victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie) then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) else dmginfo:SetDamageType(DMG_GENERIC) end
     end)
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_InfectionApply(victim)
