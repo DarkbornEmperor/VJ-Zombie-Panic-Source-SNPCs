@@ -480,6 +480,7 @@ end
 
 local ENT = FindMetaTable("Entity")
 local dmgCheck = bit_bor(DMG_ALWAYSGIB, DMG_ENERGYBEAM, DMG_BLAST, DMG_VEHICLE, DMG_CRUSH, DMG_DISSOLVE, DMG_SLOWBURN, DMG_PHYSGUN, DMG_PLASMA, DMG_SONIC)
+local npcList = {["npc_kleiner"] = true, ["npc_mossman"] = true, ["npc_alyx"] = true, ["npc_eli"] = true, ["npc_breen"] = true, ["npc_magnusson"] = true, ["npc_odessa"] = true, ["npc_gman"] = true, ["npc_barney"] = true, ["npc_fisherman"] = true, ["npc_monk"] = true, ["npc_citizen"] = true, ["npc_combine_s"] = true, ["npc_combine_elite"] = true, ["npc_metropolice"] = true}
 
 VJ_ZPS_NODEPOS = {}
 hook.Add("EntityRemoved", "VJ_ZPS_AddNodes", function(ent)
@@ -569,7 +570,7 @@ if SERVER then
             end)
         end
         if victim:IsNPC() or victim:IsNextBot() then
-            if victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
+            if npcList[victim:GetClass()] && victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
             hook.Add("OnNPCKilled", "VJ_ZPS_Infection_NPC", function(victim, inflictor, attacker)
                 local zomEnt = inflictor, attacker
                 if zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then
@@ -626,7 +627,7 @@ if SERVER then
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
                     hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player")
-                    victim:Kill()
+                    victim:KillSilent()
                     VJ_ZPS_CreateZombie(victim)
                 end
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 1 then
