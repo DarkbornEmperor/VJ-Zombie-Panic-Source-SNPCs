@@ -825,17 +825,12 @@ function ENT:OnDamaged(dmginfo, hitgroup, status)
         if status == "PreDamage" && self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then
             dmginfo:ScaleDamage(0.80)
             if self.HasSounds && self.HasImpactSounds then VJ.EmitSound(self, "VJ.Impact.Armor") end
-            local spark = ents.Create("env_spark")
-            spark:SetKeyValue("Magnitude", "1")
-            spark:SetKeyValue("Spark Trail Length", "1")
-            spark:SetPos(dmginfo:GetDamagePosition())
-            spark:SetAngles(self:GetAngles())
-            spark:SetParent(self)
-            spark:Spawn()
-            spark:Activate()
-            spark:Fire("StartSpark", "", 0)
-            spark:Fire("StopSpark", "", 0.001)
-            self:DeleteOnRemove(spark)
+            local effectData = EffectData()
+            effectData:SetOrigin(dmginfo:GetDamagePosition())
+            effectData:SetNormal(dmginfo:GetDamageForce():GetNormalized())
+            effectData:SetMagnitude(3)
+            effectData:SetScale(1)
+            util.Effect("ElectricSpark", effectData)
         end
     end
 end

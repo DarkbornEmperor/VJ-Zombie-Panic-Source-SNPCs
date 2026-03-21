@@ -155,6 +155,7 @@ function ENT:Init()
    self:CapabilitiesRemove(CAP_ANIMATEDFACE)
    self:SetSurroundingBounds(Vector(60, 60, 90), Vector(-60, -60, 0))
    self.ZPS_NextBerserkT = CurTime() + math_rand(10,20)
+   if self:GetClass() == "npc_vj_zps_zinf" or self:GetClass() == "npc_vj_zps_zinf_ply" then self:DrawShadow(false) end
    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
    if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
         self.HealthRegenParams.Amount = 4
