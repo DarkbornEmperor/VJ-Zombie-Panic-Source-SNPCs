@@ -591,14 +591,18 @@ if SERVER then
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_InfectionApply(victim)
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim then return end
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE") or victim:Health() <= 0 or victim.GodMode or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE") or !victim:Alive() or victim.GodMode or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
         local victimModel = victim:GetModel()
         victim.ZPS_InfectedVictim = true
         victim.ZPS_NextCoughT = CurTime() + math_rand(5,30)
         victim.ZPS_NextEffectT = CurTime() + math_rand(10,35)
+        local deaths
+        if victim:IsPlayer() then
+            deaths = victim:Deaths()
+        end
         if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
             hook.Add("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex(), function()
-                if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
+                if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_IsControllingNPC or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
                 if IsValid(victim) && !victim.VJ_ZPS_Survivor && CurTime() > victim.ZPS_NextCoughT then
                     if string_find(victimModel, "female") or string_find(victimModel, "alyx") or string_find(victimModel, "mossman") or string_find(victimModel, "chell") or string_find(victimModel, "zoey") or string_find(victimModel, "producer") or string_find(victimModel, "rochelle") or string_find(victimModel, "amy") or string_find(victimModel, "candace") or string_find(victimModel, "isa") or string_find(victimModel, "lyndsay") or string_find(victimModel, "margaret") or string_find(victimModel, "rachel") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
@@ -618,12 +622,7 @@ if SERVER then
                 end
             end)
         end
-        local deaths
-        if victim:IsPlayer() then
-            deaths = victim:Deaths()
-        end
         timer.Create("VJ_ZPS_InfectionTime" .. victim:EntIndex(), math_random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(), GetConVar("VJ_ZPS_InfectionTime2"):GetInt()), 1, function()
-            if !IsValid(victim) or (victim:IsPlayer() && !victim:Alive()) or (victim:IsPlayer() && victim:Deaths() > deaths) or (victim:IsPlayer() && victim.VJ_IsControllingNPC) or (victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1) or victim:Health() <= 0 or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) return end
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
                     hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player")
