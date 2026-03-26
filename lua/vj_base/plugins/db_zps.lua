@@ -569,7 +569,7 @@ if SERVER then
             end)
         end
         if victim:IsNPC() or victim:IsNextBot() then
-            if npcList[victim:GetClass()] && victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
+            if npcList[victim:GetClass()] && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
             hook.Add("OnNPCKilled", "VJ_ZPS_Infection_NPC", function(victim, inflictor, attacker)
                 if zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then
                     VJ_ZPS_Infect(victim, inflictor, attacker)
