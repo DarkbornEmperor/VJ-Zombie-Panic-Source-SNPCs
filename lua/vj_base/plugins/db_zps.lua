@@ -563,7 +563,6 @@ if SERVER then
         dmginfo:SetDamageType(DMG_REMOVENORAGDOLL)
         if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
             hook.Add("PlayerDeath", "VJ_ZPS_Infection_Player", function(victim, inflictor, attacker)
-                local zomEnt = inflictor, attacker
                 if zomEnt.VJ_ZPS_Zombie && victim:LastHitGroup() != HITGROUP_HEAD then
                     VJ_ZPS_Infect(victim, inflictor, attacker)
                 end
@@ -572,7 +571,6 @@ if SERVER then
         if victim:IsNPC() or victim:IsNextBot() then
             if npcList[victim:GetClass()] && victim.ZPS_InfectedVictim && zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then dmginfo:SetDamageType(DMG_REMOVENORAGDOLL) end
             hook.Add("OnNPCKilled", "VJ_ZPS_Infection_NPC", function(victim, inflictor, attacker)
-                local zomEnt = inflictor, attacker
                 if zomEnt.VJ_ZPS_Zombie && victim:GetInternalVariable("m_LastHitGroup") != HITGROUP_HEAD then
                     VJ_ZPS_Infect(victim, inflictor, attacker)
                 end
@@ -602,7 +600,7 @@ if SERVER then
         end
         if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
             hook.Add("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex(), function()
-                if !IsValid(victim) or !victim.ZPS_InfectedVictim or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_IsControllingNPC or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
+                if victim.ZPS_InfectedVictim && (!IsValid(victim) or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_IsControllingNPC or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
                 if IsValid(victim) && !victim.VJ_ZPS_Survivor && CurTime() > victim.ZPS_NextCoughT then
                     if string_find(victimModel, "female") or string_find(victimModel, "alyx") or string_find(victimModel, "mossman") or string_find(victimModel, "chell") or string_find(victimModel, "zoey") or string_find(victimModel, "producer") or string_find(victimModel, "rochelle") or string_find(victimModel, "amy") or string_find(victimModel, "candace") or string_find(victimModel, "isa") or string_find(victimModel, "lyndsay") or string_find(victimModel, "margaret") or string_find(victimModel, "rachel") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
@@ -753,10 +751,18 @@ if SERVER then
         end*/
         if victim.VJ_ID_Living && victim.ZPS_InfectedVictim then
             if !victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-                zombie = ents.Create("npc_vj_zps_zinf")
+                if victim:IsPlayer() then
+                    zombie = ents.Create("npc_vj_zps_zinf_ply")
+                else
+                    zombie = ents.Create("npc_vj_zps_zinf")
+                end
                 zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim, victim)
             elseif victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 0 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
-                zombie = ents.Create("npc_vj_zps_zinf")
+                if victim:IsPlayer() then
+                    zombie = ents.Create("npc_vj_zps_zinf_ply")
+                else
+                    zombie = ents.Create("npc_vj_zps_zinf")
+                end
                 zombie:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMaterial, oldPlayerColor, victim, victim)
             elseif victim.VJ_ZPS_Survivor && GetConVar("VJ_ZPS_ZombieModels"):GetInt() == 1 && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
                 if survName == "npc_vj_zps_eugene" then
@@ -804,6 +810,10 @@ if SERVER then
                     zombie:ZombieVoice_Vanessa()
                 end
             end
+        end
+        if victim:IsPlayer() then
+            victim:Spectate(OBS_MODE_CHASE)
+            victim:SpectateEntity(zombie)
         end
         timer.Simple(1, function()
             if IsValid(zombie) then
