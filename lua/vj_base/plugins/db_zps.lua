@@ -611,12 +611,12 @@ if SERVER then
                 end
                 if IsValid(victim) && CurTime() > victim.ZPS_NextEffectT then
                     VJ.CreateSound(victim, "darkborn/zps/infection/jolt-0" .. math_random(1,4) .. ".wav", 75, 100)
-                    victim.ZPS_NextEffectT = CurTime() + math_rand(10,35)
                     if victim:IsPlayer() then
                         net.Start("VJ_ZPS_InfectionScreenEffect")
                             net.WriteEntity(victim)
                         net.Send(victim)
                     end
+                    victim.ZPS_NextEffectT = CurTime() + math_rand(10,35)
                 end
             end)
         end
