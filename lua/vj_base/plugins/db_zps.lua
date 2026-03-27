@@ -609,7 +609,7 @@ if SERVER then
                     end
                     victim.ZPS_NextCoughT = CurTime() + math_rand(5,30)
                 end
-                if CurTime() > victim.ZPS_NextEffectT then
+                if IsValid(victim) && CurTime() > victim.ZPS_NextEffectT then
                     VJ.CreateSound(victim, "darkborn/zps/infection/jolt-0" .. math_random(1,4) .. ".wav", 75, 100)
                     victim.ZPS_NextEffectT = CurTime() + math_rand(10,35)
                     if victim:IsPlayer() then
