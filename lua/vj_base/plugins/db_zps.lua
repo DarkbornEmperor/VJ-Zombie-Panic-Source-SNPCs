@@ -7,6 +7,7 @@
     local math_random = math.random
     local math_rand = math.Rand
     local string_find = string.find
+    local string_lower = string.lower
     local bit_bor = bit.bor
 
     VJ.AddPlugin("Zombie Panic! Source SNPCs", "NPC")
@@ -602,7 +603,7 @@ if SERVER then
             hook.Add("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex(), function()
                 if victim.ZPS_InfectedVictim && (!IsValid(victim) or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_IsControllingNPC or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
                 if IsValid(victim) && !victim.VJ_ZPS_Survivor && CurTime() > victim.ZPS_NextCoughT then
-                    if string_find(victimModel, "female") or string_find(victimModel, "alyx") or string_find(victimModel, "mossman") or string_find(victimModel, "chell") or string_find(victimModel, "zoey") or string_find(victimModel, "producer") or string_find(victimModel, "rochelle") or string_find(victimModel, "amy") or string_find(victimModel, "candace") or string_find(victimModel, "isa") or string_find(victimModel, "lyndsay") or string_find(victimModel, "margaret") or string_find(victimModel, "rachel") then
+                    if string_find(string_lower(victimModel), "female") or string_find(string_lower(victimModel), "alyx") or string_find(string_lower(victimModel), "mossman") or string_find(string_lower(victimModel), "chell") or string_find(string_lower(victimModel), "zoey") or string_find(string_lower(victimModel), "producer") or string_find(string_lower(victimModel), "rochelle") or string_find(string_lower(victimModel), "amy") or string_find(string_lower(victimModel), "candace") or string_find(string_lower(victimModel), "isa") or string_find(string_lower(victimModel), "lyndsay") or string_find(string_lower(victimModel), "margaret") or string_find(string_lower(victimModel), "rachel") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
                     else
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 100)
@@ -683,6 +684,8 @@ if SERVER then
                 zombie:ZombieVoice_Vanessa()
             end
         end
+        if timer.Exists("timer_melee_bleed" .. victim:EntIndex()) then timer.Remove("timer_melee_bleed" .. victim:EntIndex()) end
+        if timer.Exists("timer_melee_slowply" .. victim:EntIndex()) then timer.Remove("timer_melee_slowply" .. victim:EntIndex()) end
         if !IsValid(contEnt) then
             local contEnt = ents.Create("obj_vj_controller")
             contEnt.VJCE_Player = victim
@@ -700,7 +703,7 @@ if SERVER then
             end
         end)
         if !string_find(oldModel, "models/darkborn/zps/survivors/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/") && !string_find(oldModel, "models/darkborn/zps/survivors/pms/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/") && !string_find(oldModel, "models/darkborn/zps/zombies/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/pms/") then
-            if string_find(oldModel, "female") or string_find(oldModel, "alyx") or string_find(oldModel, "mossman") or string_find(oldModel, "chell") or string_find(oldModel, "zoey") or string_find(oldModel, "producer") or string_find(oldModel, "rochelle") or string_find(oldModel, "amy") or string_find(oldModel, "candace") or string_find(oldModel, "isa") or string_find(oldModel, "lyndsay") or string_find(oldModel, "margaret") or string_find(oldModel, "rachel") then
+            if string_find(string_lower(oldModel), "female") or string_find(string_lower(oldModel), "alyx") or string_find(string_lower(oldModel), "mossman") or string_find(string_lower(oldModel), "chell") or string_find(string_lower(oldModel), "zoey") or string_find(string_lower(oldModel), "producer") or string_find(string_lower(oldModel), "rochelle") or string_find(string_lower(oldModel), "amy") or string_find(string_lower(oldModel), "candace") or string_find(string_lower(oldModel), "isa") or string_find(string_lower(oldModel), "lyndsay") or string_find(string_lower(oldModel), "margaret") or string_find(string_lower(oldModel), "rachel") then
                 zombie:ZombieVoice_InfectedFemale()
             else
                 zombie:ZombieVoice_InfectedMale()
@@ -828,7 +831,7 @@ if SERVER then
             zombie.CurrentPossibleEnemies = {}
         end
         if !victim.VJ_ZPS_Survivor && !string_find(oldModel, "models/darkborn/zps/survivors/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/") && !string_find(oldModel, "models/darkborn/zps/survivors/pms/") && !string_find(oldModel, "models/darkborn/zps/survivors_old/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/") && !string_find(oldModel, "models/darkborn/zps/zombies/pms/") && !string_find(oldModel, "models/darkborn/zps/zombies_old/pms/") then
-            if string_find(oldModel, "female") or string_find(oldModel, "alyx") or string_find(oldModel, "mossman") or string_find(oldModel, "chell") or string_find(oldModel, "zoey") or string_find(oldModel, "producer") or string_find(oldModel, "rochelle") or string_find(oldModel, "amy") or string_find(oldModel, "candace") or string_find(oldModel, "isa") or string_find(oldModel, "lyndsay") or string_find(oldModel, "margaret") or string_find(oldModel, "rachel") then
+            if string_find(string_lower(oldModel), "female") or string_find(string_lower(oldModel), "alyx") or string_find(string_lower(oldModel), "mossman") or string_find(string_lower(oldModel), "chell") or string_find(string_lower(oldModel), "zoey") or string_find(string_lower(oldModel), "producer") or string_find(string_lower(oldModel), "rochelle") or string_find(string_lower(oldModel), "amy") or string_find(string_lower(oldModel), "candace") or string_find(string_lower(oldModel), "isa") or string_find(string_lower(oldModel), "lyndsay") or string_find(string_lower(oldModel), "margaret") or string_find(string_lower(oldModel), "rachel") then
                 zombie:ZombieVoice_InfectedFemale()
             else
                 zombie:ZombieVoice_InfectedMale()
