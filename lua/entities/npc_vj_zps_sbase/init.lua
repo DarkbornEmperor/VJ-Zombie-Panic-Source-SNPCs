@@ -3052,19 +3052,32 @@ ENT.FootSteps = {
         "physics/glass/glass_sheet_step4.wav"
     }
 }
+local wadeSnd = {
+    "player/footsteps/wade1.wav",
+    "player/footsteps/wade2.wav",
+    "player/footsteps/wade3.wav",
+    "player/footsteps/wade4.wav",
+    "player/footsteps/wade5.wav",
+    "player/footsteps/wade6.wav",
+    "player/footsteps/wade7.wav",
+    "player/footsteps/wade8.wav"
+}
 ---------------------------------------------------------------------------------------------------------------------------------------------
+local vecZ150 = Vector(0, 0, -150)
+--
 function ENT:OnFootstepSound(moveType, sdFile)
     if !self:OnGround() then return end
+    local myPos = self:GetPos()
     local tr = util.TraceLine({
-        start = self:GetPos(),
-        endpos = self:GetPos() + Vector(0, 0, -150),
-        filter = {self}
+        start = myPos,
+        endpos = myPos + vecZ150,
+        filter = self
     })
     if tr.Hit && self.FootSteps[tr.MatType] then
         VJ.EmitSound(self, VJ.PICK(self.FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootStepPitch1, self.FootStepPitch2))
     end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self, "player/footsteps/wade" .. math_random(1,8) .. ".wav", self.FootstepSoundLevel, self:VJ_DecideSoundPitch(self.FootStepPitch1, self.FootStepPitch2))
+        VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch.a, self.FootstepSoundPitch.b))
     end
 end
 /*-----------------------------------------------
