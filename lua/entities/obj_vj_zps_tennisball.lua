@@ -10,7 +10,7 @@ ENT.Base = "obj_vj_grenade"
 ENT.PrintName = "Tennis Ball"
 ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
-ENT.Category = "VJ Base"
+ENT.Category = "Zombie Panic! Source"
 
 ENT.VJ_ID_Grenade = false
 ENT.VJ_ID_Grabbable = false

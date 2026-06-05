@@ -8,6 +8,7 @@ ENT.Author = "Darkborn"
 
 if !SERVER then return end
 
+local CurTime = CurTime
 local table_insert = table.insert
 local table_remove = table.remove
 local math_random = math.random
@@ -24,7 +25,6 @@ ENT.Zombie = {
     {class = "npc_vj_zps_zpedro", chance = 1},
     {class = "npc_vj_zps_zvanessa", chance = 1}
 }
-
 local musicList = {
     "darkborn/zps/mapspawner/ac_glowingmist.wav",
     "darkborn/zps/mapspawner/ac_silenthorror.wav"
@@ -68,6 +68,7 @@ function ENT:Initialize()
     self:SetNoDraw(true)
     self:DrawShadow(false)
 
+    local curTime = CurTime()
     self.IsActivated = tobool(GetConVar("VJ_ZPS_MapSpawner_Enabled"):GetInt())
     self.ZPS_SpawnDistance = GetConVar("VJ_ZPS_MapSpawner_SpawnMax"):GetInt()
     self.ZPS_SpawnDistanceClose = GetConVar("VJ_ZPS_MapSpawner_SpawnMin"):GetInt()
@@ -78,12 +79,12 @@ function ENT:Initialize()
     self.ZPS_MaxHordeSpawn = GetConVar("VJ_ZPS_MapSpawner_HordeCount"):GetInt()
     self.tbl_SpawnedNPCs = {}
     self.tbl_NPCsWithEnemies = {}
-    self.NextAICheckTime = CurTime() + 5
-    self.NextZombieSpawnTime = CurTime() + 1
-    self.NextHordeSpawnTime = CurTime() + math_rand(self.ZPS_HordeCooldownMin, self.ZPS_HordeCooldownMax)
+    self.NextAICheckTime = curTime + 5
+    self.NextZombieSpawnTime = curTime + 1
+    self.NextHordeSpawnTime = curTime + math_rand(self.ZPS_HordeCooldownMin, self.ZPS_HordeCooldownMax)
     self.DidStartMusic = false
-    self.NextMusicSwitchT = CurTime() + 1
-    self.NextAIBossCheckTime = CurTime() + 5
+    self.NextMusicSwitchT = curTime + 1
+    self.NextAIBossCheckTime = curTime + 5
     self.HordeSpawnRate = 0.19
 
     local ambience = {"darkborn/zps/zombies/carrier/actions/carrier_roar.wav", "darkborn/zps/zombies/carrier/actions/survivor_spotted.wav", "darkborn/zps/zombies/carrier/actions/survivor_tagged.wav"}
@@ -214,7 +215,8 @@ function ENT:GetNodePosition(i)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:IsNodeUsable(i)
-    return self.nodePositions[i].Time < CurTime()
+    local curTime = CurTime()
+    return self.nodePositions[i].Time < curTime
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:FindEnemy()
@@ -265,6 +267,7 @@ end
 function ENT:Think()
     self.IsActivated = GetConVar("VJ_ZPS_MapSpawner_Enabled"):GetInt()
     if self.IsActivated then
+        local curTime = CurTime()
         -- Manage ConVar data
         self.ZPS_SpawnDistance = GetConVar("VJ_ZPS_MapSpawner_SpawnMax"):GetInt()
         self.ZPS_SpawnDistanceClose = GetConVar("VJ_ZPS_MapSpawner_SpawnMin"):GetInt()
@@ -276,7 +279,7 @@ function ENT:Think()
         //self.AI_RefreshTime = GetConVar("VJ_ZPS_MapSpawner_RefreshRate"):GetInt()
 
         -- Checks for inactive AI, this code is quite bulky and might be able to be optimized better
-        if CurTime() > self.NextAICheckTime then
+        if curTime > self.NextAICheckTime then
             if #self.tbl_SpawnedNPCs > 0 then
                 for i, v in ipairs(self.tbl_SpawnedNPCs) do
                     if IsValid(v) then
@@ -294,21 +297,21 @@ function ENT:Think()
                     end
                 end
             end
-            self.NextAICheckTime = CurTime() + 5
+            self.NextAICheckTime = curTime + 5
         end
 
         -- Manages Music
         self:DoMusic(false)
 
         -- Spawns AI
-        if CurTime() > self.NextZombieSpawnTime then
+        if curTime > self.NextZombieSpawnTime then
             if #self.tbl_SpawnedNPCs >= self.ZPS_MaxZombie - self.ZPS_MaxHordeSpawn then return end -- Makes sure that we can at least spawn a mob when it's time
             self:SpawnZombie(self:PickZombie(self.Zombie), self:FindSpawnPosition(false))
-            self.NextZombieSpawnTime = CurTime() + math_rand(GetConVar("VJ_ZPS_MapSpawner_DelayMin"):GetInt(), GetConVar("VJ_ZPS_MapSpawner_DelayMax"):GetInt())
+            self.NextZombieSpawnTime = curTime + math_rand(GetConVar("VJ_ZPS_MapSpawner_DelayMin"):GetInt(), GetConVar("VJ_ZPS_MapSpawner_DelayMax"):GetInt())
         end
 
         -- Spawns Hordes
-        if CurTime() > self.NextHordeSpawnTime && math_random(1, self.ZPS_HordeChance) == 1 then
+        if curTime > self.NextHordeSpawnTime && math_random(1, self.ZPS_HordeChance) == 1 then
             for i = 1, self.ZPS_MaxHordeSpawn do
                 timer.Simple(self.HordeSpawnRate * i, function() -- Help with lag when spawning
                     if IsValid(self) then
@@ -316,29 +319,30 @@ function ENT:Think()
                     end
                 end)
             end
-            self.NextHordeSpawnTime = CurTime() + math_rand(self.ZPS_HordeCooldownMin, self.ZPS_HordeCooldownMax)
+            self.NextHordeSpawnTime = curTime + math_rand(self.ZPS_HordeCooldownMin, self.ZPS_HordeCooldownMax)
         end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:DoMusic(stop)
     for _, v in ipairs(player.GetAll()) do
+        local curTime = CurTime()
         if !stop && !self.DidStartMusic then
             self.DidStartMusic = true
-            self.NextMusicSwitchT = CurTime() + 1
+            self.NextMusicSwitchT = curTime + 1
             if GetConVar("VJ_ZPS_MapSpawner_Music"):GetInt() == 1 then
                 self.NextZPSMusicT = self.NextZPSMusicT or 0
-                if CurTime() > self.NextZPSMusicT then
+                if curTime > self.NextZPSMusicT then
                     self.ZPS_PickTrack = VJ.PICK(musicList)
                     self.ZPS_Track = VJ.CreateSound(v, self.ZPS_PickTrack, GetConVar("VJ_ZPS_MapSpawner_MusicVolume"):GetInt(), 100)
-                    self.NextZPSMusicT = CurTime() + ((((SoundDuration(self.ZPS_PickTrack) > 0) and SoundDuration(self.ZPS_PickTrack)) or 2) + 1)
+                    self.NextZPSMusicT = curTime + ((((SoundDuration(self.ZPS_PickTrack) > 0) and SoundDuration(self.ZPS_PickTrack)) or 2) + 1)
                     timer.Simple(((((SoundDuration(self.ZPS_PickTrack) > 0) and SoundDuration(self.ZPS_PickTrack)) or 2) + 1), function() if IsValid(self) then self.DidStartMusic = false VJ.STOPSOUND(self.ZPS_Track) end end)
                 end
             end
         end
         if stop && self.DidStartMusic then
             self.DidStartMusic = false
-            self.NextMusicSwitchT = CurTime() + 1
+            self.NextMusicSwitchT = curTime + 1
             VJ.STOPSOUND(self.ZPS_Track)
         end
     end
@@ -365,26 +369,27 @@ function ENT:SpawnZombie(ent, pos, isMob)
     if !ent then return end
     if pos == nil or !pos then return end
     if #self.tbl_SpawnedNPCs >= self.ZPS_MaxZombie then return end
-    local Zombie = ents.Create(ent)
-    Zombie:SetPos(pos)
-    Zombie:SetAngles(Angle(0, math_random(0,360), 0))
-    Zombie:Spawn()
-    table_insert(self.tbl_SpawnedNPCs, Zombie)
+    local zomEnt = ents.Create(ent)
+    zomEnt:SetPos(pos)
+    zomEnt:SetAngles(Angle(0, math_random(0,360), 0))
+    zomEnt:Spawn()
+    table_insert(self.tbl_SpawnedNPCs, zomEnt)
     if isMob then
-        Zombie.SightAngle = 360
-        Zombie.EnemyXRayDetection = true
-        Zombie:DrawShadow(false)
+        zomEnt.SightAngle = 360
+        zomEnt.EnemyXRayDetection = true
+        zomEnt:DrawShadow(false)
         timer.Simple(0, function()
-            if IsValid(Zombie) then
-                Zombie:DrawShadow(false)
+            if IsValid(zomEnt) then
+                zomEnt:DrawShadow(false)
             end
         end)
     end
-    Zombie.MapSpawner = self
-    Zombie.EntitiesToNoCollide = {}
-    Zombie.CallForHelp = false
+    zomEnt.MapSpawner = self
+    zomEnt.EntitiesToNoCollide = {}
+    zomEnt.CallForHelp = false
+    zomEnt.CanReceiveOrders = false
     for _, v in pairs(self.Zombie) do
-        table_insert(Zombie.EntitiesToNoCollide, v.class)
+        table_insert(zomEnt.EntitiesToNoCollide, v.class)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

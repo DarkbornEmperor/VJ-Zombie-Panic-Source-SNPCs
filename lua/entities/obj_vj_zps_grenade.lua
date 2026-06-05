@@ -10,7 +10,7 @@ ENT.Base = "obj_vj_grenade"
 ENT.PrintName = "Grenade"
 ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
-ENT.Category = "VJ Base"
+ENT.Category = "Zombie Panic! Source"
 
 if CLIENT then
     VJ.AddKillIcon("obj_vj_zps_grenade", ENT.PrintName, "zps/killicons/destroy_survivor", Color(0, 160, 255))

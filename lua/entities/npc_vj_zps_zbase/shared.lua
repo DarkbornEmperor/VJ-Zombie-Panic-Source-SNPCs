@@ -7,6 +7,7 @@ ENT.Category = "Zombie Panic! Source"
 
 ENT.VJ_ID_Undead = true
 ENT.VJ_ZPS_Zombie = true
+ENT.VJ_ZPS_Carrier = true
 
 if CLIENT then
     VJ.AddKillIcon("npc_vj_zps_zbase", ENT.PrintName, "zps/killicons/destroy_zombie", Color(255, 0, 0))

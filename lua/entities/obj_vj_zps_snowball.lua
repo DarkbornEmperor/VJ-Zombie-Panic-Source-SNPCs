@@ -10,7 +10,7 @@ ENT.Base = "obj_vj_projectile_base"
 ENT.PrintName = "Snowball"
 ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
-ENT.Category = "VJ Base"
+ENT.Category = "Zombie Panic! Source"
 
 ENT.VJ_ID_Danger = false
 
@@ -38,7 +38,9 @@ function ENT:InitPhys()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+local defAngle = Angle(0, 0, 0)
+--
 function ENT:OnDestroy(data, phys)
-    ParticleEffect("vj_zps_impact_snowball", data.HitPos, Angle(0, 0, 0), nil)
+    ParticleEffect("vj_zps_impact_snowball", data.HitPos, defAngle, nil)
     //VJ.EmitSound(self, {"darkborn/zps/weapons/physics/snowball/impact01.wav", "darkborn/zps/weapons/physics/snowball/impact02.wav", "darkborn/zps/weapons/physics/snowball/impact03.wav"}, 75, 100)
 end

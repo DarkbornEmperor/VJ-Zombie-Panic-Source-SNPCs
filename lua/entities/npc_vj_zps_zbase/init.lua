@@ -43,7 +43,7 @@ ENT.ZPS_Crouching = false
 ENT.ZPS_CanBreakDoors = false
 ENT.ZPS_Berserk = false
 ENT.ZPS_AttackingDoor = false
-ENT.ZPS_DoorToBreak = NULL
+ENT.ZPS_DoorEnt = NULL
 ENT.ZPS_BerserkSpeed = 1.2
 ENT.ZPS_NextBerserkT = 0
 ENT.ZPS_NextJumpT = 0
@@ -74,13 +74,18 @@ ENT.SoundTbl_Impact = {
     "darkborn/zps/shared/impacts/flesh_impact-03.wav",
     "darkborn/zps/shared/impacts/flesh_impact-04.wav"
 }
-
 ENT.AnimTbl_DoorAttack = {
     "vjseq_vjges_s_attack1_door",
     "vjseq_vjges_s_attack2_door",
     "vjseq_vjges_s_attack3_door"
 }
-
+local doorEnts = {
+    prop_door = true,
+    prop_door_rotating = true,
+    func_door = true,
+    func_door_rotating = true
+}
+local CurTime = CurTime
 local math_random = math.random
 local math_rand = math.Rand
 local string_find = string.find
@@ -93,49 +98,21 @@ function ENT:OnInput(key, activator, caller, data)
         self:ExecuteMeleeAttack()
     end
     if key == "break_door" then
-        if IsValid(self.ZPS_DoorToBreak) then
+        if IsValid(self.Zombie_DoorEnt) then
             self:PlaySoundSystem("BeforeMeleeAttack", self.SoundTbl_BeforeMeleeAttack)
             VJ.EmitSound(self, "physics/wood/wood_panel_impact_hard1.wav", 75, 100)
             local doorDmg = self.MeleeAttackDamage
-            local door = self.ZPS_DoorToBreak
+            local door = self.Zombie_DoorEnt
             if door.doorHP == nil then
                 door.doorHP = 200 - doorDmg
             elseif door.doorHP <= 0 then
-                self:PlaySoundSystem("MeleeAttackMiss", self.SoundTbl_MeleeAttackMiss)
-                return -- To prevent door props making a duplication when it shouldn't
+                self:PlaySoundSystem("MeleeAttackMiss")
+                return
             else
                 door.doorHP = door.doorHP - doorDmg
             end
-            if door:GetClass() == "prop_door_rotating" && door.doorHP <= 0 then
-                VJ.EmitSound(door, "physics/wood/wood_furniture_break" .. math_random(1,2) ..".wav", 75, 100)
-                VJ.EmitSound(door, "ambient/materials/door_hit1.wav" , 75, 100)
-                ParticleEffect("door_pound_core", door:GetPos(), door:GetAngles(), nil)
-                ParticleEffect("door_explosion_chunks", door:GetPos(), door:GetAngles(), nil)
-                door:Remove()
-                local doorGib = ents.Create("prop_physics")
-                doorGib:SetPos(door:GetPos())
-                doorGib:SetAngles(door:GetAngles())
-                doorGib:SetModel(door:GetModel())
-                doorGib:SetSkin(door:GetSkin())
-                doorGib:SetBodygroup(1, door:GetBodygroup(1))
-                doorGib:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-                doorGib:SetSolid(SOLID_NONE)
-                doorGib:Spawn()
-                doorGib:GetPhysicsObject():ApplyForceCenter(self:GetForward() * 10000)
-                SafeRemoveEntityDelayed(doorGib,30)
-            elseif door:GetClass() == "func_door_rotating" && door.doorHP <= 0 then
-                VJ.EmitSound(door, "physics/wood/wood_furniture_break" .. math_random(1,2) .. ".wav", 75, 100)
-                VJ.EmitSound(door, "ambient/materials/door_hit1.wav", 75, 100)
-                ParticleEffect("door_pound_core",door:GetPos(), door:GetAngles(), nil)
-                ParticleEffect("door_explosion_chunks",door:GetPos(), door:GetAngles(), nil)
-                door:Remove()
-                local doorGibs = ents.Create("prop_dynamic")
-                doorGibs:SetPos(door:GetPos())
-                doorGibs:SetAngles(door:GetAngles())
-                doorGibs:SetModel("models/props_c17/FurnitureDresser001a.mdl")
-                doorGibs:Spawn()
-                doorGibs:TakeDamage(9999)
-                doorGibs:Fire("break")
+            if doorEnts[door:GetClass()] && door.doorHP <= 0 then
+                self:BreakDoor(door)
             end
         end
     end
@@ -150,40 +127,44 @@ function ENT:PreInit()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Init()
-   if self.Zombie_Init then self:Zombie_Init() end
-   self:ZombieVoices()
-   self:CapabilitiesRemove(CAP_ANIMATEDFACE)
-   self:SetSurroundingBounds(Vector(60, 60, 90), Vector(-60, -60, 0))
-   self.ZPS_NextBerserkT = CurTime() + math_rand(10,20)
-   if self:GetClass() == "npc_vj_zps_zinf" or self:GetClass() == "npc_vj_zps_zinf_ply" then self:DrawShadow(false) end
-   if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
-   if self:GetClass() == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
+    if self.Zombie_Init then self:Zombie_Init() end
+    local curTime = CurTime()
+    local myClass = self:GetClass()
+    if myClass == "npc_vj_zps_zinf" or myClass == "npc_vj_zps_zinf_ply" then self:DrawShadow(false) end
+    if myClass == "npc_vj_zps_zinf" then self:SetName("Turned Zombie")
+    elseif myClass == "npc_vj_zps_zinf_ply" then self:SetName("Turned Zombie (Player)") end
+
+    if GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 then
+    if myClass == "npc_vj_zps_zcarrier" then self:SetSkin(1) end
         self.HealthRegenParams.Amount = 4
         self.HealthRegenParams.Delay = VJ.SET(1,1)
     end
+    self.ZPS_NextBerserkT = curTime + math_rand(10,20)
+    self:ZombieVoices()
+    self:SetSurroundingBounds(Vector(60, 60, 90), Vector(-60, -60, 0))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieVoices()
-    local cType = self:GetClass()
-    if cType == "npc_vj_zps_zcarrier" then
+    local myClass = self:GetClass()
+    if myClass == "npc_vj_zps_zcarrier" then
         self:ZombieVoice_Carrier()
-    elseif cType == "npc_vj_zps_zeugene" then
+    elseif myClass == "npc_vj_zps_zeugene" then
         self:ZombieVoice_Eugene()
-    elseif cType == "npc_vj_zps_zjessica" then
+    elseif myClass == "npc_vj_zps_zjessica" then
         self:ZombieVoice_Jessica()
-    elseif cType == "npc_vj_zps_zlarry" then
+    elseif myClass == "npc_vj_zps_zlarry" then
         self:ZombieVoice_Larry()
-    elseif cType == "npc_vj_zps_zlea" then
+    elseif myClass == "npc_vj_zps_zlea" then
         self:ZombieVoice_Lea()
-    elseif cType == "npc_vj_zps_zmarcus" then
+    elseif myClass == "npc_vj_zps_zmarcus" then
         self:ZombieVoice_Marcus()
-    elseif cType == "npc_vj_zps_zpaul" then
+    elseif myClass == "npc_vj_zps_zpaul" then
         self:ZombieVoice_Paul()
-    elseif cType == "npc_vj_zps_zpedro" then
+    elseif myClass == "npc_vj_zps_zpedro" then
         self:ZombieVoice_Pedro()
-    elseif cType == "npc_vj_zps_zvanessa" then
+    elseif myClass == "npc_vj_zps_zvanessa" then
         self:ZombieVoice_Vanessa()
-    /*elseif cType == "npc_vj_zps_zinf" or cType == "npc_vj_zps_zinf_ply" then
+    /*elseif myClass == "npc_vj_zps_zinf" or myClass == "npc_vj_zps_zinf_ply" then
         self:ZombieVoice_InfectedMale()*/
     end
 end
@@ -226,52 +207,55 @@ function ENT:Controller_Initialize(ply, controlEnt)
         net.WriteEntity(self)
     net.Send(ply)
 
-    function self.VJ_TheControllerEntity:OnStopControlling()
-        net.Start("VJ_ZPS_Zombie_HUD")
-            net.WriteBool(true)
-            net.WriteEntity(self)
-        net.Send(ply)
-    end
-        if self:GetClass() == "npc_vj_zps_zinf_ply" then
+    if self:GetClass() == "npc_vj_zps_zinf_ply" then
         if IsValid(ply) then
             self.ZombieCont = ply
             self:SetName(self.ZombieCont:GetName() .. "(Zombie)")
             ply:SetHealth(ply:GetMaxHealth())
         end
     end
+    local npc = self
+    npc.JumpParams.Enabled = false
     controlEnt.VJC_Player_DrawHUD = false
     function controlEnt:OnThink()
         self.VJCE_NPC:SetArrivalSpeed(9999)
-        self.VJC_NPC_CanTurn = self.VJC_Camera_Mode == 1
-        self.VJC_BullseyeTracking = self.VJC_Camera_Mode == 1
-        self.VJCE_NPC.EnemyDetection = true
-        self.VJCE_NPC.JumpParams.Enabled = false
+        self.VJC_NPC_CanTurn = self.VJC_Camera_Mode == 2
+        self.VJC_BullseyeTracking = (self.VJCE_NPC:IsMoving() && self.VJC_Camera_Mode == 1) or self.VJC_Camera_Mode == 2
+    end
+    function controlEnt:OnStopControlling()
+        if IsValid(npc) then
+            npc.JumpParams.Enabled = true
+        end
+        net.Start("VJ_ZPS_Zombie_HUD")
+            net.WriteBool(true)
+            net.WriteEntity(self)
+        net.Send(ply)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnChangeActivity(newAct)
     if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
         self:PlaySoundSystem("Speech", self.SoundTbl_Jump)
-    end
-    if newAct == ACT_LAND then
+    elseif newAct == ACT_LAND then
         self:SetNavType(NAV_GROUND)
     end
     return self.BaseClass.OnChangeActivity(self, newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnAlert(ent)
-    self.ZPS_NextBerserkT = CurTime() + math_rand(10,20)
+    local curTime = CurTime()
+    self.ZPS_NextBerserkT = curTime + math_rand(10,20)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
     if !self.ZPS_Crouching then
-        if act == ACT_WALK && self:GetClass() == "npc_vj_zps_zcarrier" then
+        local myClass = self:GetClass()
+        if act == ACT_WALK && myClass == "npc_vj_zps_zcarrier" then
             return ACT_RUN
-        elseif act == ACT_RUN && self:GetClass() != "npc_vj_zps_zcarrier" then
+        elseif act == ACT_RUN && myClass != "npc_vj_zps_zcarrier" then
             return ACT_WALK
         end
-    end
-    if self.ZPS_Crouching then
+    elseif self.ZPS_Crouching then
         if act == ACT_IDLE then
             return ACT_IDLE_STEALTH
         elseif act == ACT_WALK or act == ACT_RUN then
@@ -285,59 +269,33 @@ function ENT:TranslateActivity(act)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThink()
+    local curTime = CurTime()
+    local controlled = self.VJ_IsBeingControlled
+    local ply = self.VJ_TheController
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
-        if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
-            if self:OnGround() && CurTime() > self.ZPS_NextJumpT then
+        if controlled && ply:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
+            if self:OnGround() && curTime > self.ZPS_NextJumpT then
                 local maxDist = 220
                 local maxDepth = 20
                 local targetPos = self:GetPos() + Vector(math_rand(-maxDist, maxDist), math_rand(-maxDist, maxDist), maxDepth)
                 self:Jump(targetPos)
-                /*if self.VJ_TheController:KeyDown(IN_FORWARD) then self:SetVelocity(self:GetUp() * 200 + self:GetForward() * 350)
-                elseif self.VJ_TheController:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp() * 200 + self:GetForward() * -350)
-                elseif self.VJ_TheController:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp() * 200 + self:GetRight() * -350)
-                elseif self.VJ_TheController:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp() * 200 + self:GetRight() * 350) end*/
+                /*if ply:KeyDown(IN_FORWARD) then self:SetVelocity(self:GetUp() * 200 + self:GetForward() * 350)
+                elseif ply:KeyDown(IN_BACK) then self:SetVelocity(self:GetUp() * 200 + self:GetForward() * -350)
+                elseif ply:KeyDown(IN_MOVELEFT) then self:SetVelocity(self:GetUp() * 200 + self:GetRight() * -350)
+                elseif ply:KeyDown(IN_MOVERIGHT) then self:SetVelocity(self:GetUp() * 200 + self:GetRight() * 350) end*/
                 self:PlaySoundSystem("Speech", self.SoundTbl_Jump)
-                self.ZPS_NextJumpT = CurTime() + 0.8
+                self.ZPS_NextJumpT = curTime + 0.8
             end
         end
     end
-    local controller = self.VJ_TheController
     local curAct = self:GetSequenceActivity(self:GetIdealSequence())
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 && VJ_CVAR_AI_ENABLED then
-        if IsValid(self:GetEnemy()) && !self.ZPS_Crouching && !self.IsGuard && curAct != ACT_OPEN_DOOR && !IsValid(self.ZPS_DoorToBreak) then
-            if math_random(1,100) <= 3 && self.EnemyData.DistanceNearest < 150 && !IsValid(controller) && self:Visible(self:GetEnemy()) then
+        local eneData = self.EnemyData
+        if IsValid(eneData.Target) && !self.ZPS_Crouching && !self.IsGuard && curAct != ACT_OPEN_DOOR && !IsValid(self.ZPS_DoorEnt) then
+            if math_random(1,100) <= 3 && eneData.DistanceNearest < 150 && !IsValid(ply) && eneData.Visible then
                 self:AvoidThreat()
             end
         end
-    end
-    if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 0 or self.Dead then self.ZPS_DoorToBreak = NULL return end
-    if !IsValid(self.ZPS_DoorToBreak) && !self.ZPS_AttackingDoor then
-        if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_RELOAD))) then
-            for _, v in pairs(ents.FindInSphere(self:GetPos(), 30)) do
-                if GetConVar("VJ_ZPS_BreakDoors_Func"):GetInt() == 1 && v:GetClass() == "func_door_rotating" && v:Visible(self) then self.ZPS_DoorToBreak = v end
-                if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
-                    local anim = string_lower(v:GetSequenceName(v:GetSequence()))
-                    if string_find(anim, "idle") or string_find(anim, "open") /*or string_find(anim, "locked")*/ then
-                        self.ZPS_AttackingDoor = true
-                        self.ZPS_DoorToBreak = v
-                        break
-                    end
-                end
-            end
-        end
-    else
-        if IsValid(self.ZPS_DoorToBreak) then
-            local dist = VJ.GetNearestDistance(self, self.ZPS_DoorToBreak)
-            if IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor && (self.AttackAnimTime > CurTime() or !self.ZPS_DoorToBreak:Visible(self) or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorToBreak = NULL return end
-            if curAct != ACT_OPEN_DOOR && IsValid(self.ZPS_DoorToBreak) && self.ZPS_NextMeleeAnimT < CurTime() then
-                self:SetTurnTarget(self.ZPS_DoorToBreak)
-                self:PlayAnim(self.AnimTbl_DoorAttack, false, false, false)
-                self.ZPS_NextMeleeAnimT = CurTime() + VJ.AnimDuration(self, ACT_OPEN_DOOR)
-            end
-        end
-    end
-    if !IsValid(self.ZPS_DoorToBreak) && self.ZPS_AttackingDoor then
-        self.ZPS_AttackingDoor = false
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -346,7 +304,6 @@ function ENT:AvoidThreat()
     local maxDist = 220
     local maxDepth = 20
     local targetPos = self:GetPos() + Vector(math_rand(-maxDist, maxDist), math_rand(-maxDist, maxDist), maxDepth)
-
     if self:GetNavType() != NAV_JUMP then
         self:Jump(targetPos)
     end
@@ -363,9 +320,10 @@ function ENT:Jump(pos)
         self.CurrentTask = nil
         self.CurrentTaskID = nil
     end
-    //self.NextIdleStandTime = CurTime()
-    self.NextIdleTime = CurTime()
-    self.NextChaseTime = CurTime()
+    local curTime = CurTime()
+    //self.NextIdleStandTime = curTime
+    self.NextIdleTime = curTime
+    self.NextChaseTime = curTime
     self:ForceMoveJump(VJ.CalculateTrajectory(self, NULL, "CurveOld", self:GetPos(), self:GetPos() + ((((pos or self:GetPos() +self:GetUp() * 100) - self:GetPos()):GetNormalized() * 50) + (self:GetUp() * 25)), 250))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -402,56 +360,77 @@ function ENT:OnThinkActive()
             end
         end
     end
-    if self:IsMoving() && self:OnGround() then
-        if self.ZPS_Berserk then
-            self:SetPlaybackRate(self.ZPS_BerserkSpeed)
-            local berserkSpeed = 0.3
-            self:SetVelocity(self:GetMoveVelocity() * berserkSpeed)
-        elseif !self.ZPS_Berserk then
-            self:SetPlaybackRate(1)
-            self:SetVelocity(self:GetMoveVelocity() * 0)
-        end
+    if self:IsMoving() && self:OnGround() && self.ZPS_Berserk then
+        self:SetPlaybackRate(self.ZPS_BerserkSpeed)
+        self:SetVelocity(self:GetMoveVelocity() * 0.3)
     end
-    if IsValid(self:GetEnemy()) && !self.ZPS_Berserk && !self.ZPS_Crouching && CurTime() > self.ZPS_NextBerserkT && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_SPEED))) then
+    local curTime = CurTime()
+    local controlled = self.VJ_IsBeingControlled
+    local ply = self.VJ_TheController
+    if IsValid(self.EnemyData.Target) && !self.ZPS_Berserk && !self.ZPS_Crouching && curTime > self.ZPS_NextBerserkT && ((!controlled) or (controlled && ply:KeyDown(IN_SPEED))) then
         self.ZPS_Berserk = true
         self:PlaySoundSystem("Speech", self.SoundTbl_Berserk)
         timer.Simple(8, function()
             if IsValid(self) then
                 self.ZPS_Berserk = false
-                self.ZPS_NextBerserkT = CurTime() + math_rand(10,20)
+                self:SetPlaybackRate(1)
+                self.ZPS_NextBerserkT = curTime + math_rand(10,20)
             end
         end)
+    end
+    if GetConVar("VJ_ZPS_BreakDoors"):GetInt() == 0 or self.Dead then self.ZPS_DoorEnt = NULL return end
+    if !IsValid(self.ZPS_DoorEnt) && !self.ZPS_AttackingDoor && ((!controlled) or (controlled && ply:KeyDown(IN_RELOAD))) then
+        for _, v in pairs(ents.FindInSphere(self:GetPos(), 35)) do
+            local vClass = v:GetClass()
+            if IsValid(v) && doorEnts[vClass] && v:Visible(self) then
+                local anim = string_lower(v:GetSequenceName(v:GetSequence()))
+                if vClass == "prop_door_rotating" && !string_find(anim, "locked") then
+                    self.ZPS_AttackingDoor = true
+                end
+                self.ZPS_AttackingDoor = true
+                self.ZPS_DoorEnt = v
+                break
+            end
+        end
+    else
+        local door = self.ZPS_DoorEnt
+        if IsValid(door) then
+            local dist = VJ.GetNearestDistance(self, door)
+            if IsValid(door) && self.ZPS_AttackingDoor && (self.AttackAnimTime > curTime or !door:Visible(self) or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorEnt = NULL return end
+            if curAct != ACT_OPEN_DOOR && IsValid(door) && self.ZPS_NextMeleeAnimT < curTime then
+                self:SetTurnTarget(door)
+                self:PlayAnim(self.AnimTbl_DoorAttack, false, false, false)
+                self.ZPS_NextMeleeAnimT = curTime + VJ.AnimDuration(self, ACT_OPEN_DOOR)
+            end
+        end
+    end
+    if !IsValid(door) && self.ZPS_AttackingDoor then
+        self.ZPS_AttackingDoor = false
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_OnThinkActive() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+local meleeDef = {
+    "vjseq_vjges_s_attack1",
+    "vjseq_vjges_s_attack2",
+    "vjseq_vjges_s_attack3"
+}
+--
 function ENT:OnMeleeAttack(status, enemy)
     if status == "Init" then
         if self.MeleeAttack_IsPropAttack or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
             self.AnimTbl_MeleeAttack =
                 "vjseq_vjges_s_push_z"
         else
-            self.AnimTbl_MeleeAttack = {
-                "vjseq_vjges_s_attack1",
-                "vjseq_vjges_s_attack2",
-                "vjseq_vjges_s_attack3"
-            }
+            self.AnimTbl_MeleeAttack = meleeDef
         end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnMeleeAttackExecute(status, ent, isProp)
     if status == "PreDamage" then
-        if self:IsOnFire() then ent:Ignite(4) end
-        if math_random(1, GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && ent:LookupBone("ValveBiped.Bip01_Pelvis") != nil && !ent.ZPS_InfectedVictim then
-            if (ent:IsPlayer() && ent:Health() < ent:GetMaxHealth() * 0.7 /*&& ent:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or ent:IsNPC() or ent:IsNextBot() then
-                if ent.ZPS_InfectedVictim then return end
-                if ent.VJ_ZPS_Survivor then ent.ZPS_NextCoughT = CurTime() + math_rand(5,30) end
-                //if ent:IsPlayer() then ent:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
-                VJ_ZPS_InfectionApply(ent)
-            end
-        end
+        if self:IsOnFire() then ent:Ignite(math_rand(3,5)) end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -459,100 +438,127 @@ function ENT:MeleeAttackTraceDirection()
     return self:GetForward()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+local headshotSd = {"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav", "darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"}
+--
 function ENT:OnDamaged(dmginfo, hitgroup, status)
     -- Unique headshot sounds
     if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
-        self:PlaySoundSystem("Impact", {"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav", "darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"})
-    end
-     if status == "PreDamage" && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 /*&& dmginfo:IsBulletDamage()*/ then
+        self:PlaySoundSystem("Impact", headshotSd)
+    elseif status == "PreDamage" && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 1 /*&& dmginfo:IsBulletDamage()*/ then
         dmginfo:ScaleDamage(0.50)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+local gibSd = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}
+--
 function ENT:HandleGibOnDeath(dmginfo, hitgroup)
     if GetConVar("VJ_ZPS_Gib"):GetInt() == 0 then return end
     self.HasDeathSounds = false
-    VJ.EmitSound(self, "darkborn/zps/shared/impacts/flesh_bodyexplode1.wav", 75, 100)
+    local myAng = self:GetAngles()
     if self.HasGibOnDeathEffects then
-        ParticleEffect("vj_zps_blood_explode_01", self:GetPos(), self:GetAngles())
+        ParticleEffect("vj_zps_blood_explode_01", self:GetPos(), myAng)
     end
-    if IsValid(self.SantaHat) then self:CreateGibEntity("prop_physics", "models/darkborn/zps/festive/santahat.mdl", {Pos = self:LocalToWorld(Vector(0, 0, -5)), Ang = self:GetAngles()}) end
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_head.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 68)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_ribs.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 0)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_pelvis.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 2)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_leg_l.mdl", {Pos = self:LocalToWorld(Vector(0, 6, 2)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_leg_r.mdl", {Pos = self:LocalToWorld(Vector(0, -6, 2)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_arm_r.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_arm_l.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump01.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump01.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump03.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump03.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = self:GetAngles(), CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    if IsValid(self.SantaHat) then self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/festive/santahat.mdl", {BloodDecal = "", Pos = self:LocalToWorld(Vector(0, 0, -5)), Ang = myAng, CollideSound = ""}, function(gib) gib.PhysicsSounds = true end) end
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_head.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 68)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_ribs.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 0)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_pelvis.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 2)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_leg_l.mdl", {Pos = self:LocalToWorld(Vector(0, 6, 2)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_leg_r.mdl", {Pos = self:LocalToWorld(Vector(0, -6, 2)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_arm_r.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_arm_l.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump01.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump01.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump03.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 60)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump03.mdl", {Pos = self:LocalToWorld(Vector(0, 0, 50)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny01.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny02.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl", {Pos = self:LocalToWorld(Vector(0, -20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump_tiny03.mdl", {Pos = self:LocalToWorld(Vector(0, 20, 55)), Ang = myAng, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+    self:PlaySoundSystem("Gib", "darkborn/zps/shared/impacts/flesh_bodyexplode1.wav")
     return true, {AllowCorpse = false, AllowSound = false}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
-    if IsValid(self.SantaHat) then
+    local santaHat = self.SantaHat
+    if IsValid(santaHat) then
         if hitgroup == HITGROUP_HEAD then
-            self:CreateGibEntity("prop_physics", "models/darkborn/zps/festive/santahat.mdl", {Pos = self:LocalToWorld(Vector(8, 0, -5)), Ang = self:GetAngles(), Vel = "UseDamageForce"})
-            self.SantaHat:Remove()
+            self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/festive/santahat.mdl", {BloodDecal = "", Pos = self:LocalToWorld(Vector(8, 0, -5)), Ang = self:GetAngles(), CollideSound = "", Vel = "UseDamageForce"}, function(gib) gib.PhysicsSounds = true end)
+            santaHat:Remove()
         else
-            self.SantaHat:SetOwner(corpse)
-            self.SantaHat:SetParent(corpse)
+            santaHat:SetOwner(corpse)
+            santaHat:SetParent(corpse)
         end
     end
-    if IsValid(self.Bonemerge) then
+    local bonemerge = self.Bonemerge
+    if IsValid(bonemerge) then
         corpse:SetNoDraw(true)
-        corpse:VJ_ZPS_CreateBoneMerge(corpse, self.Bonemerge:GetModel(), self.Bonemerge:GetSkin(), self.Bonemerge:GetColor(), self.Bonemerge:GetMaterial(), self.Bonemerge:GetPlayerColor(), self.Bonemerge, self.Bonemerge)
+        corpse:VJ_ZPS_CreateBoneMerge(corpse, bonemerge:GetModel(), bonemerge:GetSkin(), bonemerge:GetColor(), bonemerge:GetMaterial(), bonemerge:GetPlayerColor(), bonemerge, bonemerge)
     end
     if GetConVar("VJ_ZPS_HeadGib"):GetInt() == 0 or GetConVar("VJ_ZPS_OldModels"):GetInt() == 1 or !self.CanGib then return end
     if dmginfo:GetDamageForce():Length() < 800 then return end
-    if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) then
+    local att = self:GetAttachment(self:LookupAttachment("forward"))
+    if hitgroup == HITGROUP_HEAD then
         VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav", 75, 100)
-        corpse:RemoveAllDecals()
-        corpse:SetBodygroup(0, math_random(1,3))
-        corpse:SetBodygroup(1, math_random(1,3))
-        corpse:SetBodygroup(2, math_random(1,3))
-        corpse:SetBodygroup(3, math_random(1,3))
-        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+        if IsValid(bonemerge) then
+            corpse.Bonemerge:RemoveAllDecals()
+            corpse.Bonemerge:SetBodygroup(0, math_random(1,3))
+            corpse.Bonemerge:SetBodygroup(1, math_random(1,3))
+            corpse.Bonemerge:SetBodygroup(2, math_random(1,3))
+            corpse.Bonemerge:SetBodygroup(3, math_random(1,3))
+        else
+            corpse:RemoveAllDecals()
+            corpse:SetBodygroup(0, math_random(1,3))
+            corpse:SetBodygroup(1, math_random(1,3))
+            corpse:SetBodygroup(2, math_random(1,3))
+            corpse:SetBodygroup(3, math_random(1,3))
+        end
+        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = att.Pos, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = att.Pos, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
+        self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = att.Pos, CollideSound = gibSd}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
     end
-    if hitgroup == HITGROUP_HEAD && !IsValid(self.Bonemerge) && self.HasGibOnDeathEffects && (corpse:GetBodygroup(0) != 0 or corpse:GetBodygroup(1) != 0 or corpse:GetBodygroup(2) != 0 or corpse:GetBodygroup(3) != 0) then
+    if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && ((corpse:GetBodygroup(0) != 0 or corpse:GetBodygroup(1) != 0 or corpse:GetBodygroup(2) != 0 or corpse:GetBodygroup(3) != 0) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) != 0 or corpse.Bonemerge:GetBodygroup(1) != 0 or corpse.Bonemerge:GetBodygroup(2) != 0 or corpse.Bonemerge:GetBodygroup(3) != 0)) then
         VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_bloodspray-0" .. math_random(1,3) .. ".wav", 60, 100)
-        if corpse:GetBodygroup(0) == 1 or corpse:GetBodygroup(1) == 1 or corpse:GetBodygroup(2) == 1 or corpse:GetBodygroup(3) == 1 then
+        local attHead1 = nil
+        local attHead2 = nil
+        local attHead3 = nil
+        if IsValid(bonemerge) then
+            attHead1 = corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot1"))
+            attHead2 = corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot2"))
+            attHead3 = corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot3"))
+        else
+            attHead1 = corpse:GetAttachment(corpse:LookupAttachment("headshot1"))
+            attHead2 = corpse:GetAttachment(corpse:LookupAttachment("headshot2"))
+            attHead3 = corpse:GetAttachment(corpse:LookupAttachment("headshot3"))
+        end
+        if (corpse:GetBodygroup(0) == 1 or corpse:GetBodygroup(1) == 1 or corpse:GetBodygroup(2) == 1 or corpse:GetBodygroup(3) == 1) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) == 1 or corpse.Bonemerge:GetBodygroup(1) == 1 or corpse.Bonemerge:GetBodygroup(2) == 1 or corpse.Bonemerge:GetBodygroup(3) == 1) then
             local bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot1")).Pos)
-            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot1")).Ang)
+            bleedOut:SetPos(attHead1.Pos)
+            bleedOut:SetAngles(attHead1.Ang)
             bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot1")
             bleedOut:Spawn()
             bleedOut:Activate()
             bleedOut:Fire("Start", "", 0)
-        elseif corpse:GetBodygroup(0) == 2 or corpse:GetBodygroup(1) == 2 or corpse:GetBodygroup(2) == 2 or corpse:GetBodygroup(3) == 2 then
+        elseif (corpse:GetBodygroup(0) == 2 or corpse:GetBodygroup(1) == 2 or corpse:GetBodygroup(2) == 2 or corpse:GetBodygroup(3) == 2) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) == 2 or corpse.Bonemerge:GetBodygroup(1) == 2 or corpse.Bonemerge:GetBodygroup(2) == 2 or corpse.Bonemerge:GetBodygroup(3) == 2) then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot2")).Pos)
-            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot2")).Ang)
+            bleedOut:SetPos(attHead2.Pos)
+            bleedOut:SetAngles(attHead2.Ang)
             bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot2")
             bleedOut:Spawn()
             bleedOut:Activate()
             bleedOut:Fire("Start", "", 0)
-        elseif corpse:GetBodygroup(0) == 3 or corpse:GetBodygroup(1) == 3 or corpse:GetBodygroup(2) == 3 or corpse:GetBodygroup(3) == 3 then
+        elseif (corpse:GetBodygroup(0) == 3 or corpse:GetBodygroup(1) == 3 or corpse:GetBodygroup(2) == 3 or corpse:GetBodygroup(3) == 3) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) == 3 or corpse.Bonemerge:GetBodygroup(1) == 3 or corpse.Bonemerge:GetBodygroup(2) == 3 or corpse.Bonemerge:GetBodygroup(3) == 3) then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-            bleedOut:SetPos(corpse:GetAttachment(corpse:LookupAttachment("headshot3")).Pos)
-            bleedOut:SetAngles(corpse:GetAttachment(corpse:LookupAttachment("headshot3")).Ang)
+            bleedOut:SetPos(attHead3.Pos)
+            bleedOut:SetAngles(attHead3.Ang)
             bleedOut:SetParent(corpse)
             bleedOut:Fire("SetParentAttachment", "headshot3")
             bleedOut:Spawn()
@@ -560,60 +566,44 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("Start", "", 0)
         end
     end
-    -- For bonemerged Zombies
-    if IsValid(self.Bonemerge) && (string_find(self.Bonemerge:GetModel(), "models/darkborn/zps/survivors/") or string_find(self.Bonemerge:GetModel(), "models/darkborn/zps/survivors/pms/")) then
-        if hitgroup == HITGROUP_HEAD then
-            VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_impact_headshot-01.wav", 75, 100)
-            corpse.Bonemerge:RemoveAllDecals()
-            corpse.Bonemerge:SetBodygroup(0, math_random(1,3))
-            corpse.Bonemerge:SetBodygroup(1, math_random(1,3))
-            corpse.Bonemerge:SetBodygroup(2, math_random(1,3))
-            corpse.Bonemerge:SetBodygroup(3, math_random(1,3))
-            self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-            self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-            self:CreateGibEntity("obj_vj_gib", "models/darkborn/zps/gibs/gib_meatclump02.mdl", {Pos = self:GetAttachment(self:LookupAttachment("forward")).Pos, CollideSound = {"darkborn/zps/shared/gibs/flesh_impact_bloody-01.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-02.wav", "darkborn/zps/shared/gibs/flesh_impact_bloody-03.wav"}}, function(gib) ParticleEffectAttach("vj_zps_blood_gib_trail", PATTACH_POINT_FOLLOW, gib, gib:LookupAttachment("origin")) end)
-        end
-        if hitgroup == HITGROUP_HEAD && self.HasGibOnDeathEffects && (corpse.Bonemerge:GetBodygroup(0) != 0 or corpse.Bonemerge:GetBodygroup(1) != 0 or corpse.Bonemerge:GetBodygroup(2) != 0 or corpse.Bonemerge:GetBodygroup(3) != 0) then
-            VJ.EmitSound(corpse, "darkborn/zps/shared/impacts/flesh_bloodspray-0" .. math_random(1,3) .. ".wav", 60, 100)
-            if corpse.Bonemerge:GetBodygroup(0) == 1 or corpse.Bonemerge:GetBodygroup(1) == 1 or corpse.Bonemerge:GetBodygroup(2) == 1 or corpse.Bonemerge:GetBodygroup(3) == 1 then
-                local bleedOut = ents.Create("info_particle_system")
-                bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-                bleedOut:SetPos(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot1")).Pos)
-                bleedOut:SetAngles(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot1")).Ang)
-                bleedOut:SetParent(corpse.Bonemerge)
-                bleedOut:Fire("SetParentAttachment", "headshot1")
-                bleedOut:Spawn()
-                bleedOut:Activate()
-                bleedOut:Fire("Start", "", 0)
-            elseif corpse.Bonemerge:GetBodygroup(0) == 2 or corpse.Bonemerge:GetBodygroup(1) == 2 or corpse.Bonemerge:GetBodygroup(2) == 2 or corpse.Bonemerge:GetBodygroup(3) == 2 then
-                bleedOut = ents.Create("info_particle_system")
-                bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-                bleedOut:SetPos(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot2")).Pos)
-                bleedOut:SetAngles(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot2")).Ang)
-                bleedOut:SetParent(corpse.Bonemerge)
-                bleedOut:Fire("SetParentAttachment", "headshot2")
-                bleedOut:Spawn()
-                bleedOut:Activate()
-                bleedOut:Fire("Start", "", 0)
-            elseif corpse.Bonemerge:GetBodygroup(0) == 3 or corpse.Bonemerge:GetBodygroup(1) == 3 or corpse.Bonemerge:GetBodygroup(2) == 3 or corpse.Bonemerge:GetBodygroup(3) == 3 then
-                bleedOut = ents.Create("info_particle_system")
-                bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
-                bleedOut:SetPos(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot3")).Pos)
-                bleedOut:SetAngles(corpse.Bonemerge:GetAttachment(corpse.Bonemerge:LookupAttachment("headshot3")).Ang)
-                bleedOut:SetParent(corpse.Bonemerge)
-                bleedOut:Fire("SetParentAttachment", "headshot3")
-                bleedOut:Spawn()
-                bleedOut:Activate()
-                bleedOut:Fire("Start", "", 0)
-            end
-        end
-    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnRemove()
     -- If no corpse spawned, make sure to remove the hat
-    if !IsValid(self.Corpse) && IsValid(self.SantaHat) then
-        self.SantaHat:Remove()
+    local santaHat = self.SantaHat
+    if !IsValid(self.Corpse) && IsValid(santaHat) then
+        santaHat:Remove()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:BreakDoor(door)
+    local myPos = self:GetPos()
+    local doorPos = door:GetPos()
+    local doorAng = door:GetAngles()
+    //VJ.EmitSound(self, "physics/wood/wood_panel_impact_hard1.wav", 75, 100)
+    if IsValid(door) && doorEnts[door:GetClass()] then
+        VJ.EmitSound(door, "physics/wood/wood_furniture_break" .. math_random(1,2) .. ".wav", 75, 100)
+        VJ.EmitSound(door, "ambient/materials/door_hit1.wav", 75, 100)
+        ParticleEffect("door_pound_core", doorPos, doorAng, nil)
+        ParticleEffect("door_explosion_chunks", doorPos, doorAng, nil)
+        local doorGib = ents.Create("prop_physics")
+        doorGib:SetPos(doorPos)
+        doorGib:SetAngles(doorAng)
+        doorGib:SetModel(door:GetModel())
+        doorGib:SetSkin(door:GetSkin())
+        for i = 0, door:GetNumBodyGroups() - 1 do
+            doorGib:SetBodygroup(i, door:GetBodygroup(i))
+        end
+        doorGib:Spawn()
+        doorGib:Activate()
+        doorGib:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        local dir = (doorGib:GetPos() - myPos):GetNormalized()
+        local phys = doorGib:GetPhysicsObject()
+        if IsValid(phys) then
+            phys:ApplyForceCenter(dir * 8000)
+        end
+        SafeRemoveEntityDelayed(doorGib, 30)
+        door:Remove()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1456,7 +1446,7 @@ ENT.Zombie_FootSteps = {
         "physics/flesh/flesh_impact_hard5.wav",
         "physics/flesh/flesh_impact_hard6.wav"
     },
-    [74] = { -- Snow
+    [MAT_SNOW] = {
         "darkborn/zps/shared/footsteps/snow1.wav",
         "darkborn/zps/shared/footsteps/snow2.wav",
         "darkborn/zps/shared/footsteps/snow3.wav",
@@ -1504,7 +1494,7 @@ ENT.Zombie_FootSteps = {
         "darkborn/zps/shared/zombie_footsteps/concrete3.wav",
         "darkborn/zps/shared/zombie_footsteps/concrete4.wav"
     },
-    [85] = { -- Grass
+    [MAT_GRASS] = {
         "darkborn/zps/shared/footsteps/grass1.wav",
         "darkborn/zps/shared/footsteps/grass2.wav",
         "darkborn/zps/shared/footsteps/grass3.wav",
@@ -1584,7 +1574,7 @@ ENT.Carrier_FootSteps = {
         "physics/flesh/flesh_impact_hard5.wav",
         "physics/flesh/flesh_impact_hard6.wav"
     },
-    [74] = { -- Snow
+    [MAT_SNOW] = {
         "darkborn/zps/shared/carrier_footsteps/snow1.wav",
         "darkborn/zps/shared/carrier_footsteps/snow2.wav",
         "darkborn/zps/shared/carrier_footsteps/snow3.wav",
@@ -1632,7 +1622,7 @@ ENT.Carrier_FootSteps = {
         "darkborn/zps/shared/carrier_footsteps/concrete3.wav",
         "darkborn/zps/shared/carrier_footsteps/concrete4.wav"
     },
-    [85] = { -- Grass
+    [MAT_GRASS] = {
         "darkborn/zps/shared/carrier_footsteps/grass1.wav",
         "darkborn/zps/shared/carrier_footsteps/grass2.wav",
         "darkborn/zps/shared/carrier_footsteps/grass3.wav",
@@ -1692,8 +1682,3 @@ function ENT:OnFootstepSound(moveType, sdFile)
         VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch.a, self.FootstepSoundPitch.b))
     end
 end
-/*-----------------------------------------------
-    *** Copyright (c) 2012-2026 by DrVrej, All rights reserved. ***
-    No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-    without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/

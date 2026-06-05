@@ -38,15 +38,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnMeleeAttackExecute(status, ent, isProp)
     if status == "PreDamage" then
-        if self:IsOnFire() then ent:Ignite(4) end
-        if math_random(1, GetConVar("VJ_ZPS_CarrierInfectionChance"):GetInt()) == 1 && ent:LookupBone("ValveBiped.Bip01_Pelvis") != nil && !ent.ZPS_InfectedVictim then
-            if (ent:IsPlayer() && ent:Health() < ent:GetMaxHealth() * 0.7 /*&& ent:Armor() < 25*/ && GetConVar("sbox_godmode"):GetInt() == 0) or ent:IsNPC() then
-                if ent.ZPS_InfectedVictim then return end
-                if ent.IsZPSSurvivor then ent.ZPS_NextCoughT = CurTime() + math_rand(1,30) end
-                //if ent:IsPlayer() then ent:PrintMessage(HUD_PRINTTALK, "You've been infected.") end
-                VJ_ZPS_InfectionApply(ent)
-            end
-        end
+        if self:IsOnFire() then ent:Ignite(math_rand(3,5)) end
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,8 +57,3 @@ end
         end
     end
 end*/
-/*-----------------------------------------------
-    *** Copyright (c) 2012-2026 by DrVrej, All rights reserved. ***
-    No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-    without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/

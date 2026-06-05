@@ -10,7 +10,7 @@ ENT.Base = "obj_vj_grenade"
 ENT.PrintName = "IED"
 ENT.Author = "Darkborn"
 ENT.Contact = "http://steamcommunity.com/groups/vrejgaming"
-ENT.Category = "VJ Base"
+ENT.Category = "Zombie Panic! Source"
 
 ENT.VJ_ID_Grenade = false
 ENT.VJ_ID_Grabbable = false
@@ -35,6 +35,7 @@ ENT.SoundTbl_OnCollide = {
 -- Custom
 ENT.IED_ArmT = 2
 ENT.IED_Armed = false
+ENT.IED_Detonate = false
 ENT.IED_NextBlinkT = 0
 
 local math_rand = math.Rand
@@ -52,12 +53,14 @@ function ENT:InitPhys()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThink()
-    if !IsValid(self:GetOwner()) && self.IED_Armed then self:Detonate() return end
+    local owner = self:GetOwner()
+    if !IsValid(owner) && self.IED_Armed then self:Detonate() return end
     if !self.IED_Armed then return end
     if self.IED_Armed && CurTime() > self.IED_NextBlinkT then
-        if self:GetSkin() == 0 then
+        local mySkin = self:GetSkin()
+        if mySkin == 0 then
             self:SetSkin(1)
-        elseif self:GetSkin() == 1 then
+        elseif mySkin == 1 then
             self:SetSkin(0)
         end
         /*self:SetSkin(1)
@@ -66,12 +69,14 @@ function ENT:OnThink()
         VJ.CreateSound(self, "darkborn/zps/weapons/explosives/ied/ied_beep_armed.wav", 75, 100)
         self.IED_NextBlinkT = CurTime() + 1
     end
-    if IsValid(self:GetOwner()) then
-        local owner = self:GetOwner()
-        local ownerDist = self:GetPos():Distance(owner:GetPos())
-        if IsValid(owner) && ownerDist <= 500 && self:Visible(owner) then
-            for _, v in ipairs(ents.FindInSphere(self:GetPos(), 150)) do
+    if IsValid(owner) then
+        local myPos = self:GetPos()
+        local ownerDist = myPos:Distance(owner:GetPos())
+        if IsValid(owner) && ownerDist <= 500 && self:Visible(owner) && !self.IED_Detonate then
+            for _, v in ipairs(ents.FindInSphere(myPos, 150)) do
                 if IsValid(v) && IsValid(owner) && (v != owner.VJ_TheController && v != owner.VJ_TheControllerBullseye) && ((v:IsNPC() && v:GetClass() != owner:GetClass() && (owner:IsPlayer() or (owner:IsNPC() && owner:Disposition(v) != D_LI && !v:IsFlagSet(FL_NOTARGET)))) or (v:IsPlayer() && v:Alive() && owner:Disposition(v) != D_LI && (owner:IsPlayer() or (!VJ_CVAR_IGNOREPLAYERS && !v:IsFlagSet(FL_NOTARGET))))) then
+                    if self.IED_Detonate then return end
+                    self.IED_Detonate = true
                     self:Detonate()
                 end
             end
