@@ -569,6 +569,7 @@ if SERVER then
                 if (victim:IsPlayer() && victim:Armor() <= 0 && GetConVar("sbox_godmode"):GetInt() == 0) or victim:IsNPC() or victim:IsNextBot() then
                     if victim.ZPS_InfectedVictim then return end
                     if victim.VJ_ZPS_Survivor then victim.ZPS_NextCoughT = curTime + math_rand(5,30) end
+                    victim.ZPS_InfectedVictim = true
                     VJ_ZPS_InfectionApply(victim)
                 end
             end
@@ -607,7 +608,6 @@ if SERVER then
 
         local curTime = CurTime()
         local victimModel = victim:GetModel()
-        victim.ZPS_InfectedVictim = true
         victim.ZPS_NextCoughT = curTime + math_rand(5,30)
         victim.ZPS_NextEffectT = curTime + math_rand(10,35)
 
