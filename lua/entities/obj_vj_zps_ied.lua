@@ -103,15 +103,12 @@ function ENT:Detonate()
             local expLight = ents.Create("light_dynamic")
             expLight:SetKeyValue("brightness", "4")
             expLight:SetKeyValue("distance", "300")
-            expLight:SetLocalPos(myPos)
-            expLight:SetLocalAngles(self:GetAngles())
+            expLight:SetPos(myPos)
             expLight:Fire("Color", "255 150 0")
-            //expLight:SetParent(self)
             expLight:Spawn()
             expLight:Activate()
-            expLight:Fire("TurnOn", "", 0)
-            expLight:Fire("Kill", "", 0.08)
-            //self:DeleteOnRemove(expLight)
+            expLight:Fire("TurnOn")
+            expLight:Fire("Kill", nil, 0.15)
 
             self:SetLocalPos(myPos + vecZ4) -- Because the entity is too close to the ground
             local tr = util.TraceLine({
