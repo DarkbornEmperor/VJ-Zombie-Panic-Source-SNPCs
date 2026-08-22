@@ -239,7 +239,6 @@ function ENT:OnChangeActivity(newAct)
     elseif newAct == ACT_LAND then
         self:SetNavType(NAV_GROUND)
     end
-    return self.BaseClass.OnChangeActivity(self, newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnAlert(ent)
