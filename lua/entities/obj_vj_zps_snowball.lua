@@ -38,7 +38,7 @@ function ENT:InitPhys()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-local defAngle = Angle(0, 0, 0)
+local defAngle = Angle()
 --
 function ENT:OnDestroy(data, phys)
     ParticleEffect("vj_zps_impact_snowball", data.HitPos, defAngle, nil)
