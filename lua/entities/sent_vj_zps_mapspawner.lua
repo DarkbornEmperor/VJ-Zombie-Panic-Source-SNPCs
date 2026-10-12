@@ -25,9 +25,14 @@ ENT.Zombie = {
     {class = "npc_vj_zps_zpedro", chance = 1},
     {class = "npc_vj_zps_zvanessa", chance = 1}
 }
-local musicList = {
+local music = {
     "darkborn/zps/mapspawner/ac_glowingmist.wav",
     "darkborn/zps/mapspawner/ac_silenthorror.wav"
+}
+local ambient = {
+    "darkborn/zps/zombies/carrier/actions/carrier_roar.wav",
+    "darkborn/zps/zombies/carrier/actions/survivor_spotted.wav",
+    "darkborn/zps/zombies/carrier/actions/survivor_tagged.wav"
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Initialize()
@@ -83,14 +88,11 @@ function ENT:Initialize()
     self.NextZombieSpawnTime = curTime + 1
     self.NextHordeSpawnTime = curTime + math_rand(self.ZPS_HordeCooldownMin, self.ZPS_HordeCooldownMax)
     self.DidStartMusic = false
-    self.NextMusicSwitchT = curTime + 1
-    self.NextAIBossCheckTime = curTime + 5
     self.HordeSpawnRate = 0.19
 
-    local ambience = {"darkborn/zps/zombies/carrier/actions/carrier_roar.wav", "darkborn/zps/zombies/carrier/actions/survivor_spotted.wav", "darkborn/zps/zombies/carrier/actions/survivor_tagged.wav"}
     for _, v in ipairs(player.GetAll()) do
-        if GetConVar("VJ_ZPS_MapSpawner_Ambient") == 1 then
-            self.ZPS_Ambience = VJ.CreateSound(v, ambience, GetConVar("VJ_ZPS_MapSpawner_AmbienceVolume"):GetInt(), 100)
+        if GetConVar("VJ_ZPS_MapSpawner_Ambience") == 1 then
+            self.ZPS_Ambience = VJ.CreateSound(v, VJ.PICK(ambient), GetConVar("VJ_ZPS_MapSpawner_AmbienceVolume"):GetInt(), 100)
         end
     end
 end
@@ -283,11 +285,11 @@ function ENT:Think()
             if #self.tbl_SpawnedNPCs > 0 then
                 for i, v in ipairs(self.tbl_SpawnedNPCs) do
                     if IsValid(v) then
-                        local enemy = v:GetEnemy()
+                        local enemy = v.EnemyData.Target
                         self:CheckEnemyDistance(v)
                         if IsValid(enemy) && !VJ.HasValue(self.tbl_NPCsWithEnemies, v) then
-                            table_insert(self.tbl_NPCsWithEnemies, v)
-                        elseif !IsValid(enemy) then
+                                table_insert(self.tbl_NPCsWithEnemies, v)
+                            elseif !IsValid(enemy) then
                             if VJ.HasValue(self.tbl_NPCsWithEnemies, v) then
                                 table_remove(self.tbl_NPCsWithEnemies, i)
                             end
@@ -295,13 +297,29 @@ function ENT:Think()
                     else
                         table_remove(self.tbl_SpawnedNPCs, i)
                     end
+                    -- Handle stuck AI and remove them
+                    if IsValid(v) then
+                        local ene = v.EnemyData.Target
+                        local vPos = v:GetPos()
+                        local tr = util.TraceHull({
+                            start = vPos,
+                            endpos = vPos,
+                            mins = v:OBBMins(),
+                            maxs = v:OBBMaxs(),
+                            filter = v
+                        })
+                        if (tr.HitWorld && (!v:IsMoving() or v:GetVelocity():Length() <= 0)) or (v:WaterLevel() == 3 && v.MovementType != VJ_MOVETYPE_AQUATIC && v.MovementType != VJ_MOVETYPE_AERIAL) or (IsValid(ene) && v:IsUnreachable(ene)) then
+                            //PrintMessage(HUD_PRINTCENTER, "Removing " .. VJ.GetName(v) .. ".")
+                            SafeRemoveEntity(v)
+                        end
+                    end
                 end
             end
             self.NextAICheckTime = curTime + 5
         end
 
         -- Manages Music
-        self:DoMusic(false)
+        if GetConVar("VJ_ZPS_MapSpawner_Music"):GetInt() == 1 then self:DoMusic(false) end
 
         -- Spawns AI
         if curTime > self.NextZombieSpawnTime then
@@ -311,7 +329,7 @@ function ENT:Think()
         end
 
         -- Spawns Hordes
-        if curTime > self.NextHordeSpawnTime && math_random(1, self.ZPS_HordeChance) == 1 then
+        if curTime > self.NextHordeSpawnTime && math_random(1, self.ZPS_HordeChance) == 1 && self.ZPS_MaxHordeSpawn > 0 then
             for i = 1, self.ZPS_MaxHordeSpawn do
                 timer.Simple(self.HordeSpawnRate * i, function() -- Help with lag when spawning
                     if IsValid(self) then
@@ -329,21 +347,22 @@ function ENT:DoMusic(stop)
         local curTime = CurTime()
         if !stop && !self.DidStartMusic then
             self.DidStartMusic = true
-            self.NextMusicSwitchT = curTime + 1
-            if GetConVar("VJ_ZPS_MapSpawner_Music"):GetInt() == 1 then
-                self.NextZPSMusicT = self.NextZPSMusicT or 0
-                if curTime > self.NextZPSMusicT then
-                    self.ZPS_PickTrack = VJ.PICK(musicList)
-                    self.ZPS_Track = VJ.CreateSound(v, self.ZPS_PickTrack, GetConVar("VJ_ZPS_MapSpawner_MusicVolume"):GetInt(), 100)
-                    self.NextZPSMusicT = curTime + ((((SoundDuration(self.ZPS_PickTrack) > 0) and SoundDuration(self.ZPS_PickTrack)) or 2) + 1)
-                    timer.Simple(((((SoundDuration(self.ZPS_PickTrack) > 0) and SoundDuration(self.ZPS_PickTrack)) or 2) + 1), function() if IsValid(self) then self.DidStartMusic = false VJ.STOPSOUND(self.ZPS_Track) end end)
+            self.NextMusicT = self.NextMusicT or 0
+            if curTime > self.NextMusicT then
+                local pickMusic = VJ.PICK(music)
+                local musicSd = CreateSound(v, pickMusic)
+                if musicSd then
+                    musicSd:SetSoundLevel(GetConVar("VJ_ZPS_MapSpawner_MusicVolume"):GetInt())
+                    musicSd:Play()
+                    self.ZPS_Music = musicSd
+                    timer.Simple(SoundDuration(pickMusic), function() if IsValid(self) && self.DidStartMusic then self.DidStartMusic = false end end)
                 end
+                self.NextMusicT = curTime + SoundDuration(pickMusic)
             end
         end
         if stop && self.DidStartMusic then
             self.DidStartMusic = false
-            self.NextMusicSwitchT = curTime + 1
-            VJ.STOPSOUND(self.ZPS_Track)
+            self.ZPS_Music:Stop()
         end
     end
 end
@@ -370,7 +389,7 @@ function ENT:SpawnZombie(ent, pos, isMob)
     if pos == nil or !pos then return end
     if #self.tbl_SpawnedNPCs >= self.ZPS_MaxZombie then return end
     local zomEnt = ents.Create(ent)
-    zomEnt:SetPos(pos)
+    zomEnt:SetPos(pos + Vector(0, 0, 10))
     zomEnt:SetAngles(Angle(0, math_random(0,360), 0))
     zomEnt:Spawn()
     table_insert(self.tbl_SpawnedNPCs, zomEnt)
@@ -386,8 +405,7 @@ function ENT:SpawnZombie(ent, pos, isMob)
     end
     zomEnt.MapSpawner = self
     zomEnt.EntitiesToNoCollide = {}
-    zomEnt.CallForHelp = false
-    zomEnt.CanReceiveOrders = false
+    zomEnt.CallForHelpDistance = 250
     for _, v in pairs(self.Zombie) do
         table_insert(zomEnt.EntitiesToNoCollide, v.class)
     end
