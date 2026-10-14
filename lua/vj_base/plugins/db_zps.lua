@@ -675,7 +675,10 @@ if SERVER then
         local oldMaterial = victim:GetMaterial()
         local oldColor = victim:GetColor()
         local oldPlayerColor = victim:GetPlayerColor()
-        if IsValid(victim:GetParent()) then victim:SetParent(NULL) end
+        if IsValid(victim:GetParent()) then
+            victim:SetPos(victim:GetParent():GetAttachment(victim:GetParentAttachment()).Pos)
+            victim:SetParent(NULL)
+        end
         if victim:IsPlayer() then
             if victim.ZPS_InfectedVictim && GetConVar("VJ_ZPS_Hardcore"):GetInt() == 0 then
                 zombie = ents.Create("npc_vj_zps_zinf_ply")
@@ -745,6 +748,10 @@ if SERVER then
                 end
             end
         end)
+        if IsValid(victim:GetParent()) then
+            victim:SetPos(victim:GetParent():GetAttachment(victim:GetParentAttachment()).Pos)
+            victim:SetParent(NULL)
+        end
         if victim.IsVJBaseSNPC then
             victim.HasDeathCorpse = false
             victim.HasDeathAnimation = false
@@ -767,7 +774,6 @@ if SERVER then
                 end
             end
             victim.HasRagdoll = false
-            if IsValid(victim:GetParent()) then victim:SetParent(NULL) end
             victim:Remove()
         end
         local zombie = NULL

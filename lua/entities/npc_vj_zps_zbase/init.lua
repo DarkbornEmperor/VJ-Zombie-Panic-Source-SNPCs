@@ -99,7 +99,6 @@ function ENT:OnInput(key, activator, caller, data)
     end
     if key == "break_door" then
         if IsValid(self.Zombie_DoorEnt) then
-            self:PlaySoundSystem("BeforeMeleeAttack", self.SoundTbl_BeforeMeleeAttack)
             VJ.EmitSound(self, "physics/wood/wood_panel_impact_hard1.wav", 75, 100)
             local doorDmg = self.MeleeAttackDamage
             local door = self.Zombie_DoorEnt
@@ -395,9 +394,10 @@ function ENT:OnThinkActive()
         local door = self.ZPS_DoorEnt
         if IsValid(door) then
             local dist = VJ.GetNearestDistance(self, door)
-            if IsValid(door) && self.ZPS_AttackingDoor && (self.AttackAnimTime > curTime or !door:Visible(self) or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorEnt = NULL return end
+            if IsValid(door) && self.ZPS_AttackingDoor && (self.AttackAnimTime > curTime /*or !door:Visible(self)*/ or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorEnt = NULL return end
             if curAct != ACT_OPEN_DOOR && IsValid(door) && self.ZPS_NextMeleeAnimT < curTime then
                 self:SetTurnTarget(door)
+                self:PlaySoundSystem("BeforeMeleeAttack")
                 self:PlayAnim(self.AnimTbl_DoorAttack, false, false, false)
                 self.ZPS_NextMeleeAnimT = curTime + VJ.AnimDuration(self, ACT_OPEN_DOOR)
             end
