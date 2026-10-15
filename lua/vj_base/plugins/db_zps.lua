@@ -717,7 +717,7 @@ if SERVER then
         if timer.Exists(vicSlowTmr) then timer.Remove(vicSlowTmr) end
         if !IsValid(contEnt) then
             local contEnt = ents.Create("obj_vj_controller")
-            contEnt.VJCE_Player = victim
+            contEnt:GetPlayer() = victim
             contEnt:SetControlledNPC(zombie)
             contEnt:Spawn()
             contEnt:StartControlling()
