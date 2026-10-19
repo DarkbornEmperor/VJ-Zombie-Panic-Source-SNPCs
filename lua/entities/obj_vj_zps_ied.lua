@@ -74,7 +74,7 @@ function ENT:OnThink()
         local ownerDist = myPos:Distance(owner:GetPos())
         if IsValid(owner) && ownerDist <= 500 && self:Visible(owner) && !self.IED_Detonate then
             for _, v in ipairs(ents.FindInSphere(myPos, 150)) do
-                if IsValid(v) && IsValid(owner) && (v != owner.VJ_TheController && v != owner.VJ_TheControllerEntity:GetBullseye()) && ((v:IsNPC() && v:GetClass() != owner:GetClass() && (owner:IsPlayer() or (owner:IsNPC() && owner:Disposition(v) != D_LI && !v:IsFlagSet(FL_NOTARGET)))) or (v:IsPlayer() && v:Alive() && owner:Disposition(v) != D_LI && (owner:IsPlayer() or (!VJ_CVAR_IGNOREPLAYERS && !v:IsFlagSet(FL_NOTARGET))))) then
+                if IsValid(v) && IsValid(owner) && (v != owner.VJ_Controller:GetPlayer() && v != owner.VJ_Controller:GetBullseye()) && ((v:IsNPC() && v:GetClass() != owner:GetClass() && (owner:IsPlayer() or (owner:IsNPC() && owner:Disposition(v) != D_LI && !v:IsFlagSet(FL_NOTARGET)))) or (v:IsPlayer() && v:Alive() && owner:Disposition(v) != D_LI && (owner:IsPlayer() or (!VJ_CVAR_IGNOREPLAYERS && !v:IsFlagSet(FL_NOTARGET))))) then
                     if self.IED_Detonate then return end
                     self.IED_Detonate = true
                     self:Detonate()

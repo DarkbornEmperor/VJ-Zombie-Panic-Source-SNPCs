@@ -233,7 +233,7 @@ function ENT:Controller_Initialize(ply, controlEnt)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnChangeActivity(newAct)
-    if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
+    if newAct == ACT_JUMP && !self.VJ_Controlled then
         self:PlaySoundSystem("Speech", self.SoundTbl_Jump)
     elseif newAct == ACT_LAND then
         self:SetNavType(NAV_GROUND)
@@ -268,8 +268,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThink()
     local curTime = CurTime()
-    local controlled = self.VJ_IsBeingControlled
-    local ply = self.VJ_TheController
+    local controlled = self.VJ_Controlled
+    local ply = self.VJ_Controller:GetPlayer()
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
         if controlled && ply:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
             if self:OnGround() && curTime > self.ZPS_NextJumpT then
@@ -339,7 +339,7 @@ function ENT:OnThinkActive()
     self:Zombie_OnThinkActive()
     if GetConVar("VJ_ZPS_Crouch"):GetInt() == 1 then
         local curAct = self:GetSequenceActivity(self:GetIdealSequence())
-        if IsValid(self:GetEnemy()) && !self.VJ_IsBeingControlled && curAct != ACT_OPEN_DOOR then
+        if IsValid(self:GetEnemy()) && !self.VJ_Controlled && curAct != ACT_OPEN_DOOR then
             if /*(IsValid(self:GetBlockingEntity()) && self:GetBlockingEntity():GetClass() == "prop_physics") or*/ (self:GetEnemy():IsPlayer() && self:GetEnemy():GetPos():Distance(self:GetPos()) <= 350 && self:GetEnemy():Crouching()) then
                 self:Crouch(true)
                 self.ZPS_Crouching = true
@@ -348,8 +348,8 @@ function ENT:OnThinkActive()
                 self.ZPS_Crouching = false
             end
         end
-        if self.VJ_IsBeingControlled then
-            if self.VJ_TheController:KeyDown(IN_DUCK) then
+        if self.VJ_Controlled then
+            if self.VJ_Controller:GetPlayer():KeyDown(IN_DUCK) then
                 self:Crouch(true)
                 self.ZPS_Crouching = true
             else
@@ -363,8 +363,8 @@ function ENT:OnThinkActive()
         self:SetVelocity(self:GetMoveVelocity() * 0.3)
     end
     local curTime = CurTime()
-    local controlled = self.VJ_IsBeingControlled
-    local ply = self.VJ_TheController
+    local controlled = self.VJ_Controlled
+    local ply = self.VJ_Controller:GetPlayer()
     if IsValid(self.EnemyData.Target) && !self.ZPS_Berserk && !self.ZPS_Crouching && curTime > self.ZPS_NextBerserkT && ((!controlled) or (controlled && ply:KeyDown(IN_SPEED))) then
         self.ZPS_Berserk = true
         self:PlaySoundSystem("Speech", self.SoundTbl_Berserk)
@@ -418,7 +418,7 @@ local meleeDef = {
 --
 function ENT:OnMeleeAttack(status, enemy)
     if status == "Init" then
-        if self.MeleeAttack_IsPropAttack or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
+        if self.MeleeAttack_IsPropAttack or (self.VJ_Controlled && self.VJ_Controller:GetPlayer():KeyDown(IN_ATTACK2)) then
             self.AnimTbl_MeleeAttack =
                 "vjseq_vjges_s_push_z"
         else

@@ -44,7 +44,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 /*function ENT:Zombie_OnThinkActive()
     for _, v in ipairs(ents.FindInSphere(self:GetPos(), 3000)) do
-        if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then
+        if v:IsNPC() && v != self && v:GetClass() != self:GetClass() && v:Disposition(self) == D_LI && ((!self.VJ_Controlled) or (self.VJ_Controlled && self.VJ_Controller:GetPlayer():KeyDown(IN_RELOAD))) && IsValid(self:GetEnemy()) then
             if CurTime() > self.ZPS_BerserkNextT then
                 if self.ZPS_Stimulated then
                     self.ZPS_Berserk = true

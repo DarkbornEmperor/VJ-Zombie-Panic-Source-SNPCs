@@ -257,7 +257,7 @@ function ENT:Controller_Initialize(ply, controlEnt)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnChangeActivity(newAct)
-    if newAct == ACT_JUMP && !self.VJ_IsBeingControlled then
+    if newAct == ACT_JUMP && !self.VJ_Controlled then
         self:PlaySoundSystem("Speech", self.SoundTbl_Jump)
     elseif newAct == ACT_LAND then
         self:SetNavType(NAV_GROUND)
@@ -298,8 +298,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnThink()
     local curTime = CurTime()
-    local controlled = self.VJ_IsBeingControlled
-    local ply = self.VJ_TheController
+    local controlled = self.VJ_Controlled
+    local ply = self.VJ_Controller:GetPlayer()
     if GetConVar("VJ_ZPS_Jump"):GetInt() == 1 then
         if controlled && ply:KeyDown(IN_JUMP) && self:GetNavType() != NAV_JUMP then
             if self:OnGround() && curTime > self.ZPS_NextJumpT then
@@ -349,7 +349,7 @@ function ENT:OnThinkActive()
         self:PlaySoundSystem("Speech", self.SoundTbl_Cough)
         self.ZPS_NextCoughT = curTime + math_rand(5,30)
     end
-    if self.ZPS_CanHeal && !self:IsBusy() && IsValid(self) && !self.MedicData.Status && curTime > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_USE))) then
+    if self.ZPS_CanHeal && !self:IsBusy() && IsValid(self) && !self.MedicData.Status && curTime > self.ZPS_NextSelfHealT && (self:Health() < self:GetMaxHealth() * 0.75) && ((!self.VJ_Controlled) or (self.VJ_Controlled && self.VJ_Controller:GetPlayer():KeyDown(IN_USE))) then
         self:OnMedicBehavior("BeforeHeal")
         self:PlayAnim("vjges_gesture_inoculator_inject_self", true, false, false)
         self.IsAbleToMeleeAttack = false
@@ -374,7 +374,7 @@ function ENT:OnThinkActive()
     if GetConVar("VJ_ZPS_WeaponSwitch"):GetInt() == 0 or !self.WeaponInventory_MeleeList or self.Weapon_Disabled or !IsValid(self:GetActiveWeapon()) then return end
     local eneData = self.EnemyData
     local dist = eneData.DistanceNearest
-    if IsValid(eneData.Target) && !self.VJ_IsBeingControlled && !self.ZPS_Panic then
+    if IsValid(eneData.Target) && !self.VJ_Controlled && !self.ZPS_Panic then
         local wep = self:GetActiveWeapon()
         if self.WeaponInventoryStatus == VJ.WEP_INVENTORY_MELEE then return end
         local selectType = false
@@ -396,7 +396,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnAllyKilled(ent)
     local curTime = CurTime()
-    if self.VJ_IsBeingControlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > curTime then return end
+    if self.VJ_Controlled or self.IsGuard or (self.NextDoAnyAttackT + 2) > curTime then return end
     if math_random(1,5) == 1 && !self.ZPS_Panic then
         self.ZPS_Panic = true
         self:PlaySoundSystem("CallForHelp")
@@ -406,7 +406,7 @@ end
 function ENT:SelectSchedule()
     self.BaseClass.SelectSchedule(self)
     -- Hide after an ally is killed
-    if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_IsBeingControlled then
+    if !self.Dead && self.ZPS_Panic && !self:IsBusy() && !self.VJ_Controlled then
         local curTime = CurTime()
         self.ZPS_Panic = false
         self:SCHEDULE_COVER_ENEMY("TASK_RUN_PATH", function(x) x.RunCode_OnFail = function() self.NextDoAnyAttackT = 0 end end)
@@ -552,7 +552,7 @@ function ENT:OnWeaponAttack()
         self:PlayAnim(finalAnim, "LetAttacks", false, true)
         self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
     end
-    if self.VJ_IsBeingControlled then return end
+    if self.VJ_Controlled then return end
     if wep.IsMeleeWeapon then self.MeleeAttackAnimationFaceEnemy = false else self.MeleeAttackAnimationFaceEnemy = true end
     if self.Weapon_Strafe && !self.IsGuard && !self.IsFollowing && (wep.IsMeleeWeapon) && self.WeaponAttackState == VJ.WEP_ATTACK_STATE_FIRE && curTime > self.NextWeaponStrafeT && (curTime - self.EnemyData.TimeAcquired) > 2 then
         timer.Simple(0, function()
@@ -570,7 +570,7 @@ function ENT:OnWeaponAttack()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:OnWeaponStrafe()
-    if self.VJ_IsBeingControlled then return end
+    if self.VJ_Controlled then return end
     if math_random(1,2) == 1 && !self.ZPS_Crouching then
         self.ZPS_Crouching = true
     //elseif math_random(1,2) == 1 && self.ZPS_Crouching then
@@ -590,7 +590,7 @@ function ENT:OnWeaponReload()
         end
     end
     local ene = self.EnemyData.Target
-    if self.IsGuard or self.ZPS_Panic or self.VJ_IsBeingControlled or !IsValid(ene) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:DoCoverTrace(self:GetPos() + self:OBBCenter(), ene:EyePos(), false, {SetLastHiddenTime = true}) then return end
+    if self.IsGuard or self.ZPS_Panic or self.VJ_Controlled or !IsValid(ene) or self.Weapon_FindCoverOnReload or GetConVar("VJ_ZPS_ReloadRun"):GetInt() == 0 or self:DoCoverTrace(self:GetPos() + self:OBBCenter(), ene:EyePos(), false, {SetLastHiddenTime = true}) then return end
     timer.Simple(0,function()
         if IsValid(self) then
             local moveCheck = VJ.PICK(VJ.TraceDirections(self, "Quick", math_random(150, 400), true, false, 8, true))

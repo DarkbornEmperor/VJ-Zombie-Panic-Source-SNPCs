@@ -621,7 +621,7 @@ if SERVER then
         if GetConVar("VJ_ZPS_InfectionEffects"):GetInt() == 1 && !victim.ZPS_ImmuneInfection then
             hook.Add("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex(), function()
                 local curTime = CurTime()
-                if victim.ZPS_InfectedVictim && (!IsValid(victim) or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_IsControllingNPC or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
+                if victim.ZPS_InfectedVictim && (!IsValid(victim) or (victim:IsPlayer() && (!victim:Alive() or victim:Deaths() > deaths or victim.VJ_Controlling or GetConVar("sbox_godmode"):GetInt() == 1)) or !victim:Alive() or victim.GodMode) then victim.ZPS_InfectedVictim = false timer.Remove("VJ_ZPS_InfectionTime" .. victim:EntIndex()) hook.Remove("Think", "VJ_ZPS_VictimCough" .. victim:EntIndex()) return end
                 if IsValid(victim) && !victim.VJ_ZPS_Survivor && curTime > victim.ZPS_NextCoughT then
                     if string_find(string_lower(victimModel), "female") or string_find(string_lower(victimModel), "alyx") or string_find(string_lower(victimModel), "mossman") or string_find(string_lower(victimModel), "chell") or string_find(string_lower(victimModel), "zoey") or string_find(string_lower(victimModel), "producer") or string_find(string_lower(victimModel), "rochelle") or string_find(string_lower(victimModel), "amy") or string_find(string_lower(victimModel), "candace") or string_find(string_lower(victimModel), "isa") or string_find(string_lower(victimModel), "lyndsay") or string_find(string_lower(victimModel), "margaret") or string_find(string_lower(victimModel), "rachel") then
                         VJ.CreateSound(victim, "ambient/voices/cough" .. math_random(1,4) .. ".wav", 75, 120)
@@ -668,7 +668,7 @@ if SERVER then
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_SetPlayerZombie(victim)
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJ_IsControllingNPC or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJ_Controlling or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
         local zombie = NULL
         local oldModel = victim:GetModel()
         local oldSkin = victim:GetSkin()
