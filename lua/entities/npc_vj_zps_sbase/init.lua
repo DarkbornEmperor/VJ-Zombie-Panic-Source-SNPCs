@@ -265,16 +265,11 @@ function ENT:OnChangeActivity(newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
-    local eneData = self.EnemyData
-    if self.ZPS_Crouching && self.Weapon_CanMoveFire && IsValid(eneData.Target) && IsValid(self:GetActiveWeapon()) && !self.WeaponEntity.IsMeleeWeapon then
-        local curTime = CurTime()
-        if (eneData.Visible or (eneData.VisibleTime + 5) > curTime) && self.CurrentSchedule && self.CurrentSchedule.CanShootWhenMoving && self:CanFireWeapon(true, false) then
-            self.WeaponAttackState = VJ.WEP_ATTACK_STATE_FIRE
-            if act == ACT_WALK then
-                return self:TranslateActivity(act == ACT_WALK and ACT_WALK_CROUCH_AIM)
-            elseif act == ACT_RUN then
-                return self:TranslateActivity(act == ACT_RUN and ACT_RUN_CROUCH_AIM)
-            end
+    if self.ZPS_Crouching then
+        if act == ACT_WALK_AIM then
+            return self:TranslateActivity(act == ACT_WALK_AIM and ACT_WALK_CROUCH_AIM)
+        elseif act == ACT_RUN_AIM then
+            return self:TranslateActivity(act == ACT_RUN_AIM and ACT_RUN_CROUCH_AIM)
         end
     end
     if act == ACT_IDLE && !self.AnimationTranslations[ACT_IDLE] then
