@@ -3107,9 +3107,9 @@ function ENT:OnFootstepSound(moveType, sdFile)
         filter = self
     })
     if tr.Hit && self.FootSteps[tr.MatType] then
-        VJ.EmitSound(self, VJ.PICK(self.FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootStepPitch1, self.FootStepPitch2))
+        VJ.EmitSound(self, VJ.PICK(self.FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch))
     end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch.a, self.FootstepSoundPitch.b))
+        VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch))
     end
 end

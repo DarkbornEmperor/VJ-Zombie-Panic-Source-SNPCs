@@ -1672,12 +1672,12 @@ function ENT:OnFootstepSound(moveType, sdFile)
         filter = self
     })
     if tr.Hit && self.Zombie_FootSteps[tr.MatType] && self:GetClass() != "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self, VJ.PICK(self.Zombie_FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootStepPitch1, self.FootStepPitch2))
+        VJ.EmitSound(self, VJ.PICK(self.Zombie_FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch))
     end
     if tr.Hit && self.Carrier_FootSteps[tr.MatType] && self:GetClass() == "npc_vj_zps_zcarrier" then
-        VJ.EmitSound(self, VJ.PICK(self.Carrier_FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootStepPitch1, self.FootStepPitch2))
+        VJ.EmitSound(self, VJ.PICK(self.Carrier_FootSteps[tr.MatType]), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch))
     end
     if self:WaterLevel() > 0 && self:WaterLevel() < 3 then
-        VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch.a, self.FootstepSoundPitch.b))
+        VJ.EmitSound(self, VJ.PICK(wadeSnd), self.FootstepSoundLevel, self:GetSoundPitch(self.FootstepSoundPitch))
     end
 end
