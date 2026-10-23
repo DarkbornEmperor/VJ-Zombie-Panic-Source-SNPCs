@@ -53,7 +53,7 @@ ENT.ControllerParams = {
     FirstP_Offset = Vector(0, 0, 5),
 }
 -- Custom
-ENT.ZPS_Armor = false
+ENT.ZPS_HasArmor = false
 ENT.ZPS_ArmorHP = 100
 ENT.ZPS_CanHeal = false
 ENT.ZPS_Crouching = false
@@ -192,7 +192,7 @@ function ENT:Init()
         self.Weapon_FindCoverOnReload = true
     end
     if math_random(1,5) == 1 then self.IsMedic = true self.ZPS_CanHeal = true end
-    if math_random(1,5) == 1 then self.ZPS_Armor = true end
+    if math_random(1,5) == 1 then self.ZPS_HasArmor = true end
 
     local curTime = CurTime()
     self.ZPS_NextWepSwitchT = curTime + math_rand(2,4)
@@ -839,6 +839,22 @@ function ENT:SetAnimationTranslations(h)
     self.AnimationTranslations[ACT_LAND] = defLand
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CalculateArmor(dmginfo, hitgroup, status)
+    local getDmg = dmginfo:GetDamage()
+    local flNew = getDmg * 0.2
+    local flArmor = getDmg - self.ZPS_ArmorHP
+
+    if flArmor > self.ZPS_ArmorHP then -- Was there more damage than available armor?
+        flArmor = self.ZPS_ArmorHP
+        flNew = getDmg - flArmor
+        self.ZPS_ArmorHP = 0
+    else
+        self.ZPS_ArmorHP = self.ZPS_ArmorHP - getDmg
+    end
+
+    return flNew
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 local headshotSd = {"darkborn/zps/shared/impacts/flesh_impact_headshot-02.wav", "darkborn/zps/shared/impacts/flesh_impact_headshot-03.wav"}
 --
 function ENT:OnDamaged(dmginfo, hitgroup, status)
@@ -846,10 +862,9 @@ function ENT:OnDamaged(dmginfo, hitgroup, status)
     if status == "PostDamage" && hitgroup == HITGROUP_HEAD then
         self:PlaySoundSystem("Impact", headshotSd)
         -- For armor
-    elseif status == "PreDamage" then
-        if self.ZPS_Armor then self.ZPS_ArmorHP = self.ZPS_ArmorHP - dmginfo:GetDamage() end
-        if self.ZPS_ArmorHP > 0 && (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB)) && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then
-            dmginfo:ScaleDamage(0.80)
+    elseif status == "PreDamage" && self.ZPS_HasArmor && self.ZPS_ArmorHP > 0 && (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_GEAR) then
+        dmginfo:SetDamage(self:CalculateArmor(dmginfo, hitgroup, status))
+        if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB) then
             if self.HasSounds && self.HasImpactSounds then VJ.EmitSound(self, "VJ.Impact.Armor") end
             local effectData = EffectData()
             effectData:SetOrigin(dmginfo:GetDamagePosition())
