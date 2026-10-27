@@ -444,10 +444,10 @@ if CLIENT then
             panel:NumSlider("Infection Chance", "VJ_ZPS_InfectionChance", 1, 100, 0)
             panel:ControlHelp("Chance to be infected once the victim's health is vulnerable to infection.")
             panel:ControlHelp("Ex: 1 = 100%, 100 = 1%.")
-            panel:NumSlider("Infection Time Random #1", "VJ_ZPS_InfectionTime1", 5, 120, 0)
-            panel:NumSlider("Infection Time Random #2", "VJ_ZPS_InfectionTime2", 5, 120, 0)
+            panel:NumSlider("Infection Time Rand #1", "VJ_ZPS_InfectionTime1", 5, 120, 0)
+            panel:NumSlider("Infection Time Rand #2", "VJ_ZPS_InfectionTime2", 5, 120, 0)
             panel:ControlHelp("Time until succumbing to infection.")
-            panel:ControlHelp("Note: Random #2 must be higher than Random #1")
+            panel:ControlHelp("Note: Rand #2 must be higher than Rand #1")
         end)
         spawnmenu.AddToolMenuOption("DrVrej", "SNPC Configures", "ZPS - Map Spawner", "ZPS - Map Spawner", "", "", function(panel)
             panel:AddControl("Button", {Text = "#vjbase.menu.general.reset.everything", Command = "VJ_ZPS_MapSpawner_Music 1\nVJ_ZPS_MapSpawner_Ambience 1\nVJ_ZPS_MapSpawner_MusicVolume 50\nVJ_ZPS_MapSpawner_AmbienceVolume 50"})
@@ -641,7 +641,7 @@ if SERVER then
                 end
             end)
         end
-        timer.Create("VJ_ZPS_InfectionTime" .. victim:EntIndex(), math_random(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(), GetConVar("VJ_ZPS_InfectionTime2"):GetInt()), 1, function()
+        timer.Create("VJ_ZPS_InfectionTime" .. victim:EntIndex(), math_rand(GetConVar("VJ_ZPS_InfectionTime1"):GetInt(), GetConVar("VJ_ZPS_InfectionTime2"):GetInt()), 1, function()
             if IsValid(victim) && victim.ZPS_InfectedVictim && !victim.ZPS_ImmuneInfection then
                 if victim:IsPlayer() && GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 then
                     hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player")
@@ -675,8 +675,9 @@ if SERVER then
         local oldMaterial = victim:GetMaterial()
         local oldColor = victim:GetColor()
         local oldPlayerColor = victim:GetPlayerColor()
-        if IsValid(victim:GetParent()) then
-            victim:SetPos(victim:GetParent():GetAttachment(victim:GetParentAttachment()).Pos)
+        local entParent = victim:GetParent()
+        if IsValid(entParent) then
+            victim:SetPos(entParent:GetAttachment(victim:GetParentAttachment()).Pos)
             victim:SetParent(NULL)
         end
         if victim:IsPlayer() then
@@ -748,8 +749,9 @@ if SERVER then
                 end
             end
         end)
-        if IsValid(victim:GetParent()) then
-            victim:SetPos(victim:GetParent():GetAttachment(victim:GetParentAttachment()).Pos)
+        local entParent = victim:GetParent()
+        if IsValid(entParent) then
+            victim:SetPos(entParent:GetAttachment(victim:GetParentAttachment()).Pos)
             victim:SetParent(NULL)
         end
         if victim.IsVJBaseSNPC then
