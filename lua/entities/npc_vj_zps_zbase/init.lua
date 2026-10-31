@@ -196,7 +196,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Controller_Initialize(ply, controlEnt)
     ply:ChatPrint("ATTACK2: Prop Attack (While holding ATTACK2, press ATTACK1)")
-    ply:ChatPrint("RELOAD: Break Door (If valid)")
+    ply:ChatPrint("RELOAD: Break Door")
     ply:ChatPrint("JUMP: Jump")
     ply:ChatPrint("DUCK: Crouch")
     ply:ChatPrint("SPRINT: Berserk (Cooldown is 10-15 seconds)")
