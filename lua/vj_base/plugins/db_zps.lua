@@ -567,7 +567,7 @@ if SERVER then
         local curTime = CurTime()
         local inflictor = dmginfo:GetInflictor()
         local attacker = dmginfo:GetAttacker()
-        if math_random(1, (attacker.VJ_ZPS_Carrier && GetConVar("VJ_ZPS_InfectionChance"):GetInt() / 2.5) or GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && victim:LookupBone("ValveBiped.Bip01_Pelvis") != nil && !victim.ZPS_InfectedVictim then
+        if math_random(1, (attacker.VJ_ZPS_Carrier && GetConVar("VJ_ZPS_InfectionChance"):GetInt() / 2.5) or GetConVar("VJ_ZPS_InfectionChance"):GetInt()) == 1 && victim:LookupBone("ValveBiped.Bip01_Pelvis") && !victim.ZPS_InfectedVictim then
             if victim:Alive() && victim:Health() - dmginfo:GetDamage() && attacker.VJ_ZPS_Zombie then
                 if (victim:IsPlayer() && victim:Armor() <= 0 && GetConVar("sbox_godmode"):GetInt() == 0) or victim:IsNPC() or victim:IsNextBot() then
                     if victim.ZPS_InfectedVictim then return end
@@ -578,7 +578,7 @@ if SERVER then
             end
         end
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim.OSZ_InfectedVictim then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ_ZPS_CheckDmgType(dmginfo:GetDamageType()) or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ_ZPS_CheckDmgType(dmginfo:GetDamageType()) or !victim:LookupBone("ValveBiped.Bip01_Pelvis") then hook.Remove("PlayerDeath", "VJ_ZPS_Infection_Player") hook.Remove("OnNPCKilled", "VJ_ZPS_Infection_NPC") return end
         if victim:IsPlayer() /*&& GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0*/ then
             hook.Add("PlayerDeath", "VJ_ZPS_Infection_Player", function(victim, inflictor, attacker)
                 if victim.ZPS_InfectedVictim && victim:LastHitGroup() != HITGROUP_HEAD && attacker.VJ_ZPS_Zombie then
@@ -607,7 +607,7 @@ if SERVER then
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_InfectionApply(victim)
         if victim.LNR_InfectedVictim or victim.GOTDR_InfectedVictim or victim.NMRIHR_InfectedVictim or victim.CNCR_InfectedVictim or victim.OSZ_InfectedVictim then return end
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE") or !victim:Alive() or victim.GodMode or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 /*or victim.VJ_AVP_IsTech*/ or victim.VJ_ID_Undead or victim.ZPS_ImmuneInfection or VJ.HasValue(victim.VJ_NPC_Class, "CLASS_ZOMBIE") or !victim:Alive() or victim.GodMode or !victim:LookupBone("ValveBiped.Bip01_Pelvis") then return end
 
         local curTime = CurTime()
         local victimModel = victim:GetModel()
@@ -663,12 +663,12 @@ if SERVER then
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_Infect(victim, inflictor, attacker)
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.ZPS_ImmuneInfection or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or victim.ZPS_ImmuneInfection or !victim:LookupBone("ValveBiped.Bip01_Pelvis") then return end
         VJ_ZPS_CreateZombie(victim)
     end
     ---------------------------------------------------------------------------------------------------------------------------------------------
     function VJ_ZPS_SetPlayerZombie(victim)
-        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJ_Controlling or victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil then return end
+        if GetConVar("VJ_ZPS_Infection"):GetInt() == 0 or GetConVar("VJ_ZPS_PlayerZombie"):GetInt() == 0 or GetConVar("sbox_godmode"):GetInt() == 1 or victim.VJ_Controlling or !victim:LookupBone("ValveBiped.Bip01_Pelvis") then return end
         local zombie = NULL
         local oldModel = victim:GetModel()
         local oldSkin = victim:GetSkin()
@@ -906,13 +906,13 @@ function ENT:VJ_ZPS_CreateBoneMerge(zombie, oldModel, oldSkin, oldColor, oldMate
     end
     body:SetColor(oldColor)
     body:SetMaterial(oldMaterial)
-    if oldPlayerColor != false then body:SetPlayerColor(oldPlayerColor) else body:SetPlayerColor(Color(61, 87, 105):ToVector()) end
-    if IsValid(bgEnt) then
+    if oldPlayerColor then body:SetPlayerColor(oldPlayerColor) else body:SetPlayerColor(Color(61, 87, 105):ToVector()) end
+    if bgEnt then
         for i = 0, body:GetNumBodyGroups() -1 do
             body:SetBodygroup(i, bgEnt:GetBodygroup(i))
         end
     end
-    if IsValid(subMat) then
+    if subMat then
         for i = 0,31 do
             if subMat:GetSubMaterial(i) != "" then
                 body:SetSubMaterial(i, subMat:GetSubMaterial(i))
