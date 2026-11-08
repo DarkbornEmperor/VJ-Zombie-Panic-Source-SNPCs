@@ -78,8 +78,8 @@ function ENT:Initialize()
     self.ZPS_SpawnDistance = GetConVar("VJ_ZPS_MapSpawner_SpawnMax"):GetInt()
     self.ZPS_SpawnDistanceClose = GetConVar("VJ_ZPS_MapSpawner_SpawnMin"):GetInt()
     self.ZPS_HordeChance = GetConVar("VJ_ZPS_MapSpawner_HordeChance"):GetInt()
-    self.ZPS_HordeCooldownMin = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMin"):GetInt()
-    self.ZPS_HordeCooldownMax = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMax"):GetInt()
+    self.ZPS_HordeCooldownMin = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMin"):GetFloat()
+    self.ZPS_HordeCooldownMax = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMax"):GetFloat()
     self.ZPS_MaxZombie = GetConVar("VJ_ZPS_MapSpawner_MaxZom"):GetInt()
     self.ZPS_MaxHordeSpawn = GetConVar("VJ_ZPS_MapSpawner_HordeCount"):GetInt()
     self.tbl_SpawnedNPCs = {}
@@ -92,7 +92,7 @@ function ENT:Initialize()
 
     for _, v in ipairs(player.GetAll()) do
         if GetConVar("VJ_ZPS_MapSpawner_Ambience") == 1 then
-            self.ZPS_Ambience = VJ.CreateSound(v, VJ.PICK(ambient), GetConVar("VJ_ZPS_MapSpawner_AmbienceVolume"):GetInt(), 100)
+            self.ZPS_Ambience = VJ.CreateSound(v, VJ.PICK(ambient), GetConVar("VJ_ZPS_MapSpawner_AmbienceVolume"):GetFloat(), 100)
         end
     end
 end
@@ -274,8 +274,8 @@ function ENT:Think()
         self.ZPS_SpawnDistance = GetConVar("VJ_ZPS_MapSpawner_SpawnMax"):GetInt()
         self.ZPS_SpawnDistanceClose = GetConVar("VJ_ZPS_MapSpawner_SpawnMin"):GetInt()
         self.ZPS_HordeChance = GetConVar("VJ_ZPS_MapSpawner_HordeChance"):GetInt()
-        self.ZPS_HordeCooldownMin = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMin"):GetInt()
-        self.ZPS_HordeCooldownMax = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMax"):GetInt()
+        self.ZPS_HordeCooldownMin = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMin"):GetFloat()
+        self.ZPS_HordeCooldownMax = GetConVar("VJ_ZPS_MapSpawner_HordeCooldownMax"):GetFloat()
         self.ZPS_MaxZombie = GetConVar("VJ_ZPS_MapSpawner_MaxZom"):GetInt()
         self.ZPS_MaxHordeSpawn = GetConVar("VJ_ZPS_MapSpawner_HordeCount"):GetInt()
         //self.AI_RefreshTime = GetConVar("VJ_ZPS_MapSpawner_RefreshRate"):GetInt()
@@ -325,7 +325,7 @@ function ENT:Think()
         if curTime > self.NextZombieSpawnTime then
             if #self.tbl_SpawnedNPCs >= self.ZPS_MaxZombie - self.ZPS_MaxHordeSpawn then return end -- Makes sure that we can at least spawn a mob when it's time
             self:SpawnZombie(self:PickZombie(self.Zombie), self:FindSpawnPosition(false))
-            self.NextZombieSpawnTime = curTime + math_rand(GetConVar("VJ_ZPS_MapSpawner_DelayMin"):GetInt(), GetConVar("VJ_ZPS_MapSpawner_DelayMax"):GetInt())
+            self.NextZombieSpawnTime = curTime + math_rand(GetConVar("VJ_ZPS_MapSpawner_DelayMin"):GetFloat(), GetConVar("VJ_ZPS_MapSpawner_DelayMax"):GetFloat())
         end
 
         -- Spawns Hordes
@@ -353,7 +353,7 @@ function ENT:DoMusic(stop)
                 local pickMusic = VJ.PICK(music)
                 local musicSd = CreateSound(v, pickMusic)
                 if musicSd then
-                    musicSd:SetSoundLevel(GetConVar("VJ_ZPS_MapSpawner_MusicVolume"):GetInt())
+                    musicSd:SetSoundLevel(GetConVar("VJ_ZPS_MapSpawner_MusicVolume"):GetFloat())
                     musicSd:Play()
                     self.ZPS_Music = musicSd
                     timer.Simple(SoundDuration(pickMusic), function() if IsValid(self) && self.DidStartMusic then self.DidStartMusic = false end end)
