@@ -542,7 +542,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot1")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         elseif (corpse:GetBodygroup(0) == 2 or corpse:GetBodygroup(1) == 2 or corpse:GetBodygroup(2) == 2 or corpse:GetBodygroup(3) == 2) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) == 2 or corpse.Bonemerge:GetBodygroup(1) == 2 or corpse.Bonemerge:GetBodygroup(2) == 2 or corpse.Bonemerge:GetBodygroup(3) == 2) then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
@@ -552,7 +552,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot2")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         elseif (corpse:GetBodygroup(0) == 3 or corpse:GetBodygroup(1) == 3 or corpse:GetBodygroup(2) == 3 or corpse:GetBodygroup(3) == 3) or IsValid(bonemerge) && (corpse.Bonemerge:GetBodygroup(0) == 3 or corpse.Bonemerge:GetBodygroup(1) == 3 or corpse.Bonemerge:GetBodygroup(2) == 3 or corpse.Bonemerge:GetBodygroup(3) == 3) then
             bleedOut = ents.Create("info_particle_system")
             bleedOut:SetKeyValue("effect_name", "vj_zps_blood_headshot")
@@ -562,7 +562,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot3")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         end
     end
 end

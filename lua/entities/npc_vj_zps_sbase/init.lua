@@ -941,7 +941,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot1")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         elseif corpse:GetBodygroup(0) == 2 or corpse:GetBodygroup(1) == 2 or corpse:GetBodygroup(2) == 2 or corpse:GetBodygroup(3) == 2 then
             local attHead2 = corpse:GetAttachment(corpse:LookupAttachment("headshot2"))
             bleedOut = ents.Create("info_particle_system")
@@ -952,7 +952,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot2")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         elseif corpse:GetBodygroup(0) == 3 or corpse:GetBodygroup(1) == 3 or corpse:GetBodygroup(2) == 3 or corpse:GetBodygroup(3) == 3 then
             local attHead3 = corpse:GetAttachment(corpse:LookupAttachment("headshot3"))
             bleedOut = ents.Create("info_particle_system")
@@ -963,7 +963,7 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpse)
             bleedOut:Fire("SetParentAttachment", "headshot3")
             bleedOut:Spawn()
             bleedOut:Activate()
-            bleedOut:Fire("Start", "", 0)
+            bleedOut:Fire("Start", nil, 0)
         end
     end
 end
