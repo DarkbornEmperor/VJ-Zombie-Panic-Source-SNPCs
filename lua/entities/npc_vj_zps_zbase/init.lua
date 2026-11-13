@@ -396,7 +396,7 @@ function ENT:OnThinkActive()
             local dist = VJ.GetNearestDistance(self, door)
             if IsValid(door) && self.ZPS_AttackingDoor && (self.AttackAnimTime > curTime /*or !door:Visible(self)*/ or dist > 35) then self.ZPS_AttackingDoor = false self.ZPS_DoorEnt = NULL return end
             if curAct != ACT_OPEN_DOOR && IsValid(door) && self.ZPS_NextMeleeAnimT < curTime then
-                self:SetTurnTarget(door)
+                self:SetTurnTarget(door, 1)
                 self:PlaySoundSystem("BeforeMeleeAttack")
                 self:PlayAnim(self.AnimTbl_DoorAttack, false, false, false)
                 self.ZPS_NextMeleeAnimT = curTime + VJ.AnimDuration(self, ACT_OPEN_DOOR)
